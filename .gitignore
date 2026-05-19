@@ -1,0 +1,6 @@
+/Demo/nbproject/private/
+/Demo/build/
+/Demo/dist/
+*.class
+*.dat
+*.log
