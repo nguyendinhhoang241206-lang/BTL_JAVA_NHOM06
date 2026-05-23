@@ -10,24 +10,30 @@ import controller.MovieSearchController;
 
 public class MainTest {
     public static void main(String[] args) {
+        // Thiết lập giao diện Native (giao diện phẳng, hiện đại của Windows)
+        try {
+            javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        // Chạy Luồng UI
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                JFrame frame = new JFrame("Test Phân Quyền Chuẩn MVC");
+                // Khởi tạo cửa sổ chính
+                JFrame frame = new JFrame("Phần Mềm Quản Lý Phim - Chuẩn MVC");
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 
+                // 1. Khởi tạo cái Xác (View rỗng)
                 ShowlistmovieForm view = new ShowlistmovieForm();
                 
-                // --- TEST TRƯỜNG HỢP 1: ĐĂNG NHẬP BẰNG TÀI KHOẢN USER/VIEWER ---
-                // Ông truyền chữ "USER" hoặc "VIEWER" vào đây
-                MovieSearchController controller = new MovieSearchController(view, "USER");
+                // 2. Khởi tạo Không gian và phân quyền (Controller)
+                MovieSearchController controller = new MovieSearchController(view, "ADMIN");
                 
-                // --- TEST TRƯỜNG HỢP 2: ĐĂNG NHẬP BẰNG TÀI KHOẢN ADMIN ---
-                // Khi nào muốn test quyền Admin, ông đổi chữ "USER" ở trên thành "ADMIN" nhé:
-                // MovieSearchController controller = new MovieSearchController(view, "ADMIN");
-                
+                // 3. Đưa View vào khung và hiển thị lên giữa màn hình
                 frame.add(view);
-                frame.setSize(950, 600);
-                frame.setLocationRelativeTo(null);
+                frame.setSize(950, 650); 
+                frame.setLocationRelativeTo(null); 
                 frame.setVisible(true);
             }
         });
