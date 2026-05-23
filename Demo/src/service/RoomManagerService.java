@@ -2,13 +2,32 @@ package service;
 
 import dao.RoomDAO;
 import model.Room;
+import java.util.List;
 
 public class RoomManagerService {
     private RoomDAO roomDAO = new RoomDAO();
     private SeatManagerService seatManagerService = new SeatManagerService();
 
-    // TODO: Sinh viên tự code logic: Gọi roomDAO.add(room) để thêm phòng chiếu mới. Sau khi lưu phòng thành công, tự động gọi seatManagerService.generateSeatsForRoom(room.getId(), room.getTotalSeats()) để tự động sinh các ghế thuộc phòng đó. Trả về true nếu thành công.
+    // Hàm lưu phòng và kích hoạt sinh ghế (Đã điền logic cho TODO)
     public boolean addRoom(Room room) {
+        // 1. Kiểm tra mã phòng đã tồn tại chưa để tránh trùng lặp
+        if (roomDAO.findById(room.getId()) != null) {
+            return false;
+        }
+
+        // 2. Lưu phòng vào file (gọi DAO)
+        boolean isRoomSaved = roomDAO.add(room);
+
+        // 3. Nếu lưu phòng thành công, tự động gọi Service khác để sinh ghế
+        if (isRoomSaved) {
+            return seatManagerService.generateSeatsForRoom(room.getId(), room.getTotalSeats());
+        }
+
         return false;
+    }
+
+    // Hàm lấy danh sách phòng (Controller cần hàm này để hiển thị lên JTable)
+    public List<Room> getAllRooms() {
+        return roomDAO.findAll();
     }
 }
