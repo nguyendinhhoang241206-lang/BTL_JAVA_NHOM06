@@ -6,6 +6,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -97,22 +99,91 @@ public class ShowTimeDAO {
         return false;
     }
 
-    // TODO: Sinh viên tự code logic: Duyệt danh sách tìm lịch chiếu có id khớp với tham số truyền vào. Trả về đối tượng ShowTime hoặc null.
-    public ShowTime findById(String id) {
-        if (id == null) {
-            return null;
-        }
-        readFromFile();
-        for (ShowTime showTime : this.showTimes) {
-            if (showTime.getId().equals(id)) {
-                return showTime;
-            }
-        }
-        return null;
-    }
+//    // TODO: Sinh viên tự code logic: Duyệt danh sách tìm lịch chiếu có id khớp với tham số truyền vào. Trả về đối tượng ShowTime hoặc null.
+//    public ShowTime findById(String id) {
+//        if (id == null) {
+//            return null;
+//        }
+//        readFromFile();
+//        for (ShowTime showTime : this.showTimes) {
+//            if (showTime.getId().equals(id)) {
+//                return showTime;
+//            }
+//        }
+//        return null;
+//    }
 
     // TODO: Sinh viên tự code logic: Trả về toàn bộ danh sách lịch chiếu bằng cách gọi readFromFile().
     public List<ShowTime> findAll() {
         return readFromFile();
+    }
+    
+    public List<ShowTime> getFakeShowTimes() {
+        List<ShowTime> list = new ArrayList<>();
+
+    list.add(
+        new ShowTime(
+            "ST01",
+            LocalDate.of(2026, 5, 22),
+            LocalTime.of(18, 0),
+            LocalTime.of(20, 0),
+            "M01",
+            "Room1"
+        )
+    );
+
+    list.add(
+        new ShowTime(
+            "ST02",
+            LocalDate.of(2026, 5, 22),
+            LocalTime.of(18, 0),
+            LocalTime.of(20, 0),
+            "M02",
+            "Room2"
+        )
+    );
+    
+    list.add(
+        new ShowTime(
+            "ST03",
+            LocalDate.of(2026, 5, 22),
+            LocalTime.of(19, 0),
+            LocalTime.of(21, 0),
+            "M03",
+            "Room3"
+        )
+    );
+    
+    list.add(
+        new ShowTime(
+            "ST04",
+            LocalDate.of(2026, 5, 22),
+            LocalTime.of(20, 0),
+            LocalTime.of(22, 0),
+            "M04",
+            "Room4"
+        )
+    );
+
+        return list;
+    }
+    
+    public ShowTime findById(String id) {
+
+        if (id == null) {
+            return null;
+        }
+
+        List<ShowTime> list = getFakeShowTimes();
+
+        for (ShowTime showTime : list) {
+
+            if (showTime.getId().equals(id)) {
+
+                return showTime;
+            }
+        }
+
+        return null;
     }
 }

@@ -6,7 +6,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class BookingDAO {
@@ -112,19 +114,19 @@ public class BookingDAO {
     }
 
     // TODO: Sinh viên tự code logic: Lọc ra tất cả các Booking thuộc về userId được chỉ định. Trả về danh sách đặt vé của User đó.
-    public List<Booking> findByUserId(String userId) {
-        if (userId == null) {
-            return new ArrayList<>();
-        }
-        readFromFile();
-        List<Booking> result = new ArrayList<>();
-        for (Booking booking : this.bookings) {
-            if (booking.getUserId() != null && booking.getUserId().equals(userId)) {
-                result.add(booking);
-            }
-        }
-        return result;
-    }
+//    public List<Booking> findByUserId(String userId) {
+//        if (userId == null) {
+//            return new ArrayList<>();
+//        }
+//        readFromFile();
+//        List<Booking> result = new ArrayList<>();
+//        for (Booking booking : this.bookings) {
+//            if (booking.getUserId() != null && booking.getUserId().equals(userId)) {
+//                result.add(booking);
+//            }
+//        }
+//        return result;
+//    }
 
     // TODO: Sinh viên tự code logic: Lọc ra tất cả các Booking thuộc về showTimeId được chỉ định. Trả về danh sách đặt vé của suất chiếu đó.
     public List<Booking> findByShowTimeId(String showTimeId) {
@@ -144,5 +146,59 @@ public class BookingDAO {
     // TODO: Sinh viên tự code logic: Trả về toàn bộ danh sách đặt vé bằng cách gọi readFromFile().
     public List<Booking> findAll() {
         return readFromFile();
+    }
+    
+    public List<Booking> findByUserId(String userId) {
+        List<Booking> fakeBookings = new ArrayList<>();
+
+        fakeBookings.add(new Booking(
+            "BK1001",
+            LocalDateTime.now().minusDays(2),
+            "Combo Bắp Nước 1",
+            20000.0,
+            150000.0,
+            Booking.Status.SUCCESS,
+            userId,
+            "ST01",
+            Arrays.asList("S01", "S02")
+        ));
+
+        fakeBookings.add(new Booking(
+            "BK1002",
+            LocalDateTime.now().minusDays(5),
+            "Không kèm combo",
+            0.0,
+            85000.0,
+            Booking.Status.CANCELLED,
+            userId,
+            "ST02",
+            Arrays.asList("S03")
+        ));
+
+        fakeBookings.add(new Booking(
+            "BK1003",
+            LocalDateTime.now().minusDays(3),
+            "Combo nước",
+            10000.0,
+            120000.0,
+            Booking.Status.SUCCESS,
+            userId,
+            "ST03",
+            Arrays.asList("S04")
+        ));
+
+        fakeBookings.add(new Booking(
+            "BK1004",
+            LocalDateTime.now().minusDays(1),
+            "Không combo",
+            0.0,
+            90000.0,
+            Booking.Status.SUCCESS,
+            userId,
+            "ST04",
+            Arrays.asList("S01")
+        ));
+
+        return fakeBookings;
     }
 }

@@ -1,13 +1,25 @@
 package service;
 
 import dao.MovieDAO;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import model.Movie;
 
 public class AddMovieService {
     private MovieDAO movieDAO = new MovieDAO();
 
-    // TODO: Sinh viên tự code logic: Nhận đối tượng Movie, tiến hành kiểm tra trùng lặp ID hoặc tên phim nếu cần, sau đó gọi movieDAO.add(movie) để ghi dữ liệu. Trả về true nếu thêm thành công.
     public boolean addMovie(Movie movie) {
-        return false;
+        if (movie == null || movie.getId() == null || movie.getId().trim().isEmpty()) {
+            return false;
+        }
+        
+        if (movieDAO.findById(movie.getId()) != null) {
+            System.out.println("Lỗi: Mã phim đã tồn tại!");
+            return false; 
+        }
+        
+        return movieDAO.add(movie);
     }
+    
 }

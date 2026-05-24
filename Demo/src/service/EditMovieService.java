@@ -6,8 +6,16 @@ import model.Movie;
 public class EditMovieService {
     private MovieDAO movieDAO = new MovieDAO();
 
-    // TODO: Sinh viên tự code logic: Nhận đối tượng Movie cần cập nhật, kiểm tra xem phim có tồn tại trong hệ thống không, sau đó gọi movieDAO.update(movie) để ghi đè dữ liệu mới. Trả về true nếu sửa thành công.
     public boolean editMovie(Movie movie) {
-        return false;
+        if (movie == null || movie.getId() == null) {
+            return false;
+        }
+        
+        if (movieDAO.findById(movie.getId()) == null) {
+            System.out.println("Lỗi: Không tìm thấy phim cần sửa!");
+            return false;
+        }
+        
+        return movieDAO.update(movie);
     }
 }
