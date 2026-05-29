@@ -14,66 +14,47 @@ import model.Seat;
 import model.ShowTime;
 
 public class BookingHistoryService {
+    private BookingDAO bookingDAO = new BookingDAO();
     private ShowTimeDAO showTimeDAO = new ShowTimeDAO();
     private MovieDAO movieDAO = new MovieDAO();
     private SeatDAO seatDAO = new SeatDAO();
-    private BookingDAO bookingDAO = new BookingDAO();
 
-    
-    public List<Booking> getHistoryByUserId(String userId) {
-        return bookingDAO.findByUserId(userId);
-    }
-    
-    public List<Object[]> getHistoryData(String userId) {
-
-        List<Object[]> result = new ArrayList<>();
-
-        List<Booking> listBookings = getHistoryByUserId(userId);
+    // CHÚ Ý: Sửa List<Booking> thành List<Object[]>
+    public List<Object[]> getHistoryByUserId(String userId) {
+        List<Booking> listBookings = bookingDAO.findByUserId(userId);
+        List<Object[]> resultList = new ArrayList<>(); // Danh sách các dòng
 
         for (Booking b : listBookings) {
-
             String movieTitle = "N/A";
             String timeDetail = "N/A";
             String roomName = "N/A";
-
-            ShowTime st = showTimeDAO.findById(b.getShowTimeId());
-
-            if (st != null) {
-
-                timeDetail = st.getStartTime() + " - " + st.getShowDate();
-
-                roomName = st.getRoomId();
-
-                Movie m = movieDAO.findById(st.getMovieId());
-
-                if (m != null) {
-                    movieTitle = m.getTitle();
-                }
-            }
-
-            StringBuilder seatBuilder = new StringBuilder();
-
-            int ticketCount = 0;
-
-            if (b.getBookedSeatIds() != null) {
-
-                ticketCount = b.getBookedSeatIds().size();
-
-                for (String seatId : b.getBookedSeatIds()) {
-
-                    Seat seat = seatDAO.findById(seatId);
-
-                    if (seat != null) {
-
-                        seatBuilder.append(seat.getSeatName()).append(", ");
+            
+            if (b.getShowTimeId() != null) {
+                ShowTime st = showTimeDAO.findById(b.getShowTimeId());
+                if (st != null) {
+                    timeDetail = st.getStartTime() + " - " + st.getShowDate();
+                    roomName = st.getRoomId();
+                    
+                    Movie m = movieDAO.findById(st.getMovieId());
+                    if (m != null) {
+                        movieTitle = m.getTitle();
                     }
                 }
             }
 
+            StringBuilder seatBuilder = new StringBuilder();
+            int ticketCount = 0;
+            if (b.getBookedSeatIds() != null) {
+                ticketCount = b.getBookedSeatIds().size();
+                for (String seatId : b.getBookedSeatIds()) {
+                    Seat seat = seatDAO.findById(seatId);
+                    if (seat != null) {
+                        seatBuilder.append(seat.getSeatName()).append(", ");
+                    }
+                }
+            }
             String seatStr = seatBuilder.toString();
-
             if (seatStr.endsWith(", ")) {
-
                 seatStr = seatStr.substring(0, seatStr.length() - 2);
             }
 
@@ -88,10 +69,9 @@ public class BookingHistoryService {
                 b.getStatus(),
                 b.getBookingDate()
             };
-
-            result.add(row);
+            
+            resultList.add(row);
         }
-
-        return result;
+        return resultList;
     }
 }

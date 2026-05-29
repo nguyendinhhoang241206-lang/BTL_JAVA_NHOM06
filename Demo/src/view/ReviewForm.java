@@ -7,11 +7,8 @@ package view;
 import controller.BookingHistoryController;
 import javax.swing.DefaultButtonModel;
 import javax.swing.table.DefaultTableModel;
-import model.Booking;
-import model.ShowTime;
-import model.Movie;
-import model.Seat;
 import java.util.List;
+import service.BookingHistoryService;
 
 /**
  *
@@ -41,121 +38,6 @@ public class ReviewForm extends javax.swing.JFrame {
             tableModel.addRow(row);
         }
     }
-    
-    //lịch sử đặt vé
-//    private void loadMoviesToTable() {
-//        tableModel.setRowCount(0); // Xóa bảng cũ
-////        List<Movie> list = movieDAO.findAll();
-//        List<Movie> list = movieDAO.getFakeMovies();
-//        
-//        for (Movie m : list) {
-//            Object[] row = new Object[]{
-//                m.getId(), 
-//                m.getTitle(), 
-//                m.getDirector(), 
-//                m.getDuration(), 
-//                m.getReleaseDate(),
-//                m.getDescription()
-//            };
-//            tableModel.addRow(row);
-//        }
-//    }
-    
-//    private void tblPhimMouseClicked(java.awt.event.MouseEvent evt) {                                     
-//        int selectedRow = tblPhim.getSelectedRow();
-//        if (selectedRow >= 0) {
-//            // Lấy dữ liệu từ các cột tương ứng (thứ tự 0, 1, 2... giống hàm loadMoviesToTable)
-//            String id = tableModel.getValueAt(selectedRow, 0).toString();
-//            String title = tableModel.getValueAt(selectedRow, 1).toString();
-//            String director = tableModel.getValueAt(selectedRow, 2).toString();
-//            String duration = tableModel.getValueAt(selectedRow, 3).toString();
-//            String releaseDate = tableModel.getValueAt(selectedRow, 4).toString();
-//            String description = tableModel.getValueAt(selectedRow, 5).toString();
-//
-//            // Đẩy lên các ô nhập liệu (Đổi txt... thành tên biến ô text của bạn)
-//            txtId.setText(id);
-//            txtTitle.setText(title);
-//            txtDirector.setText(director);
-//            txtDuration.setText(duration);
-//            txtReleaseDate.setText(releaseDate); // Định dạng nhập phải chuẩn yyyy-MM-dd
-//            txtDescription.setText(description);
-//        }
-//    }
-//    
-//    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {                                       
-//        try {
-//            // 1. Thu thập dữ liệu từ Form
-//            String id = txtId.getText();
-//            String title = txtTitle.getText();
-//            String director = txtDirector.getText();
-//            String description = txtDescription.getText();
-//            int duration = Integer.parseInt(txtDuration.getText()); // Ép kiểu số
-//            LocalDate releaseDate = LocalDate.parse(txtReleaseDate.getText()); // Ép kiểu ngày (VD: 2026-05-23)
-//
-//            // 2. Đóng gói thành đối tượng Movie
-//            Movie newMovie = new Movie(id, title, description, director, duration, releaseDate);
-//
-//            // 3. Gọi Service xử lý
-//            if (addService.addMovie(newMovie)) {
-//                JOptionPane.showMessageDialog(this, "Thêm phim thành công!");
-//                loadMoviesToTable(); // Load lại bảng
-//            } else {
-//                JOptionPane.showMessageDialog(this, "Thêm thất bại (Có thể do trùng mã ID)!");
-//            }
-//        } catch (Exception e) {
-//            JOptionPane.showMessageDialog(this, "Vui lòng nhập đúng định dạng số cho Thời lượng và Ngày (yyyy-MM-dd)");
-//        }
-//    }
-//    
-//    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {                                        
-//        try {
-//            String id = txtId.getText(); // ID là mốc để tìm kiếm nên không được sửa trên form
-//            String title = txtTitle.getText();
-//            String director = txtDirector.getText();
-//            String description = txtDescription.getText();
-//            int duration = Integer.parseInt(txtDuration.getText());
-//            LocalDate releaseDate = LocalDate.parse(txtReleaseDate.getText());
-//
-//            Movie editedMovie = new Movie(id, title, description, director, duration, releaseDate);
-//
-//            if (editService.editMovie(editedMovie)) {
-//                JOptionPane.showMessageDialog(this, "Cập nhật thành công!");
-//                loadMoviesToTable();
-//            } else {
-//                JOptionPane.showMessageDialog(this, "Sửa thất bại (Không tìm thấy mã phim)!");
-//            }
-//        } catch (Exception e) {
-//            JOptionPane.showMessageDialog(this, "Dữ liệu nhập vào không hợp lệ!");
-//        }
-//    }
-//    
-//    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {                                          
-//        String id = txtId.getText();
-//        
-//        if (id.isEmpty()) {
-//            JOptionPane.showMessageDialog(this, "Vui lòng chọn một phim trên bảng để xóa!");
-//            return;
-//        }
-//
-//        // Hộp thoại xác nhận trước khi xóa
-//        int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa phim này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
-//        if (confirm == JOptionPane.YES_OPTION) {
-//            if (deleteService.deleteMovie(id)) {
-//                JOptionPane.showMessageDialog(this, "Xóa thành công!");
-//                loadMoviesToTable(); // Load lại bảng
-//                
-//                // Xóa trắng các ô nhập liệu sau khi xóa xong
-//                txtId.setText("");
-//                txtTitle.setText("");
-//                // ... set rỗng cho các ô khác ...
-//            } else {
-//                JOptionPane.showMessageDialog(this, "Lỗi: Không thể xóa (Phim không tồn tại hoặc đang có lịch chiếu)!");
-//            }
-//        }
-//    }
-    
-    
-    
     
 
     @SuppressWarnings("unchecked")

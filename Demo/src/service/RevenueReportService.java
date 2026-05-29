@@ -11,67 +11,60 @@ import model.ShowTime;
 
 public class RevenueReportService {
     private BookingDAO bookingDAO = new BookingDAO();
+    private ShowTimeDAO showTimeDAO = new ShowTimeDAO();
+    private MovieDAO movieDAO = new MovieDAO();
 
     // TODO: Sinh viên tự code logic: Gọi bookingDAO.findAll() để lấy toàn bộ danh sách đặt vé trong hệ thống. Lọc ra các hóa đơn Booking có trạng thái là SUCCESS. Duyệt qua danh sách đó và cộng dồn thuộc tính totalPrice để tính toán tổng doanh thu. Trả về tổng tiền doanh thu.
     public double calculateTotalRevenue() {
-        List<Booking> bookings = bookingDAO.findAll();
-
-        double totalRevenue = 0;
-
-        for (Booking booking : bookings) {
-
-            if (booking.getStatus() == Booking.Status.SUCCESS) {
-
-                totalRevenue += booking.getTotalPrice();
+        List<Booking> allBookings = bookingDAO.findAll();
+        double totalRevenue = 0.0;
+        
+        for (Booking b : allBookings) {
+            if (b.getStatus() == Booking.Status.SUCCESS) {
+                totalRevenue += b.getTotalPrice();
             }
         }
-
         return totalRevenue;
     }
+
+    public double calculateRevenueByMovie(String movieId) {
+        List<Booking> allBookings = bookingDAO.findAll();
+        
+        return 0.0; 
+    }
     
-    public List<Object[]> getRevenueByMovie() {
+    public List<Object[]> getRevenueReport() {
 
-        List<Object[]> result = new ArrayList<>();
+        List<Object[]> rows = new ArrayList<>();
 
-        List<Booking> bookings = bookingDAO.findByUserId("U01");
+        List<Movie> movies = movieDAO.findAll();
 
-        for (Booking booking : bookings) {
+        List<Booking> bookings = bookingDAO.findAll();
 
-            // Chỉ tính vé SUCCESS
-            if (booking.getStatus() != Booking.Status.SUCCESS) {
-                continue;
+        for (Movie movie : movies) {
+
+            int soldTickets = 0;
+            double revenue = 0;
+
+            for (Booking booking : bookings) {
+
+                if (booking.getStatus() == Booking.Status.SUCCESS) {
+
+                    ShowTime showTime = showTimeDAO.findById(booking.getShowTimeId());
+
+                    if (showTime != null && showTime.getMovieId().equals(movie.getId())) {
+                        soldTickets++;
+                        revenue += booking.getTotalPrice();
+                    }
+                }
             }
 
-            ShowTimeDAO showTimeDAO = new ShowTimeDAO();
-            MovieDAO movieDAO = new MovieDAO();
-
-            ShowTime st = showTimeDAO.findById(booking.getShowTimeId());
-
-            if (st == null) {
-                continue;
-            }
-
-            Movie movie = movieDAO.findById(st.getMovieId());
-
-            if (movie == null) {
-                continue;
-            }
-
-            String movieTitle = movie.getTitle();
-
-            int ticketCount = booking.getBookedSeatIds().size();
-
-            double revenue = booking.getTotalPrice();
-
-            Object[] row = new Object[] {
-                movieTitle,
-                ticketCount,
+            rows.add(new Object[]{
+                movie.getTitle(),
+                soldTickets,
                 revenue
-            };
-
-            result.add(row);
+            });
         }
-
-        return result;
+        return rows;
     }
 }

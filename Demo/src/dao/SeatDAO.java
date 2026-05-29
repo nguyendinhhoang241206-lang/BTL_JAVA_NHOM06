@@ -99,18 +99,20 @@ public class SeatDAO {
     }
 
     // TODO: Sinh viên tự code logic: Duyệt danh sách tìm ghế có id khớp với tham số truyền vào. Trả về đối tượng Seat hoặc null.
-//    public Seat findById(String id) {
-//        if (id == null) {
-//            return null;
-//        }
-//        readFromFile();
-//        for (Seat seat : this.seats) {
-//            if (seat.getId().equals(id)) {
-//                return seat;
-//            }
-//        }
-//        return null;
-//    }
+    public Seat findById(String id) {
+        if (id == null) {
+            return null;
+        }
+        
+        readFromFile();
+        
+        for (Seat seat : this.seats) {
+            if (seat.getId().equals(id)) {
+                return seat;
+            }
+        }
+        return null;
+    }
 
     // TODO: Sinh viên tự code logic: Duyệt danh sách tìm và lọc ra tất cả các ghế thuộc về roomId được chỉ định. Trả về danh sách ghế của phòng đó.
     public List<Seat> findByRoomId(String roomId) {
@@ -132,57 +134,4 @@ public class SeatDAO {
         return readFromFile();
     }
     
-    public List<Seat> getFakeSeats() {
-
-        List<Seat> list = new ArrayList<>();
-
-        list.add(new Seat(
-            "S01",
-            "A1",
-            Type.NORMAL,
-            75000,
-            "Room1"
-        ));
-
-        list.add(new Seat(
-            "S02",
-            "A2",
-            Type.NORMAL,
-            75000,
-            "Room1"
-        ));
-
-        list.add(new Seat(
-            "S03",
-            "B1",
-            Type.VIP,
-            120000,
-            "Room2"
-        ));
-
-        list.add(new Seat(
-            "S04",
-            "B2",
-            Type.VIP,
-            120000,
-            "Room2"
-        ));
-
-        return list;
-    }
-    
-    public Seat findById(String id) {
-
-        List<Seat> list = getFakeSeats();
-
-        for (Seat seat : list) {
-
-            if (seat.getId().equals(id)) {
-
-                return seat;
-            }
-        }
-
-        return null;
-    }
 }

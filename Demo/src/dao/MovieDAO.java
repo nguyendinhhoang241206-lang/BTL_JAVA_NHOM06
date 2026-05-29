@@ -99,81 +99,25 @@ public class MovieDAO {
         return false;
     }
 
-//    // TODO: Tự code logic: Tìm kiếm và trả về đối tượng Movie theo id. Trả về null nếu không tìm thấy.
-//    public Movie findById(String id) {
-//        if (id == null) {
-//            return null;
-//        }
-//        readFromFile();
-//        for (Movie movie : this.movies) {
-//            if (movie.getId().equals(id)) {
-//                return movie;
-//            }
-//        }
-//        return null;
-//    }
+    // TODO: Tự code logic: Tìm kiếm và trả về đối tượng Movie theo id. Trả về null nếu không tìm thấy.
+    public Movie findById(String id) {
+        if (id == null) {
+            return null;
+        }
+        
+        readFromFile();
+        
+        for (Movie movie : this.movies) {
+            if (movie.getId().equals(id)) {
+                return movie;
+            }
+        }
+        return null;
+    }
 
     // TODO: Tự code logic: Trả về toàn bộ danh sách phim hiện tại bằng cách gọi readFromFile().
     public List<Movie> findAll() {
         return readFromFile();
     }
-    
-    public List<Movie> getFakeMovies() {
-
-        List<Movie> fakeList = new ArrayList<>();
-
-        fakeList.add(new Movie(
-            "M01",
-            "Mắt Biếc",
-            "Phim tình cảm buồn",
-            "Victor Vũ",
-            117,
-            LocalDate.of(2019, 12, 20)
-        ));
-
-        fakeList.add(new Movie(
-            "M02",
-            "Bố Già",
-            "Phim gia đình hài hước",
-            "Trấn Thành",
-            128,
-            LocalDate.of(2021, 3, 12)
-        ));
-
-        fakeList.add(new Movie(
-            "M03",
-            "Lật Mặt 6",
-            "Hành động kịch tính",
-            "Lý Hải",
-            132,
-            LocalDate.of(2023, 4, 28)
-        ));
-
-        fakeList.add(new Movie(
-            "M04",
-            "Mai",
-            "Phim tâm lý tình cảm",
-            "Trấn Thành",
-            131,
-            LocalDate.of(2024, 2, 10)
-        ));
-
-        return fakeList;
-    }
-    
-    public Movie findById(String id) {
-
-        List<Movie> list = getFakeMovies();
-
-        for (Movie m : list) {
-
-            if (m.getId().equals(id)) {
-                return m;
-            }
-        }
-
-        return null;
-    }
-    
-    
+     
 }

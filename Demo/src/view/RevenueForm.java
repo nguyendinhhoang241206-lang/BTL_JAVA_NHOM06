@@ -23,7 +23,7 @@ public class RevenueForm extends javax.swing.JFrame {
     }
     
     private void loadRevenue() {
-        List<Object[]> rows = revenueController.handleGetRevenueByMovie();
+        List<Object[]> rows = revenueController.handleGetTotalRevenue();
 
         for (Object[] row : rows) {
             tableModel.addRow(row);
