@@ -4,17 +4,29 @@
  */
 package demo;
 
+import view.SelectShowTimeFrame;
+
+import javax.swing.*;
+
 /**
  *
  * @author DINH HOANG
  */
 public class Demo {
 
-    /**
-     * @param args the command line arguments
-     */
+
     public static void main(String[] args) {
-        // TODO code application logic here
+        // Chạy trong luồng an toàn của Java Swing
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                // Truyền thử một mã phim giả lập (ví dụ "M001") vào Constructor
+                SelectShowTimeFrame testFrame = new SelectShowTimeFrame("M001");
+
+                // Lệnh quan trọng nhất để cửa sổ hiển thị lên màn hình
+                testFrame.setVisible(true);
+            }
+        });
     }
     
 }
