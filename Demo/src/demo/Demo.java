@@ -4,28 +4,19 @@
  */
 package demo;
 
-import view.SelectShowTimeFrame;
+import view.showtimeroom_schedule;
 
-import javax.swing.*;
-
-/**
- *
- * @author DINH HOANG
- */
 public class Demo {
 
-
     public static void main(String[] args) {
-        // Chạy trong luồng an toàn của Java Swing
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
+        // Khởi chạy giao diện an toàn theo chuẩn luồng sự kiện của Java Swing
+        java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                // Truyền thử một mã phim giả lập (ví dụ "M001") vào Constructor
-                SelectShowTimeFrame testFrame = new SelectShowTimeFrame("M001");
-
-                // Lệnh quan trọng nhất để cửa sổ hiển thị lên màn hình
-                testFrame.setVisible(true);
+                // Tạo một đối tượng của màn hình quản lý lịch chiếu và hiển thị lên
+                showtimeroom_schedule showTimeForm = new showtimeroom_schedule();
+                showTimeForm.setVisible(true);
             }
         });
     }
+    
 }
