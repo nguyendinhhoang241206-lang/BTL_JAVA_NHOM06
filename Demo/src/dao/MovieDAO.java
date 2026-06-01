@@ -6,8 +6,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import service.AddMovieService;
 
 public class MovieDAO {
     private List<Movie> movies = new ArrayList<>();
@@ -102,7 +104,9 @@ public class MovieDAO {
         if (id == null) {
             return null;
         }
+        
         readFromFile();
+        
         for (Movie movie : this.movies) {
             if (movie.getId().equals(id)) {
                 return movie;
@@ -115,4 +119,5 @@ public class MovieDAO {
     public List<Movie> findAll() {
         return readFromFile();
     }
+     
 }

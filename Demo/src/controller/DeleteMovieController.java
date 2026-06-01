@@ -3,10 +3,12 @@ package controller;
 import service.DeleteMovieService;
 
 public class DeleteMovieController {
+    
     private DeleteMovieService deleteMovieService = new DeleteMovieService();
 
-    // TODO: Sinh viên tự code logic: Nhận sự kiện yêu cầu xóa phim (ví dụ: người dùng nhấn nút Xóa trên bảng), hiển thị hộp thoại xác nhận (Confirm Dialog) tại View, nếu người dùng đồng ý thì gọi deleteMovieService.deleteMovie(id).
+    // Hàm này sẽ được giao diện (View) gọi khi bấm nút Xóa
     public boolean handleDeleteMovie(String id) {
-        return false;
+        // Ném ID sang cho tầng Service xử lý và trả về kết quả (true/false)
+        return deleteMovieService.deleteMovie(id);
     }
 }

@@ -8,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import model.Seat.Type;
 
 public class SeatDAO {
     private List<Seat> seats = new ArrayList<>();
@@ -102,7 +103,9 @@ public class SeatDAO {
         if (id == null) {
             return null;
         }
+        
         readFromFile();
+        
         for (Seat seat : this.seats) {
             if (seat.getId().equals(id)) {
                 return seat;
@@ -130,4 +133,5 @@ public class SeatDAO {
     public List<Seat> findAll() {
         return readFromFile();
     }
+    
 }
