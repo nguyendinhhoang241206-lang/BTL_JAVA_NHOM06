@@ -13,7 +13,6 @@ public class UserDAO {
     private List<User> users = new ArrayList<>();
     private static final String FILE_PATH = "data/users.dat";
 
-    // TODO: Sinh viên tự code logic: Đọc danh sách User từ file nhị phân FILE_PATH bằng ObjectInputStream. Trả về danh sách User.
     public List<User> readFromFile() {
         File file = new File(FILE_PATH);
         if (!file.exists()) {
@@ -33,7 +32,6 @@ public class UserDAO {
         return this.users;
     }
 
-    // TODO: Sinh viên tự code logic: Ghi danh sách User xuống file nhị phân FILE_PATH bằng ObjectOutputStream. Trả về true nếu thành công, false nếu thất bại.
     public boolean writeToFile(List<User> list) {
         if (list == null) {
             return false;
@@ -52,7 +50,6 @@ public class UserDAO {
         }
     }
 
-    // TODO: Sinh viên tự code logic: Thêm một User mới vào danh sách hiện tại, sau đó gọi writeToFile để lưu thay đổi. Trả về true nếu thành công.
     public boolean add(User user) {
         if (user == null) {
             return false;
@@ -62,7 +59,6 @@ public class UserDAO {
         return writeToFile(this.users);
     }
 
-    // TODO: Sinh viên tự code logic: Tìm User theo id trong danh sách, cập nhật thông tin mới, sau đó gọi writeToFile để lưu thay đổi. Trả về true nếu thành công.
     public boolean update(User user) {
         if (user == null || user.getId() == null) {
             return false;
@@ -77,7 +73,6 @@ public class UserDAO {
         return false;
     }
 
-    // TODO: Sinh viên tự code logic: Xóa User khỏi danh sách theo id, sau đó gọi writeToFile để lưu thay đổi. Trả về true nếu thành công.
     public boolean delete(String id) {
         if (id == null) {
             return false;
@@ -97,7 +92,6 @@ public class UserDAO {
         return false;
     }
 
-    // TODO: Sinh viên tự code logic: Duyệt danh sách tìm User có id khớp với tham số truyền vào. Trả về đối tượng User hoặc null.
     public User findById(String id) {
         if (id == null) {
             return null;
@@ -111,7 +105,6 @@ public class UserDAO {
         return null;
     }
 
-    // TODO: Sinh viên tự code logic: Duyệt danh sách tìm User có username khớp với tham số truyền vào. Trả về đối tượng User hoặc null.
     public User findByUsername(String username) {
         if (username == null) {
             return null;
