@@ -9,5 +9,5 @@ package model.enums;
  * @author DINH HOANG
  */
 public enum Role {
-    
+    ADMIN,CUSTOMER
 }
