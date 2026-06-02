@@ -17,6 +17,37 @@ public class AddEditMovieForm extends javax.swing.JFrame {
      */
     public AddEditMovieForm() {
         initComponents();
+        setLocationRelativeTo(null); // Hiển thị giữa màn hình
+        initNavigationMenu();
+    }
+    // Hàm tự viết bằng tay để nhúng thanh Menu chuyển màn hình
+    private void initNavigationMenu() {
+        javax.swing.JMenuBar menuBar = new javax.swing.JMenuBar();
+
+        javax.swing.JMenu menuNav = new javax.swing.JMenu("Chức năng");
+        javax.swing.JMenuItem itemSchedule = new javax.swing.JMenuItem("📅 Quản lý Lịch chiếu");
+        itemSchedule.addActionListener(e -> {
+            new showtimeroom_schedule().setVisible(true);
+            this.dispose();
+        });
+        menuNav.add(itemSchedule);
+
+        javax.swing.JMenu menuSystem = new javax.swing.JMenu("Hệ thống");
+        javax.swing.JMenuItem itemLogout = new javax.swing.JMenuItem("🚪 Đăng xuất");
+        itemLogout.addActionListener(e -> {
+            int confirm = javax.swing.JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn đăng xuất?", "Xác nhận", javax.swing.JOptionPane.YES_NO_OPTION);
+            if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+                LoginForm loginForm = new LoginForm();
+                new controller.LoginController(loginForm);
+                loginForm.setVisible(true);
+                this.dispose();
+            }
+        });
+        menuSystem.add(itemLogout);
+
+        menuBar.add(menuNav);
+        menuBar.add(menuSystem);
+        setJMenuBar(menuBar);
     }
 
     /**
@@ -132,7 +163,7 @@ public class AddEditMovieForm extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnSave)
                     .addComponent(btnCancel))
                 .addContainerGap(8, Short.MAX_VALUE))

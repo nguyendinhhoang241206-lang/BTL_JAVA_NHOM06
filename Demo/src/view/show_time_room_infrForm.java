@@ -17,6 +17,13 @@ public class show_time_room_infrForm extends javax.swing.JFrame {
      */
     public show_time_room_infrForm() {
         initComponents();
+        setLocationRelativeTo(null); // Hiện ra giữa màn hình
+
+        // ĐÁNH THỨC CONTROLLER ĐỂ NÓ KHÓA Ô NHẬP VÀ XỬ LÝ NÚT BẤM
+        new controller.RoomManagerController(this);
+    }
+    public javax.swing.JButton getBtnBack() {
+        return backtodashboard;
     }
 
     /**

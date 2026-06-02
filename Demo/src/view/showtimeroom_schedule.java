@@ -18,8 +18,14 @@ public class showtimeroom_schedule extends javax.swing.JFrame {
      */
     public showtimeroom_schedule() {
         initComponents(); 
-        setLocationRelativeTo(null); 
-        
+        setLocationRelativeTo(null);
+        // Gọi ComboBox
+        controller.initComboBoxes(cbMovie, cbRoom);
+
+        // ---- KHÓA Ô VÀ HIỂN THỊ MÃ SẮP TẠO TẠI ĐÂY ----
+        txtId1.setEditable(false);
+        txtId1.setText(controller.getNextShowTimeId());
+
         // 1. Cấu hình định dạng Giờ Bắt đầu (HH:mm) cho spinStartTime
         javax.swing.SpinnerDateModel startModel = new javax.swing.SpinnerDateModel();
         spinStartTime.setModel(startModel);
@@ -34,7 +40,72 @@ public class showtimeroom_schedule extends javax.swing.JFrame {
         
         // Gọi hàm load dữ liệu lên bảng ngay khi vừa mở form
         controller.loadDataToTable((javax.swing.table.DefaultTableModel) tblShowTime.getModel());
-    
+        backtodashboard.addActionListener(e -> {
+            // 1. TẠO VỎ JFRAME ẢO CHO TRANG CHỦ (DASHBOARD)
+            javax.swing.JFrame mainFrame = new javax.swing.JFrame("Trang chủ Quản trị - Cinema System");
+            mainFrame.setSize(1000, 600);
+            mainFrame.setLocationRelativeTo(null);
+            mainFrame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
+
+            // 2. TẠO THANH MENU TỔNG HỢP (CHỈ DASHBOARD MỚI CÓ)
+            javax.swing.JMenuBar menuBar = new javax.swing.JMenuBar();
+
+            javax.swing.JMenu menuNav = new javax.swing.JMenu("Chức năng Hệ thống");
+
+            // -- Nút Lịch chiếu
+            javax.swing.JMenuItem itemSchedule = new javax.swing.JMenuItem("📅 Quản lý Lịch chiếu");
+            itemSchedule.addActionListener(evt -> {
+                new view.showtimeroom_schedule().setVisible(true);
+                mainFrame.dispose();
+            });
+            menuNav.add(itemSchedule);
+
+            // -- Nút Phòng chiếu
+            javax.swing.JMenuItem itemRoom = new javax.swing.JMenuItem("🏢 Quản lý Phòng chiếu");
+            itemRoom.addActionListener(evt -> {
+                new view.show_time_room_infrForm().setVisible(true);
+                mainFrame.dispose();
+            });
+            menuNav.add(itemRoom);
+
+            // -- Nút Doanh thu
+            javax.swing.JMenuItem itemRevenue = new javax.swing.JMenuItem("📈 Báo cáo Doanh thu");
+            itemRevenue.addActionListener(evt -> {
+                new view.RevenueForm().setVisible(true);
+                mainFrame.dispose();
+            });
+            menuNav.add(itemRevenue);
+
+            // -- Đăng xuất
+            javax.swing.JMenu menuSystem = new javax.swing.JMenu("Tài khoản");
+            javax.swing.JMenuItem itemLogout = new javax.swing.JMenuItem("🚪 Đăng xuất");
+            itemLogout.addActionListener(evt -> {
+                int confirm = javax.swing.JOptionPane.showConfirmDialog(mainFrame, "Đăng xuất tài khoản?", "Xác nhận", javax.swing.JOptionPane.YES_NO_OPTION);
+                if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+                    view.LoginForm loginForm = new view.LoginForm();
+                    new controller.LoginController(loginForm);
+                    loginForm.setVisible(true);
+                    mainFrame.dispose();
+                }
+            });
+            menuSystem.add(itemLogout);
+
+            menuBar.add(menuNav);
+            menuBar.add(menuSystem);
+            mainFrame.setJMenuBar(menuBar); // Đính Menu lên Dashboard
+
+            // 3. NHÚNG MẢNH GHÉP QUẢN LÝ PHIM VÀO DASHBOARD
+            view.ShowlistmovieForm showListPanel = new view.ShowlistmovieForm();
+            new controller.MovieController(showListPanel); // Kích hoạt nút bấm phim
+
+            mainFrame.add(showListPanel);
+            mainFrame.setVisible(true);
+            this.dispose();
+        });
+
+
+        // Gọi hàm load dữ liệu lên bảng ngay khi vừa mở form
+        controller.loadDataToTable((javax.swing.table.DefaultTableModel) tblShowTime.getModel());
     }
 
     /**
@@ -255,50 +326,51 @@ public class showtimeroom_schedule extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cbMovieActionPerformed
 
-    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {
         try {
-            // Chốt dữ liệu bàn phím
             spinStartTime.commitEdit();
             spinEndTime.commitEdit();
 
-            // Ném toàn bộ dữ liệu thô sang Controller xử lý
+            // Truyền txtId1.getText() làm tham số đầu tiên
             String result = controller.handleAddShowTime(
-                txtId1.getText(),
-                dateChooser.getDate(),
-                (java.util.Date) spinStartTime.getValue(),
-                (java.util.Date) spinEndTime.getValue(),
-                cbMovie.getSelectedItem().toString(),
-                cbRoom.getSelectedItem().toString()
+                    txtId1.getText(),
+                    dateChooser.getDate(),
+                    (java.util.Date) spinStartTime.getValue(),
+                    (java.util.Date) spinEndTime.getValue(),
+                    cbMovie.getSelectedItem().toString(),
+                    cbRoom.getSelectedItem().toString()
             );
 
-            // Hiển thị kết quả do Controller trả về
             if ("SUCCESS".equals(result)) {
                 javax.swing.JOptionPane.showMessageDialog(this, "Xếp lịch chiếu thành công!");
                 controller.loadDataToTable((javax.swing.table.DefaultTableModel) tblShowTime.getModel());
-                btnClearActionPerformed(null); // Gọi luôn nút Clear để dọn dẹp form
+
+                // Gọi nút clear để dọn form và tự động đổi sang mã mới cho lượt tiếp theo
+                btnClearActionPerformed(null);
             } else {
-                javax.swing.JOptionPane.showMessageDialog(this, result, "Thông báo", javax.swing.JOptionPane.WARNING_MESSAGE);
+                String errorMsg = result.split(":")[1];
+                javax.swing.JOptionPane.showMessageDialog(this, errorMsg, "Thông báo", javax.swing.JOptionPane.WARNING_MESSAGE);
             }
         } catch (Exception e) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Có lỗi xảy ra trên giao diện!", "Lỗi", javax.swing.JOptionPane.ERROR_MESSAGE);
-        }       // TODO add your handling code here:
-    }//GEN-LAST:event_btnAddActionPerformed
+            javax.swing.JOptionPane.showMessageDialog(this, "Có lỗi xảy ra!", "Lỗi", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     private void txtId1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtId1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtId1ActionPerformed
 
-    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
-        txtId1.setText("");
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {
+        // Tự động lấy mã mới tiếp theo hiển thị lên ô nhập liệu
+        txtId1.setText(controller.getNextShowTimeId());
+
         dateChooser.setDate(null);
         spinStartTime.setValue(new java.util.Date());
         spinEndTime.setValue(new java.util.Date());
         if (cbMovie.getItemCount() > 0) cbMovie.setSelectedIndex(0);
         if (cbRoom.getItemCount() > 0) cbRoom.setSelectedIndex(0);
         tblShowTime.clearSelection();
-        txtId1.requestFocus();
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnClearActionPerformed
+    }
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // Kiểm tra xem Admin đã click chọn dòng nào trên bảng chưa
