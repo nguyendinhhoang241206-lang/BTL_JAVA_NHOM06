@@ -10,4 +10,7 @@ public class RevenueReportController {
     public List<Object[]> handleGetTotalRevenue() {
         return revenueReportService.getRevenueReport();
     }
+    public double getTotalRevenue() {
+        return revenueReportService.calculateTotalRevenue();
+    }
 }

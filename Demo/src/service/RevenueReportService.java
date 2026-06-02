@@ -27,12 +27,6 @@ public class RevenueReportService {
         return totalRevenue;
     }
 
-    public double calculateRevenueByMovie(String movieId) {
-        List<Booking> allBookings = bookingDAO.findAll();
-        
-        return 0.0; 
-    }
-    
     public List<Object[]> getRevenueReport() {
 
         List<Object[]> rows = new ArrayList<>();

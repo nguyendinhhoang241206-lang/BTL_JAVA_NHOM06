@@ -1,43 +1,57 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package view;
 
-import controller.BookingHistoryController;
-import javax.swing.DefaultButtonModel;
+// Import đầy đủ các model và controller cần thiết
+import controller.ListFavoriteController;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
-import service.BookingHistoryService;
+import model.Movie;
 
 /**
  *
  * @author nguyen tien dat
  */
-public class ReviewForm extends javax.swing.JFrame {
+public class FavoriteForm extends javax.swing.JFrame {
     
     private DefaultTableModel tableModel;
-    private BookingHistoryController historyController = new BookingHistoryController();
+    
+    // Khởi tạo Controller. Controller này đã chứa sẵn Service bên trong nó.
+    private ListFavoriteController listFavoriteController = new ListFavoriteController();
 
-    /**
-     * Creates new form ReviewForm
-     */
-    public ReviewForm(String userId) {
+    public FavoriteForm() {
         initComponents();
         
         tableModel = (DefaultTableModel) history_Ticket.getModel();
         tableModel.setRowCount(0);
         
-        loadDataToTable(userId);
+        // Gọi hàm để đổ dữ liệu ngay khi vừa mở Form
+        loadDataToTable();
     }
 
-    private void loadDataToTable(String currentUserId) {
-        List<Object[]> rows = historyController.handleGetHistoryByUserId(currentUserId);
+   
+    private void loadDataToTable() {
+        tableModel.setRowCount(0); // Xóa dữ liệu cũ trên bảng
         
-        for (Object[] row : rows) {
-            tableModel.addRow(row);
+        // 1. KẾT NỐI VỚI CONTROLLER: Gọi Controller để lấy danh sách phim.
+        // Controller sẽ tự động gọi SessionUtil và Service cho bạn.
+        List<Movie> movies = listFavoriteController.getMyFavoriteMovies();
+        
+        // 2. Hiển thị lên giao diện (View)
+        if (movies != null) {
+            for (Movie movie : movies) {
+                Object[] rowData = {
+                    movie.getTitle(),
+                    movie.getDescription(),
+                    movie.getDirector(),
+                    movie.getDuration() + " phút",
+                    movie.getReleaseDate().toString()
+                };
+                tableModel.addRow(rowData);
+            }
         }
     }
+
+    // ... (GIỮ NGUYÊN TOÀN BỘ PHẦN initComponents() CỦA BẠN BÊN DƯỚI) ...
+
     
 
     @SuppressWarnings("unchecked")
@@ -50,7 +64,6 @@ public class ReviewForm extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         history_Ticket = new javax.swing.JTable();
-        jLabel6 = new javax.swing.JLabel();
 
         jPasswordField1.setText("jPasswordField1");
 
@@ -62,25 +75,25 @@ public class ReviewForm extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(51, 51, 255));
-        jLabel2.setText("LỊCH SỬ ĐẶT VÉ");
+        jLabel2.setText("DANH SÁCH YÊU THÍCH");
 
         history_Ticket.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Mã đặt vé", "Phim", "Suất chiếu", "Rạp", "Ghế", "Số vé", "Tổng tiền", "Trạng thái", "Ngày đặt"
+                "Tiêu đề", "Chi tiết phim", "Tác giả", "Thời gian", "Ngày phát hành"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -93,10 +106,6 @@ public class ReviewForm extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(history_Ticket);
 
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(51, 51, 255));
-        jLabel6.setText("DANH SÁCH ĐẶT VÉ");
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -106,9 +115,7 @@ public class ReviewForm extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 760, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -117,9 +124,7 @@ public class ReviewForm extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel2)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(40, 40, 40)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(16, Short.MAX_VALUE))
         );
@@ -153,17 +158,19 @@ public class ReviewForm extends javax.swing.JFrame {
                 }
             }
         } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ReviewForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FavoriteForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         
-        java.awt.EventQueue.invokeLater(() -> new ReviewForm("U01").setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> {
+            // Không truyền "U01" nữa, vì dùng Session rồi
+            new FavoriteForm().setVisible(true); 
+        });
     }
         
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable history_Ticket;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JScrollPane jScrollPane2;
