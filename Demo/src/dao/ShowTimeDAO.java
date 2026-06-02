@@ -6,6 +6,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -97,7 +99,7 @@ public class ShowTimeDAO {
         return false;
     }
 
-    // TODO: Sinh viên tự code logic: Duyệt danh sách tìm lịch chiếu có id khớp với tham số truyền vào. Trả về đối tượng ShowTime hoặc null.
+//    // TODO: Sinh viên tự code logic: Duyệt danh sách tìm lịch chiếu có id khớp với tham số truyền vào. Trả về đối tượng ShowTime hoặc null.
     public ShowTime findById(String id) {
         if (id == null) {
             return null;
@@ -115,4 +117,5 @@ public class ShowTimeDAO {
     public List<ShowTime> findAll() {
         return readFromFile();
     }
+    
 }

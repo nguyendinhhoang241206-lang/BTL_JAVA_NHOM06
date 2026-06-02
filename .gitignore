@@ -4,3 +4,4 @@
 *.class
 *.dat
 *.log
+Demo/data/*.dat

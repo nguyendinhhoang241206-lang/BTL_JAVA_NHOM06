@@ -12,11 +12,10 @@ import view.LoginForm;
  *
  * @author DINH HOANG
  */
+import view.showtimeroom_schedule;
+
 public class Demo {
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
         // 1. Khởi tạo dữ liệu giả vào file users.dat (Nếu file đã có data, bạn có thể comment dòng này lại)
         FakeData.main(new String[]{}); 
@@ -33,6 +32,13 @@ public class Demo {
             // Hiển thị UI ra giữa màn hình
             view.setLocationRelativeTo(null); 
             view.setVisible(true);
+        // Khởi chạy giao diện an toàn theo chuẩn luồng sự kiện của Java Swing
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                // Tạo một đối tượng của màn hình quản lý lịch chiếu và hiển thị lên
+                showtimeroom_schedule showTimeForm = new showtimeroom_schedule();
+                showTimeForm.setVisible(true);
+            }
         });
     }
     

@@ -6,7 +6,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class BookingDAO {
@@ -102,7 +104,9 @@ public class BookingDAO {
         if (id == null) {
             return null;
         }
+        
         readFromFile();
+        
         for (Booking booking : this.bookings) {
             if (booking.getId().equals(id)) {
                 return booking;
@@ -117,6 +121,7 @@ public class BookingDAO {
             return new ArrayList<>();
         }
         readFromFile();
+        
         List<Booking> result = new ArrayList<>();
         for (Booking booking : this.bookings) {
             if (booking.getUserId() != null && booking.getUserId().equals(userId)) {
@@ -145,4 +150,5 @@ public class BookingDAO {
     public List<Booking> findAll() {
         return readFromFile();
     }
+    
 }
