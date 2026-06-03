@@ -9,9 +9,9 @@ import utils.ValidationUtil;
 import javax.swing.JOptionPane;
 
 public class LoginController {
-    
+
     private LoginService loginService = new LoginService();
-    private LoginForm view; 
+    private LoginForm view;
     private User sessionUser;
 
     public LoginController(LoginForm view) {
@@ -25,49 +25,45 @@ public class LoginController {
             String username = view.getUsername();
             String password = view.getPassword();
 
-            // 1. Kiểm tra định dạng dữ liệu (Validate Input)
-            if (username.isEmpty()) {
-                view.showMessage("Tên đăng nhập không được để trống!", false);
+            try {
+
+                User user = loginService.getLoggedInUser(
+                        username,
+                        password);
+
+                this.sessionUser = user;
+                utils.Session.login(user);
+
+                view.showMessage(
+                        "Đăng nhập thành công!",
+                        true);
+
+            } catch (IllegalArgumentException ex) {
+
+                view.showMessage(
+                        ex.getMessage(),
+                        false);
+
                 return;
-            }
-            if (!ValidationUtil.isValidUsername(username)) {
-                view.showMessage("Tên đăng nhập không hợp lệ (3-20 ký tự chữ/số)!", false);
-                return;
-            }
-            if (password.isEmpty()) {
-                view.showMessage("Mật khẩu không được để trống!", false);
+
+            } catch (Exception ex) {
+
+                view.showMessage(
+                        "Có lỗi xảy ra!",
+                        false);
+
                 return;
             }
 
-            // 2. Xử lý logic đăng nhập chi tiết
-            User user = loginService.getLoggedInUser(username);
-            if (user == null) {
-                view.showMessage("Tên đăng nhập không tồn tại!", false);
-                return;
-            }
-            if (user.getStatus() != model.enums.UserStatus.ACTIVE) {
-                view.showMessage("Tài khoản của bạn đã bị khóa!", false);
-                return;
-            }
-            if (user.getPassword() == null || !user.getPassword().equals(password)) {
-                view.showMessage("Mật khẩu không chính xác!", false);
-                return;
-            }
-
-            // Đăng nhập thành công
-            this.sessionUser = user;
-            utils.Session.login(user);
-            view.showMessage("Đăng nhập thành công!", true);
-            
             // Hiển thị thông báo chào mừng bằng Popup
-            JOptionPane.showMessageDialog(view, 
-                "Chào mừng " + sessionUser.getUsername() + " quay trở lại!", 
-                "Đăng nhập thành công", 
-                JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(view,
+                    "Chào mừng " + sessionUser.getUsername() + " quay trở lại!",
+                    "Đăng nhập thành công",
+                    JOptionPane.INFORMATION_MESSAGE);
 
-            if (sessionUser.getRole() != null &&
-                    (sessionUser.getRole().toString().equalsIgnoreCase("ADMIN") ||
-                            sessionUser.getRole().toString().equalsIgnoreCase("STAFF"))) {
+            if (sessionUser.getRole() != null
+                    && (sessionUser.getRole().toString().equalsIgnoreCase("ADMIN")
+                    || sessionUser.getRole().toString().equalsIgnoreCase("STAFF"))) {
 
                 // 1. TẠO VỎ JFRAME ẢO CHO TRANG CHỦ (DASHBOARD)
                 javax.swing.JFrame mainFrame = new javax.swing.JFrame("Trang chủ Quản trị - Cinema System");
@@ -129,7 +125,7 @@ public class LoginController {
                 mainFrame.add(showListPanel);
                 mainFrame.setVisible(true);
                 view.dispose();
-            }else {
+            } else {
                 view.UserMovieListForm userDashboard = new view.UserMovieListForm();
                 userDashboard.setVisible(true);
                 view.dispose(); // Đóng màn hình Login

@@ -1,44 +1,63 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package service;
 
 import dao.UserDAO;
 import model.User;
 import model.enums.Gender;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import utils.ValidationUtil;
 
 public class ProfileService {
+
     private UserDAO userDAO;
 
     public ProfileService() {
         this.userDAO = new UserDAO();
     }
 
-    // Xử lý logic ép kiểu và gọi DAO để ghi file
-    public boolean updateProfile(User user, String email, String phone, String genderStr, String birthdayStr) throws Exception {
+    public boolean updateProfile(User user,
+            String email,
+            String phone,
+            String genderStr,
+            LocalDate birthday) {
+
+        if (user == null) {
+            throw new IllegalArgumentException("Không tìm thấy người dùng!");
+        }
+
+        // Validate email
+        ValidationUtil.validateEmail(email);
+
+        // Validate phone
+        if (phone == null || phone.trim().isEmpty()) {
+            throw new IllegalArgumentException("Số điện thoại không được để trống!");
+        }
+
+        if (!phone.matches("^0\\d{9}$")) {
+            throw new IllegalArgumentException("Số điện thoại không hợp lệ!");
+        }
+
         user.setEmail(email);
         user.setPhone(phone);
-        
-        // Chuẩn hóa giới tính
+
+        // Gender
         try {
             user.setGender(Gender.valueOf(genderStr.toUpperCase()));
-        } catch (IllegalArgumentException e) {
-            throw new Exception("Giới tính không hợp lệ!");
-        }
-
-        // Chuẩn hóa ngày sinh
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            LocalDate dob = LocalDate.parse(birthdayStr, formatter);
-            user.setBirthday(dob);
         } catch (Exception e) {
-            throw new Exception("Ngày sinh phải có định dạng yyyy-MM-dd!");
+            throw new IllegalArgumentException("Giới tính không hợp lệ!");
         }
 
-        // userDAO.update() đã có sẵn logic gọi hàm writeToFile() bên trong nó
-        return userDAO.update(user);
+        // Birthday (đÃ FIX: không parse String nữa)
+        if (birthday == null) {
+            throw new IllegalArgumentException("Ngày sinh không được để trống!");
+        }
+
+        user.setBirthday(birthday);
+
+        // Update DB
+        if (!userDAO.update(user)) {
+            throw new IllegalArgumentException("Cập nhật hồ sơ thất bại!");
+        }
+
+        return true;
     }
 }

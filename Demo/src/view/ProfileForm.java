@@ -9,7 +9,7 @@ package view;
  * @author DINH HOANG
  */
 public class ProfileForm extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ProfileForm.class.getName());
 
     /**
@@ -47,7 +47,6 @@ public class ProfileForm extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         cbGender = new javax.swing.JComboBox<>();
         lblListTitle = new javax.swing.JLabel();
-        txtBirthday = new javax.swing.JTextField();
         jScrollPane3 = new javax.swing.JScrollPane();
         listData = new javax.swing.JList<>();
         btnRequestAdmin = new javax.swing.JButton();
@@ -55,6 +54,8 @@ public class ProfileForm extends javax.swing.JFrame {
         btnBack = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
         lblMessage = new javax.swing.JLabel();
+        txtBirthday = new com.toedter.calendar.JDateChooser();
+        btnGrantRole = new javax.swing.JButton();
 
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -95,8 +96,6 @@ public class ProfileForm extends javax.swing.JFrame {
 
         lblListTitle.setText("Danh sách yêu cầu cấp quyền:");
 
-        txtBirthday.addActionListener(this::txtBirthdayActionPerformed);
-
         listData.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
@@ -112,6 +111,8 @@ public class ProfileForm extends javax.swing.JFrame {
         btnBack.setText("Quay lại");
 
         lblMessage.setForeground(new java.awt.Color(255, 0, 0));
+
+        btnGrantRole.setText("Cấp quyền");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -139,10 +140,7 @@ public class ProfileForm extends javax.swing.JFrame {
                                 .addComponent(btnBack))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(jLabel2))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(btnRequestAdmin)))
+                                .addComponent(jLabel2)))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
@@ -150,9 +148,9 @@ public class ProfileForm extends javax.swing.JFrame {
                             .addComponent(txtEmail, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(txtPhone, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(txtBirthday, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtUsername, javax.swing.GroupLayout.Alignment.LEADING))
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtUsername)
+                                    .addComponent(txtBirthday, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtRole, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -165,7 +163,12 @@ public class ProfileForm extends javax.swing.JFrame {
                                 .addComponent(jLabel6)
                                 .addGap(24, 24, 24))
                             .addComponent(lblMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblListTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(lblListTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(btnRequestAdmin)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnGrantRole)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -193,15 +196,17 @@ public class ProfileForm extends javax.swing.JFrame {
                     .addComponent(jLabel6)
                     .addComponent(jLabel7))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtBirthday, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbGender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cbGender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtBirthday, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblListTitle)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnRequestAdmin)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnRequestAdmin)
+                    .addComponent(btnGrantRole))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSave)
@@ -249,10 +254,6 @@ public class ProfileForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtPhoneActionPerformed
 
-    private void txtBirthdayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBirthdayActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtBirthdayActionPerformed
-
     private void btnRequestAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRequestAdminActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnRequestAdminActionPerformed
@@ -284,6 +285,7 @@ public class ProfileForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnGrantRole;
     private javax.swing.JButton btnRequestAdmin;
     private javax.swing.JButton btnSave;
     private javax.swing.JComboBox<String> cbGender;
@@ -305,24 +307,63 @@ public class ProfileForm extends javax.swing.JFrame {
     private javax.swing.JLabel lblListTitle;
     private javax.swing.JLabel lblMessage;
     private javax.swing.JList<String> listData;
-    private javax.swing.JTextField txtBirthday;
+    private com.toedter.calendar.JDateChooser txtBirthday;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtPhone;
     private javax.swing.JTextField txtRole;
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
     // Thêm các hàm này vào cuối class ProfileForm, trước dấu ngoặc nhọn đóng của class
-public javax.swing.JTextField getTxtUsername() { return txtUsername; }
-public javax.swing.JTextField getTxtRole() { return txtRole; }
-public javax.swing.JTextField getTxtEmail() { return txtEmail; }
-public javax.swing.JTextField getTxtPhone() { return txtPhone; }
-public javax.swing.JTextField getTxtBirthday() { return txtBirthday; }
-public javax.swing.JComboBox<String> getCbGender() { return cbGender; }
-public javax.swing.JLabel getLblMessage() { return lblMessage; }
-public javax.swing.JButton getBtnSave() { return btnSave; }
-public javax.swing.JButton getBtnBack() { return btnBack; }
-public javax.swing.JButton getBtnRequestAdmin() { return btnRequestAdmin; }
-public javax.swing.JList<String> getListData() { return listData; }
-public javax.swing.JScrollPane getScrollPaneList() { return jScrollPane3; }
-public javax.swing.JLabel getLblListTitle() { return lblListTitle; }
+
+    public javax.swing.JTextField getTxtUsername() {
+        return txtUsername;
+    }
+
+    public javax.swing.JTextField getTxtRole() {
+        return txtRole;
+    }
+
+    public javax.swing.JTextField getTxtEmail() {
+        return txtEmail;
+    }
+
+    public javax.swing.JTextField getTxtPhone() {
+        return txtPhone;
+    }
+
+    public com.toedter.calendar.JDateChooser getTxtBirthday() {
+        return txtBirthday;
+    }
+
+    public javax.swing.JComboBox<String> getCbGender() {
+        return cbGender;
+    }
+
+    public javax.swing.JLabel getLblMessage() {
+        return lblMessage;
+    }
+
+    public javax.swing.JButton getBtnSave() {
+        return btnSave;
+    }
+
+    public javax.swing.JButton getBtnBack() {
+        return btnBack;
+    }
+
+    public javax.swing.JButton getBtnRequestAdmin() {
+        return btnRequestAdmin;
+    }
+
+    public javax.swing.JList<String> getListData() {
+        return listData;
+    }
+
+    public javax.swing.JScrollPane getScrollPaneList() {
+        return jScrollPane3;
+    }
+
+    public javax.swing.JLabel getLblListTitle() {
+        return lblListTitle;
+    }
 }

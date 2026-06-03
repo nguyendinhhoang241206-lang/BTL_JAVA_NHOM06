@@ -77,13 +77,13 @@ public class FakeData {
         );
 
         User normalUser = new User(
-                "U02", "datnguyen", "password123", Role.CUSTOMER, UserStatus.ACTIVE,
+                "U02", "datnguyen", "password123", Role.USER, UserStatus.ACTIVE,
                 "dat@gmail.com", "0123456789", Gender.MALE,
                 LocalDate.of(2002, 5, 15), Arrays.asList("M03", "M01")
         );
 
         User lockedUser = new User(
-                "U03", "badboy", "111222", Role.CUSTOMER, UserStatus.LOCKED,
+                "U03", "badboy", "111222", Role.USER, UserStatus.LOCKED,
                 "badboy@gmail.com", "0999888777", Gender.OTHER,
                 LocalDate.of(2005, 10, 10), new ArrayList<>()
         );

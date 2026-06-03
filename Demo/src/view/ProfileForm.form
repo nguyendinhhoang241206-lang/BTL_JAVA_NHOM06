@@ -137,10 +137,6 @@
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
-                                      <Component id="btnRequestAdmin" min="-2" max="-2" attributes="0"/>
-                                  </Group>
                               </Group>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
@@ -150,9 +146,9 @@
                                   <Component id="txtEmail" alignment="1" max="32767" attributes="0"/>
                                   <Component id="txtPhone" alignment="1" max="32767" attributes="0"/>
                                   <Group type="102" alignment="1" attributes="0">
-                                      <Group type="103" groupAlignment="1" attributes="0">
-                                          <Component id="txtBirthday" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="txtUsername" alignment="0" max="32767" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="txtUsername" max="32767" attributes="0"/>
+                                          <Component id="txtBirthday" max="32767" attributes="0"/>
                                       </Group>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
@@ -171,6 +167,12 @@
                                   <Component id="lblMessage" min="-2" pref="220" max="-2" attributes="0"/>
                                   <Component id="lblListTitle" alignment="0" max="32767" attributes="0"/>
                               </Group>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
+                              <Component id="btnRequestAdmin" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="btnGrantRole" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -205,16 +207,19 @@
                           <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="txtBirthday" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="cbGender" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="cbGender" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtBirthday" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="lblListTitle" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jScrollPane3" min="-2" pref="38" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="btnRequestAdmin" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="btnRequestAdmin" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnGrantRole" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="btnSave" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -299,11 +304,6 @@
                 <Property name="text" type="java.lang.String" value="Danh s&#xe1;ch y&#xea;u c&#x1ea7;u c&#x1ea5;p quy&#x1ec1;n:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="txtBirthday">
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtBirthdayActionPerformed"/>
-              </Events>
-            </Component>
             <Container class="javax.swing.JScrollPane" name="jScrollPane3">
               <AuxValues>
                 <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
@@ -354,6 +354,13 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="0" green="0" red="ff" type="rgb"/>
                 </Property>
+              </Properties>
+            </Component>
+            <Component class="com.toedter.calendar.JDateChooser" name="txtBirthday">
+            </Component>
+            <Component class="javax.swing.JButton" name="btnGrantRole">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="C&#x1ea5;p quy&#x1ec1;n"/>
               </Properties>
             </Component>
           </SubComponents>

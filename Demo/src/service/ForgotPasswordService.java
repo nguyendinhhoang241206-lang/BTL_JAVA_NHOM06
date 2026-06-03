@@ -4,37 +4,41 @@ import dao.UserDAO;
 import model.User;
 
 public class ForgotPasswordService {
+
     private final UserDAO userDAO = new UserDAO();
 
-    /**
- * Khôi phục mật khẩu mới dựa trên xác minh Tên đăng nhập và Gmail.
- *
- * @param username Tên đăng nhập cần khôi phục
- * @param email Email đã đăng ký của tài khoản
- * @param newPassword Mật khẩu mới muốn đổi
- * @return null nếu thành công, hoặc chuỗi thông báo lỗi nếu thất bại
- */
-    public String resetPassword(String username,
-                            String email,
-                            String newPassword){
-        // 1. Tìm người dùng theo tên đăng nhập
-        User user = userDAO.findByUsername(username);
-        
-        // 2. Kiểm tra nếu không tìm thấy người dùng
-        if (user == null) {
-            return "Tên đăng nhập không tồn tại!";
+    public void resetPassword(String username,
+            String email,
+            String newPassword) {
+
+        utils.ValidationUtil.validateUsername(username);
+        utils.ValidationUtil.validateEmail(email);
+        utils.ValidationUtil.validatePassword(newPassword);
+
+        if (newPassword.length() < 6) {
+            throw new IllegalArgumentException(
+                    "Mật khẩu mới phải từ 6 ký tự trở lên!");
         }
 
-        // 3. So khớp email đăng ký (không phân biệt hoa thường)
-        if (user.getEmail() == null || !user.getEmail().equalsIgnoreCase(email)) {
-            return "Email không trùng khớp với tài khoản!";
+        User user = userDAO.findByUsername(username);
+
+        if (user == null) {
+            throw new IllegalArgumentException(
+                    "Tên đăng nhập không tồn tại!");
         }
-        // 6. Thiết lập mật khẩu mới và lưu lại thông qua UserDAO.update()
+
+        if (user.getEmail() == null
+                || !user.getEmail().equalsIgnoreCase(email)) {
+
+            throw new IllegalArgumentException(
+                    "Email không trùng khớp với tài khoản!");
+        }
+
         user.setPassword(newPassword);
-        boolean updated = userDAO.update(user);
-        if (!updated) {
-            return "Lỗi cập nhật mật khẩu vào cơ sở dữ liệu!";
+
+        if (!userDAO.update(user)) {
+            throw new IllegalArgumentException(
+                    "Không thể cập nhật mật khẩu!");
         }
-        return null;
     }
 }
