@@ -34,7 +34,7 @@ public class UserMovieListForm extends JFrame {
     }
 
     // ==========================================
-    // TẠO SIDEBAR (GIỮ NGUYÊN HOÀN TOÀN)
+    // TẠO SIDEBAR
     // ==========================================
     private JPanel createSidebar() {
         JPanel sidebar = new JPanel();
@@ -146,7 +146,7 @@ public class UserMovieListForm extends JFrame {
     }
 
     // ==========================================
-    // TẠO NỘI DUNG CHÍNH (ĐÃ FIX LỖI GIÃN ẢNH)
+    // TẠO NỘI DUNG CHÍNH
     // ==========================================
     private JPanel createMainContent() {
         JPanel mainPanel = new JPanel(new BorderLayout());
@@ -171,10 +171,9 @@ public class UserMovieListForm extends JFrame {
         gridPanel = new JPanel(new GridLayout(0, 3, 25, 25));
         gridPanel.setOpaque(false);
 
-        // MẸO CỐT LÕI CHỐNG GIÃN KHUNG: Bọc gridPanel vào NORTH của một panel khác
         JPanel gridWrapper = new JPanel(new BorderLayout());
         gridWrapper.setOpaque(false);
-        gridWrapper.add(gridPanel, BorderLayout.NORTH); // Giúp giữ đúng form của thẻ phim, ko bị kéo dài
+        gridWrapper.add(gridPanel, BorderLayout.NORTH);
 
         JScrollPane scrollPane = new JScrollPane(gridWrapper);
         scrollPane.setBorder(null);
@@ -199,9 +198,9 @@ public class UserMovieListForm extends JFrame {
     private void loadMoviesFromDatabase() {
         try {
             dao.MovieDAO movieDAO = new dao.MovieDAO();
-            this.allMovies = movieDAO.findAll(); // Lấy tất cả phim
-            this.currentPage = 1; // Khởi tạo về trang 1
-            renderCurrentPage();  // Vẽ giao diện
+            this.allMovies = movieDAO.findAll();
+            this.currentPage = 1;
+            renderCurrentPage();
         } catch (Exception e) {
             e.printStackTrace();
             gridPanel.add(new JLabel("Lỗi tải dữ liệu!"));
@@ -217,22 +216,15 @@ public class UserMovieListForm extends JFrame {
             lblEmpty.setFont(new Font("Arial", Font.ITALIC, 16));
             gridPanel.add(lblEmpty);
         } else {
-            // Tính toán tổng số trang
             int totalPages = (int) Math.ceil((double) allMovies.size() / itemsPerPage);
-
-            // Xử lý logic cắt danh sách (List.subList)
             int startIndex = (currentPage - 1) * itemsPerPage;
             int endIndex = Math.min(startIndex + itemsPerPage, allMovies.size());
 
-            // Vẽ các thẻ phim trong phạm vi trang hiện tại
             for (int i = startIndex; i < endIndex; i++) {
                 model.Movie m = allMovies.get(i);
                 gridPanel.add(createMovieCard(m.getId(), m.getTitle(), m.getDuration() + " phút", m.getDirector()));
             }
 
-            // ==========================================
-            // VẼ THANH PHÂN TRANG ĐỘNG
-            // ==========================================
             // Nút "Lùi"
             JButton btnPrev = new JButton("<");
             btnPrev.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -249,7 +241,7 @@ public class UserMovieListForm extends JFrame {
                 btnPage.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
                 if (i == currentPage) {
-                    btnPage.setBackground(new Color(255, 102, 0)); // Màu cam cho trang đang chọn
+                    btnPage.setBackground(new Color(255, 102, 0));
                     btnPage.setForeground(Color.WHITE);
                 } else {
                     btnPage.setBackground(Color.WHITE);
@@ -275,7 +267,6 @@ public class UserMovieListForm extends JFrame {
             paginationPanel.add(btnNext);
         }
 
-        // Cập nhật lại giao diện ngay lập tức
         gridPanel.revalidate();
         gridPanel.repaint();
         paginationPanel.revalidate();
@@ -283,7 +274,7 @@ public class UserMovieListForm extends JFrame {
     }
 
     // ==========================================
-    // TẠO THẺ PHIM (GIỮ NGUYÊN)
+    // TẠO THẺ PHIM (SỰ KIỆN ĐỔI MÀU YÊU THÍCH)
     // ==========================================
     private JPanel createMovieCard(String movieId, String title, String time, String director) {
         JPanel card = new JPanel();
@@ -291,7 +282,6 @@ public class UserMovieListForm extends JFrame {
         card.setBackground(Color.WHITE);
         card.setBorder(BorderFactory.createLineBorder(new Color(230, 230, 230), 1));
 
-        // Khóa cứng chiều cao thẻ để tránh bị kéo giãn
         card.setPreferredSize(new Dimension(240, 350));
         card.setMinimumSize(new Dimension(240, 350));
         card.setMaximumSize(new Dimension(240, 350));
@@ -300,18 +290,59 @@ public class UserMovieListForm extends JFrame {
         imageContainer.setPreferredSize(new Dimension(240, 220));
         imageContainer.setMaximumSize(new Dimension(240, 220));
 
+        // Nút Trái Tim
         JButton btnHeart = new JButton();
         ImageIcon heartIcon = new ImageIcon("image/heart.png");
         Image heartImg = heartIcon.getImage().getScaledInstance(18, 18, Image.SCALE_SMOOTH);
         btnHeart.setIcon(new ImageIcon(heartImg));
-        btnHeart.setBackground(new Color(178, 53, 228));
         btnHeart.setFocusPainted(false);
         btnHeart.setBorder(BorderFactory.createEmptyBorder());
         btnHeart.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnHeart.setBounds(195, 10, 32, 32);
 
+        // Quy ước màu
+        Color colorNormal = new Color(178, 53, 228);   // Màu Tím (Chưa thích)
+        Color colorFavorite = new Color(255, 102, 0);  // Màu Cam (Đã thích)
+
+        // Khởi tạo màu ban đầu dựa trên Session
+        model.User currentUser = utils.Session.getCurrentUser();
+        boolean isAlreadyFavorite = false;
+        if (currentUser != null && currentUser.getFavoriteMovieIds() != null) {
+            isAlreadyFavorite = currentUser.getFavoriteMovieIds().contains(movieId);
+        }
+        btnHeart.setBackground(isAlreadyFavorite ? colorFavorite : colorNormal);
+
+        // Sự kiện Click trái tim
         btnHeart.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "Đã thêm " + title + " vào danh sách yêu thích!");
+            if (currentUser == null) {
+                JOptionPane.showMessageDialog(this, "Vui lòng đăng nhập để thao tác!", "Lỗi", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            List<String> favs = currentUser.getFavoriteMovieIds();
+            if (favs == null) {
+                favs = new ArrayList<>();
+                currentUser.setFavoriteMovieIds(favs);
+            } else if (!(favs instanceof ArrayList)) {
+                // Ép kiểu mảng tĩnh thành ArrayList động để cho phép Add/Remove
+                favs = new ArrayList<>(favs);
+                currentUser.setFavoriteMovieIds(favs);
+            }
+
+            // Xử lý đổi màu và Thêm/Xóa
+            if (favs.contains(movieId)) {
+                favs.remove(movieId);
+                btnHeart.setBackground(colorNormal); // Đổi về màu Tím
+                JOptionPane.showMessageDialog(this, "Đã XÓA phim khỏi danh sách yêu thích!");
+            } else {
+                favs.add(movieId);
+                btnHeart.setBackground(colorFavorite); // Đổi thành màu Cam
+                JOptionPane.showMessageDialog(this, "Đã THÊM phim vào danh sách yêu thích!");
+            }
+
+            // Lưu trực tiếp xuống file để giữ màu
+            dao.UserDAO userDAO = new dao.UserDAO();
+            userDAO.update(currentUser);
         });
 
         // ẢNH GỐC
