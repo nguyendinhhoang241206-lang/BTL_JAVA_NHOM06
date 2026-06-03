@@ -56,7 +56,7 @@ public class ForgotPasswordController {
             }
 
             // 3. Thực hiện khôi phục mật khẩu thông qua Service
-            String errorMessage = forgotPasswordService.resetPassword(username, email, oldPassword, newPassword);
+            String errorMessage = forgotPasswordService.resetPassword(username, email, newPassword);
 
             if (errorMessage == null) {
                 view.showMessage("Khôi phục mật khẩu thành công!", true);

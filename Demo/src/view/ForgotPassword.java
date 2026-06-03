@@ -36,9 +36,9 @@ public class ForgotPassword extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         txtEmail = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        txtOldPassword = new javax.swing.JPasswordField();
-        jLabel5 = new javax.swing.JLabel();
         txtNewPassword = new javax.swing.JPasswordField();
+        jLabel5 = new javax.swing.JLabel();
+        txtConfirmPassword = new javax.swing.JPasswordField();
         lblMessage = new javax.swing.JLabel();
         btnReset = new javax.swing.JButton();
         btnBack = new javax.swing.JButton();
@@ -61,18 +61,18 @@ public class ForgotPassword extends javax.swing.JFrame {
         txtEmail.setPreferredSize(new java.awt.Dimension(300, 35));
         txtEmail.addActionListener(this::txtEmailActionPerformed);
 
-        jLabel4.setText("Mật khẩu cũ:");
-
-        txtOldPassword.setMaximumSize(new java.awt.Dimension(300, 35));
-        txtOldPassword.setMinimumSize(new java.awt.Dimension(300, 35));
-        txtOldPassword.setPreferredSize(new java.awt.Dimension(300, 35));
-        txtOldPassword.addActionListener(this::txtOldPasswordActionPerformed);
-
-        jLabel5.setText("Mật khẩu mới:");
+        jLabel4.setText("Mật khẩu mới:");
 
         txtNewPassword.setMaximumSize(new java.awt.Dimension(300, 35));
         txtNewPassword.setMinimumSize(new java.awt.Dimension(300, 35));
         txtNewPassword.setPreferredSize(new java.awt.Dimension(300, 35));
+        txtNewPassword.addActionListener(this::txtNewPasswordActionPerformed);
+
+        jLabel5.setText("Xác thực mật khẩu mới:");
+
+        txtConfirmPassword.setMaximumSize(new java.awt.Dimension(300, 35));
+        txtConfirmPassword.setMinimumSize(new java.awt.Dimension(300, 35));
+        txtConfirmPassword.setPreferredSize(new java.awt.Dimension(300, 35));
 
         lblMessage.setForeground(new java.awt.Color(255, 0, 0));
         lblMessage.setMaximumSize(new java.awt.Dimension(300, 35));
@@ -98,8 +98,8 @@ public class ForgotPassword extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtOldPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtNewPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtConfirmPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel2)
                     .addComponent(jLabel4)
                     .addComponent(jLabel5)
@@ -123,11 +123,11 @@ public class ForgotPassword extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtOldPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtNewPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtNewPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtConfirmPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblMessage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -169,9 +169,9 @@ public class ForgotPassword extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtEmailActionPerformed
 
-    private void txtOldPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtOldPasswordActionPerformed
+    private void txtNewPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNewPasswordActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtOldPasswordActionPerformed
+    }//GEN-LAST:event_txtNewPasswordActionPerformed
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
         // TODO add your handling code here:
@@ -213,9 +213,9 @@ public class ForgotPassword extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lblMessage;
+    private javax.swing.JPasswordField txtConfirmPassword;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JPasswordField txtNewPassword;
-    private javax.swing.JPasswordField txtOldPassword;
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 
@@ -233,12 +233,12 @@ public class ForgotPassword extends javax.swing.JFrame {
 
     // Lấy mật khẩu cũ (tuy nhiên logic đề xuất bỏ qua việc bắt buộc nhập mật khẩu cũ để khôi phục khi quên)
     public String getOldPassword() {
-        return new String(txtOldPassword.getPassword());
+        return new String(txtNewPassword.getPassword());
     }
 
     // Lấy mật khẩu mới
     public String getNewPassword() {
-        return new String(txtNewPassword.getPassword());
+        return new String(txtConfirmPassword.getPassword());
     }
 
     // Hiển thị thông báo màu sắc tương ứng
