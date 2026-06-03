@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package controller;
 
 import model.User;
@@ -65,6 +61,20 @@ public class ProfileController {
                     boolean success = profileService.updateProfile(loggedInUser, email, phone, gender, birthday);
                     if (success) {
                         showMessage("Cập nhật thông tin thành công!", Color.GREEN);
+
+                        // ==========================================
+                        // RELOAD LẠI DASHBOARD (ĐÓNG CŨ MỞ MỚI)
+                        // ==========================================
+                        // Quét qua tất cả các cửa sổ đang mở trên màn hình
+                        for (java.awt.Window window : java.awt.Window.getWindows()) {
+                            // Nếu phát hiện ra cái Dashboard Khách Hàng đang nằm chìm bên dưới
+                            if (window instanceof view.UserMovieListForm) {
+                                window.dispose(); // Tắt cái cũ đi
+                                new view.UserMovieListForm().setVisible(true); // Bật cái mới lên (sẽ tự động lấy tên/email mới nhất từ Session)
+                                break;
+                            }
+                        }
+
                     } else {
                         showMessage("Cập nhật thất bại. Vui lòng thử lại!", Color.RED);
                     }
@@ -78,8 +88,8 @@ public class ProfileController {
         view.getBtnBack().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Đóng form Profile lại, trả lại màn hình Dashboard
                 view.dispose();
-                // TODO: Chuyển về màn hình trước đó
             }
         });
     }
