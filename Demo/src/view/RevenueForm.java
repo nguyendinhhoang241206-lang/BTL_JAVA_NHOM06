@@ -22,6 +22,8 @@ public class RevenueForm extends javax.swing.JFrame {
         tableModel.setRowCount(0);
 
         loadRevenue();
+        loadSummaryData();
+        
     }
 
     
@@ -41,6 +43,35 @@ public class RevenueForm extends javax.swing.JFrame {
         lblTotalRevenue.setEditable(false);
     }
 
+    private void loadSummaryData() {
+        // 1. Phần Tổng vé đã bán (Bạn đang làm đúng rồi, giữ nguyên)
+        int totalTickets = revenueController.handleGetTotalTickets();
+        lblTotalTickets.setText(totalTickets + " vé");
+        
+        // 2. PHẦN TÌM PHIM BÁN CHẠY NHẤT (Dùng mẹo quét trực tiếp từ Bảng)
+        int maxTickets = 0;
+        String topMovieName = "Chưa có dữ liệu";
+
+        // Quét lần lượt từng dòng trên cái bảng 'revenue' của bạn
+        for (int i = 0; i < revenue.getRowCount(); i++) {
+            try {
+                // Cột 1 là 'Số vé bán' -> Lấy ra và ép kiểu về số nguyên
+                int tickets = Integer.parseInt(revenue.getValueAt(i, 1).toString());
+                
+                // Nếu số vé dòng này lớn hơn kỷ lục hiện tại -> Cập nhật kỷ lục
+                if (tickets > maxTickets) {
+                    maxTickets = tickets;
+                    // Cột 0 là 'Tên phim' -> Lấy tên phim tương ứng
+                    topMovieName = revenue.getValueAt(i, 0).toString();
+                }
+            } catch (Exception e) {
+                // Bỏ qua nếu có dòng bị lỗi định dạng
+            }
+        }
+        
+        // Bắn tên phim tìm được lên giao diện
+        lblTopMovie.setText(topMovieName);
+    }
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -51,6 +82,11 @@ public class RevenueForm extends javax.swing.JFrame {
         revenue = new javax.swing.JTable();
         lblTotalRevenue = new javax.swing.JTextField();
         BacktoDashBoard = new javax.swing.JToggleButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        lblTotalTickets = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        lblTopMovie = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -80,23 +116,50 @@ public class RevenueForm extends javax.swing.JFrame {
         });
         jScrollPane3.setViewportView(revenue);
 
+        lblTotalRevenue.addActionListener(this::lblTotalRevenueActionPerformed);
+
         BacktoDashBoard.setText("Back");
         BacktoDashBoard.addActionListener(this::BacktoDashBoardActionPerformed);
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(51, 51, 255));
+        jLabel1.setText("Tổng doanh thu");
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(51, 51, 255));
+        jLabel3.setText("Tổng vé đã bán");
+
+        lblTotalTickets.addActionListener(this::lblTotalTicketsActionPerformed);
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(51, 51, 255));
+        jLabel4.setText("Phim bán chạy nhất");
+
+        lblTopMovie.addActionListener(this::lblTopMovieActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 49, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(688, 688, 688))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(lblTotalRevenue, javax.swing.GroupLayout.PREFERRED_SIZE, 443, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 713, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblTotalTickets, javax.swing.GroupLayout.PREFERRED_SIZE, 443, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblTopMovie, javax.swing.GroupLayout.PREFERRED_SIZE, 443, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(BacktoDashBoard, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblTotalRevenue, javax.swing.GroupLayout.PREFERRED_SIZE, 443, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 713, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(103, Short.MAX_VALUE))
+                        .addGap(449, 449, 449)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -104,15 +167,38 @@ public class RevenueForm extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(lblTotalRevenue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(BacktoDashBoard))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblTotalRevenue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblTotalTickets, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblTopMovie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(47, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void lblTotalRevenueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lblTotalRevenueActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lblTotalRevenueActionPerformed
+
+    private void lblTotalTicketsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lblTotalTicketsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lblTotalTicketsActionPerformed
+
+    private void lblTopMovieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lblTopMovieActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lblTopMovieActionPerformed
 
     private void BacktoDashBoardActionPerformed(java.awt.event.ActionEvent evt) {
         // 1. TẠO VỎ JFRAME ẢO CHO TRANG CHỦ (DASHBOARD)
@@ -195,11 +281,17 @@ public class RevenueForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton BacktoDashBoard;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTextField lblTopMovie;
     private javax.swing.JTextField lblTotalRevenue;
+    private javax.swing.JTextField lblTotalTickets;
     private javax.swing.JTable revenue;
     // End of variables declaration//GEN-END:variables
+
 
   
 
