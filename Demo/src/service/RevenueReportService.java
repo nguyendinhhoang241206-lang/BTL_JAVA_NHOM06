@@ -4,8 +4,10 @@ import dao.BookingDAO;
 import dao.MovieDAO;
 import dao.ShowTimeDAO;
 import java.util.ArrayList;
+import java.util.HashMap;
 import model.Booking;
 import java.util.List;
+import java.util.Map;
 import model.Movie;
 import model.ShowTime;
 
@@ -60,5 +62,45 @@ public class RevenueReportService {
             });
         }
         return rows;
+    }
+    
+    // 3. TÍNH TỔNG VÉ ĐÃ BÁN (Tính theo ghế)
+    public int calculateTotalTicketsSold() {
+        // 1. Lấy toàn bộ danh sách vé từ file
+        List<Booking> bookings = bookingDAO.findAll();
+        int totalTickets = 0;
+
+        if (bookings != null) {
+            for (Booking b : bookings) {
+                // 2. Chỉ tính những vé giao dịch thành công
+                if (b.getStatus() == Booking.Status.SUCCESS) {
+                    // 3. Cộng dồn số vé
+                    totalTickets += b.getBookedSeatIds().size(); 
+                }
+            }
+        }
+        return totalTickets;
+    }
+    
+    public String getTopSellingMovieTitle() {
+        List<Object[]> reportData = getRevenueReport();
+        
+        if (reportData == null || reportData.isEmpty()) {
+            return "Chưa có dữ liệu";
+        }
+
+        String topMovie = "Chưa có dữ liệu";
+        int maxTickets = 0;
+
+        for (Object[] row : reportData) {
+            // Ép kiểu Object về số nguyên (Cột 1 là số lượng vé)
+            int tickets = (int) row[1]; 
+            
+            if (tickets > maxTickets) {
+                maxTickets = tickets;
+                topMovie = (String) row[0]; // Cột 0 là Tên phim
+            }
+        }
+        return topMovie;
     }
 }
