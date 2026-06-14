@@ -27,6 +27,13 @@ public class ProfileService {
         // Validate email
         ValidationUtil.validateEmail(email);
 
+        // Check duplicate email (excluding current user)
+        for (User u : userDAO.readFromFile()) {
+            if (!u.getId().equals(user.getId()) && u.getEmail() != null && u.getEmail().equalsIgnoreCase(email)) {
+                throw new IllegalArgumentException("Email đã được sử dụng bởi tài khoản khác!");
+            }
+        }
+
         // Validate phone
         if (phone == null || phone.trim().isEmpty()) {
             throw new IllegalArgumentException("Số điện thoại không được để trống!");
@@ -59,5 +66,11 @@ public class ProfileService {
         }
 
         return true;
+    }
+
+    public boolean requestAdmin(User user) {
+        if (user == null) return false;
+        user.setRequestedAdmin(true);
+        return userDAO.update(user);
     }
 }

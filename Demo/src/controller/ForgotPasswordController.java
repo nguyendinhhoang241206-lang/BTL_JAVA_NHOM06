@@ -24,8 +24,13 @@ public class ForgotPasswordController {
 
                 String username = view.getUsername();
                 String email = view.getEmail();
-                String oldPassword = view.getOldPassword();
                 String newPassword = view.getNewPassword();
+                String confirmPassword = view.getConfirmPassword();
+
+                if (!newPassword.equals(confirmPassword)) {
+                    throw new IllegalArgumentException(
+                            "Mật khẩu xác nhận không trùng khớp!");
+                }
 
                 forgotPasswordService.resetPassword(
                         username,
