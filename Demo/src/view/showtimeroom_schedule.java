@@ -18,8 +18,14 @@ public class showtimeroom_schedule extends javax.swing.JFrame {
      */
     public showtimeroom_schedule() {
         initComponents(); 
-        setLocationRelativeTo(null); 
-        
+        setLocationRelativeTo(null);
+        // Gọi ComboBox
+        controller.initComboBoxes(cbMovie, cbRoom);
+
+        // ---- KHÓA Ô VÀ HIỂN THỊ MÃ SẮP TẠO TẠI ĐÂY ----
+        txtId1.setEditable(false);
+        txtId1.setText(controller.getNextShowTimeId());
+
         // 1. Cấu hình định dạng Giờ Bắt đầu (HH:mm) cho spinStartTime
         javax.swing.SpinnerDateModel startModel = new javax.swing.SpinnerDateModel();
         spinStartTime.setModel(startModel);
@@ -34,7 +40,72 @@ public class showtimeroom_schedule extends javax.swing.JFrame {
         
         // Gọi hàm load dữ liệu lên bảng ngay khi vừa mở form
         controller.loadDataToTable((javax.swing.table.DefaultTableModel) tblShowTime.getModel());
-    
+        backtodashboard.addActionListener(e -> {
+            // 1. TẠO VỎ JFRAME ẢO CHO TRANG CHỦ (DASHBOARD)
+            javax.swing.JFrame mainFrame = new javax.swing.JFrame("Trang chủ Quản trị - Cinema System");
+            mainFrame.setSize(1000, 600);
+            mainFrame.setLocationRelativeTo(null);
+            mainFrame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
+
+            // 2. TẠO THANH MENU TỔNG HỢP (CHỈ DASHBOARD MỚI CÓ)
+            javax.swing.JMenuBar menuBar = new javax.swing.JMenuBar();
+
+            javax.swing.JMenu menuNav = new javax.swing.JMenu("Chức năng Hệ thống");
+
+            // -- Nút Lịch chiếu
+            javax.swing.JMenuItem itemSchedule = new javax.swing.JMenuItem("📅 Quản lý Lịch chiếu");
+            itemSchedule.addActionListener(evt -> {
+                new view.showtimeroom_schedule().setVisible(true);
+                mainFrame.dispose();
+            });
+            menuNav.add(itemSchedule);
+
+            // -- Nút Phòng chiếu
+            javax.swing.JMenuItem itemRoom = new javax.swing.JMenuItem("🏢 Quản lý Phòng chiếu");
+            itemRoom.addActionListener(evt -> {
+                new view.show_time_room_infrForm().setVisible(true);
+                mainFrame.dispose();
+            });
+            menuNav.add(itemRoom);
+
+            // -- Nút Doanh thu
+            javax.swing.JMenuItem itemRevenue = new javax.swing.JMenuItem("📈 Báo cáo Doanh thu");
+            itemRevenue.addActionListener(evt -> {
+                new view.RevenueForm().setVisible(true);
+                mainFrame.dispose();
+            });
+            menuNav.add(itemRevenue);
+
+            // -- Đăng xuất
+            javax.swing.JMenu menuSystem = new javax.swing.JMenu("Tài khoản");
+            javax.swing.JMenuItem itemLogout = new javax.swing.JMenuItem("🚪 Đăng xuất");
+            itemLogout.addActionListener(evt -> {
+                int confirm = javax.swing.JOptionPane.showConfirmDialog(mainFrame, "Đăng xuất tài khoản?", "Xác nhận", javax.swing.JOptionPane.YES_NO_OPTION);
+                if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+                    view.LoginForm loginForm = new view.LoginForm();
+                    new controller.LoginController(loginForm);
+                    loginForm.setVisible(true);
+                    mainFrame.dispose();
+                }
+            });
+            menuSystem.add(itemLogout);
+
+            menuBar.add(menuNav);
+            menuBar.add(menuSystem);
+            mainFrame.setJMenuBar(menuBar); // Đính Menu lên Dashboard
+
+            // 3. NHÚNG MẢNH GHÉP QUẢN LÝ PHIM VÀO DASHBOARD
+            view.ShowlistmovieForm showListPanel = new view.ShowlistmovieForm();
+            new controller.MovieController(showListPanel); // Kích hoạt nút bấm phim
+
+            mainFrame.add(showListPanel);
+            mainFrame.setVisible(true);
+            this.dispose();
+        });
+
+
+        // Gọi hàm load dữ liệu lên bảng ngay khi vừa mở form
+        controller.loadDataToTable((javax.swing.table.DefaultTableModel) tblShowTime.getModel());
     }
 
     /**
@@ -60,12 +131,13 @@ public class showtimeroom_schedule extends javax.swing.JFrame {
         btnClear = new javax.swing.JButton();
         txtId1 = new javax.swing.JTextField();
         backtodashboard = new javax.swing.JButton();
-        dateChooser = new com.toedter.calendar.JDateChooser();
         spinStartTime = new javax.swing.JSpinner();
         spinEndTime = new javax.swing.JSpinner();
+        dateChooser = new com.toedter.calendar.JDateChooser();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblShowTime = new javax.swing.JTable();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Showtime Management Dashboard");
@@ -134,8 +206,7 @@ public class showtimeroom_schedule extends javax.swing.JFrame {
                                         .addGap(1, 1, 1)
                                         .addComponent(jLabel1))
                                     .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING))
-                                .addGap(0, 8, Short.MAX_VALUE))
-                            .addComponent(dateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(spinStartTime)
                             .addComponent(spinEndTime))
                         .addGap(11, 11, 11))
@@ -146,6 +217,10 @@ public class showtimeroom_schedule extends javax.swing.JFrame {
                 .addGap(59, 59, 59)
                 .addComponent(backtodashboard)
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(dateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(11, 11, 11))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -164,8 +239,8 @@ public class showtimeroom_schedule extends javax.swing.JFrame {
                 .addComponent(cbRoom, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(7, 7, 7)
                 .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(dateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(4, 4, 4)
+                .addComponent(dateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -180,7 +255,7 @@ public class showtimeroom_schedule extends javax.swing.JFrame {
                     .addComponent(btnDelete))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnClear)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
                 .addComponent(backtodashboard)
                 .addGap(15, 15, 15))
         );
@@ -215,14 +290,21 @@ public class showtimeroom_schedule extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 699, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(271, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 572, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(59, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 572, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -239,7 +321,7 @@ public class showtimeroom_schedule extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(25, 25, 25)
+                .addGap(34, 34, 34)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -255,50 +337,51 @@ public class showtimeroom_schedule extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cbMovieActionPerformed
 
-    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {
         try {
-            // Chốt dữ liệu bàn phím
             spinStartTime.commitEdit();
             spinEndTime.commitEdit();
 
-            // Ném toàn bộ dữ liệu thô sang Controller xử lý
+            // Truyền txtId1.getText() làm tham số đầu tiên
             String result = controller.handleAddShowTime(
-                txtId1.getText(),
-                dateChooser.getDate(),
-                (java.util.Date) spinStartTime.getValue(),
-                (java.util.Date) spinEndTime.getValue(),
-                cbMovie.getSelectedItem().toString(),
-                cbRoom.getSelectedItem().toString()
+                    txtId1.getText(),
+                    dateChooser.getDate(),
+                    (java.util.Date) spinStartTime.getValue(),
+                    (java.util.Date) spinEndTime.getValue(),
+                    cbMovie.getSelectedItem().toString(),
+                    cbRoom.getSelectedItem().toString()
             );
 
-            // Hiển thị kết quả do Controller trả về
             if ("SUCCESS".equals(result)) {
                 javax.swing.JOptionPane.showMessageDialog(this, "Xếp lịch chiếu thành công!");
                 controller.loadDataToTable((javax.swing.table.DefaultTableModel) tblShowTime.getModel());
-                btnClearActionPerformed(null); // Gọi luôn nút Clear để dọn dẹp form
+
+                // Gọi nút clear để dọn form và tự động đổi sang mã mới cho lượt tiếp theo
+                btnClearActionPerformed(null);
             } else {
-                javax.swing.JOptionPane.showMessageDialog(this, result, "Thông báo", javax.swing.JOptionPane.WARNING_MESSAGE);
+                String errorMsg = result.split(":")[1];
+                javax.swing.JOptionPane.showMessageDialog(this, errorMsg, "Thông báo", javax.swing.JOptionPane.WARNING_MESSAGE);
             }
         } catch (Exception e) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Có lỗi xảy ra trên giao diện!", "Lỗi", javax.swing.JOptionPane.ERROR_MESSAGE);
-        }       // TODO add your handling code here:
-    }//GEN-LAST:event_btnAddActionPerformed
+            javax.swing.JOptionPane.showMessageDialog(this, "Có lỗi xảy ra!", "Lỗi", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     private void txtId1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtId1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtId1ActionPerformed
 
-    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
-        txtId1.setText("");
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {
+        // Tự động lấy mã mới tiếp theo hiển thị lên ô nhập liệu
+        txtId1.setText(controller.getNextShowTimeId());
+
         dateChooser.setDate(null);
         spinStartTime.setValue(new java.util.Date());
         spinEndTime.setValue(new java.util.Date());
         if (cbMovie.getItemCount() > 0) cbMovie.setSelectedIndex(0);
         if (cbRoom.getItemCount() > 0) cbRoom.setSelectedIndex(0);
         tblShowTime.clearSelection();
-        txtId1.requestFocus();
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnClearActionPerformed
+    }
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // Kiểm tra xem Admin đã click chọn dòng nào trên bảng chưa
@@ -324,6 +407,15 @@ public class showtimeroom_schedule extends javax.swing.JFrame {
      * @param args the command line arguments
      */
 
+//    public static void main(String args[]) {
+//        /* Đảm bảo giao diện chạy trên luồng sự kiện (Event Dispatch Thread) an toàn */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                // Khởi tạo và hiển thị form của bạn
+//                new showtimeroom_schedule().setVisible(true);
+//            }
+//        });
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backtodashboard;
@@ -333,6 +425,7 @@ public class showtimeroom_schedule extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cbMovie;
     private javax.swing.JComboBox<String> cbRoom;
     private com.toedter.calendar.JDateChooser dateChooser;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

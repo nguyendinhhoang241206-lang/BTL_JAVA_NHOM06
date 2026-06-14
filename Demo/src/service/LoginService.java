@@ -3,31 +3,33 @@ package service;
 import dao.UserDAO;
 import model.User;
 import model.enums.UserStatus;
+import utils.ValidationUtil;
 
 public class LoginService {
     private UserDAO userDAO = new UserDAO();
 
-    // Nhận password dạng String bình thường, bỏ qua kiểm tra email vì giao diện LoginForm không có ô nhập email
-    public boolean checkCredentials(String username, String email, String password) {
-        User user = userDAO.findByUsername(username);
+    public User getLoggedInUser(String username, String password) {
 
-        if (user == null) {
-            return false;
-        }
+    ValidationUtil.validateUsername(username);
+    ValidationUtil.validatePassword(password);
 
-        // Kiểm tra trực tiếp password (plain text) và bắt buộc tài khoản phải ACTIVE
-        return user.getStatus() == UserStatus.ACTIVE 
-            && user.getPassword() != null 
-            && user.getPassword().equals(password);
+    User user = userDAO.findByUsername(username);
+
+    if (user == null) {
+        throw new IllegalArgumentException(
+                "Tên đăng nhập không tồn tại");
     }
 
-    // Phương thức quá tải chỉ kiểm tra Tên đăng nhập và Mật khẩu
-    public boolean checkCredentials(String username, String password) {
-        return checkCredentials(username, "", password);
+    if (user.getStatus() != UserStatus.ACTIVE) {
+        throw new IllegalArgumentException(
+                "Tài khoản đã bị khóa");
     }
 
-
-    public User getLoggedInUser(String username) {
-        return userDAO.findByUsername(username);
+    if (!user.getPassword().equals(password)) {
+        throw new IllegalArgumentException(
+                "Mật khẩu không chính xác");
     }
+
+    return user;
+}
 }

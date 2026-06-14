@@ -17,6 +17,20 @@ public class ShowTimeManagerService {
         return showTimeDAO.add(showTime);
     }
 
+
+    // Kiểm tra xem Showtime ID đã bị trùng trong file chưa
+    public boolean checkIdExist(String id) {
+        List<ShowTime> allShowTimes = showTimeDAO.findAll();
+        if (allShowTimes != null) {
+            for (ShowTime st : allShowTimes) {
+                if (st.getId().equalsIgnoreCase(id.trim())) {
+                    return true; // Bị trùng ID
+                }
+            }
+        }
+        return false; // ID an toàn
+    }
+
     // 2. Thuật toán kiểm tra trùng lịch (Business Logic cốt lõi)
     public boolean checkTimeConflict(ShowTime showTime) {
         List<ShowTime> allShowTimes = showTimeDAO.findAll();

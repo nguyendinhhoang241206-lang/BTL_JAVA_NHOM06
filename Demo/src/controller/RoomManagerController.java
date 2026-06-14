@@ -3,15 +3,15 @@ package controller;
 import model.Room;
 import service.RoomManagerService;
 import view.show_time_room_infrForm;
+import view.showtimeroom_schedule;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Random;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class RoomManagerController {
-    
+
     private RoomManagerService roomManagerService;
     private show_time_room_infrForm view;
 
@@ -20,73 +20,157 @@ public class RoomManagerController {
         this.view = view;
         this.roomManagerService = new RoomManagerService();
 
-        // 1. Gắn tai nghe sự kiện cho nút bấm thông qua hàm Getter
-        this.view.getBtnAddRoom().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                handleAddRoomEvent();
-            }
-        });
+        // =========================================================
+        // THIẾT LẬP GIAO DIỆN BAN ĐẦU
+        // =========================================================
+        // Khóa ô nhập Mã phòng (ID) và GỌI HÀM SINH MÃ HIỂN THỊ SẴN
+        this.view.getTxtRoomId().setEditable(false);
+        this.view.getTxtRoomId().setText(getNextRoomId());
 
-        // 2. Load dữ liệu lên bảng khi giao diện vừa bật
+        // Khóa ô Tổng số ghế và fix cứng hiển thị số 50
+        this.view.getTxtTotalSeats().setEditable(false);
+        this.view.getTxtTotalSeats().setText("50");
+
+        // =========================================================
+        // GẮN SỰ KIỆN NÚT BẤM
+        // =========================================================
+        this.view.getBtnAddRoom().addActionListener(e -> handleAddRoomEvent());
+
+        if (this.view.getBtnBack() != null) {
+            this.view.getBtnBack().addActionListener(e -> {
+                // 1. TẠO VỎ JFRAME ẢO CHO TRANG CHỦ (DASHBOARD)
+                javax.swing.JFrame mainFrame = new javax.swing.JFrame("Trang chủ Quản trị - Cinema System");
+                mainFrame.setSize(1000, 600);
+                mainFrame.setLocationRelativeTo(null);
+                mainFrame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
+
+                // 2. TẠO THANH MENU TỔNG HỢP (CHỈ DASHBOARD MỚI CÓ)
+                javax.swing.JMenuBar menuBar = new javax.swing.JMenuBar();
+
+                javax.swing.JMenu menuNav = new javax.swing.JMenu("Chức năng Hệ thống");
+
+                // -- Nút Lịch chiếu
+                javax.swing.JMenuItem itemSchedule = new javax.swing.JMenuItem("📅 Quản lý Lịch chiếu");
+                itemSchedule.addActionListener(evt -> {
+                    new view.showtimeroom_schedule().setVisible(true);
+                    mainFrame.dispose();
+                });
+                menuNav.add(itemSchedule);
+
+                // -- Nút Phòng chiếu
+                javax.swing.JMenuItem itemRoom = new javax.swing.JMenuItem("🏢 Quản lý Phòng chiếu");
+                itemRoom.addActionListener(evt -> {
+                    new view.show_time_room_infrForm().setVisible(true);
+                    mainFrame.dispose();
+                });
+                menuNav.add(itemRoom);
+
+                // -- Nút Doanh thu
+                javax.swing.JMenuItem itemRevenue = new javax.swing.JMenuItem("📈 Báo cáo Doanh thu");
+                itemRevenue.addActionListener(evt -> {
+                    new view.RevenueForm().setVisible(true);
+                    mainFrame.dispose();
+                });
+                menuNav.add(itemRevenue);
+
+                // -- Đăng xuất
+                javax.swing.JMenu menuSystem = new javax.swing.JMenu("Tài khoản");
+                javax.swing.JMenuItem itemLogout = new javax.swing.JMenuItem("🚪 Đăng xuất");
+                itemLogout.addActionListener(evt -> {
+                    int confirm = javax.swing.JOptionPane.showConfirmDialog(mainFrame, "Đăng xuất tài khoản?", "Xác nhận", javax.swing.JOptionPane.YES_NO_OPTION);
+                    if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+                        view.LoginForm loginForm = new view.LoginForm();
+                        new controller.LoginController(loginForm);
+                        loginForm.setVisible(true);
+                        mainFrame.dispose();
+                    }
+                });
+                menuSystem.add(itemLogout);
+
+                menuBar.add(menuNav);
+                menuBar.add(menuSystem);
+                mainFrame.setJMenuBar(menuBar); // Đính Menu lên Dashboard
+
+                // 3. NHÚNG MẢNH GHÉP QUẢN LÝ PHIM VÀO DASHBOARD
+                view.ShowlistmovieForm showListPanel = new view.ShowlistmovieForm();
+                new controller.MovieController(showListPanel); // Kích hoạt nút bấm phim
+
+                mainFrame.add(showListPanel);
+                mainFrame.setVisible(true);
+                this.view.dispose();
+            });
+        }
+
         refreshRoomTable();
     }
 
-    // Nơi xử lý logic khi nút được bấm
+    // =========================================================
+    // HÀM LẤY MÃ PHÒNG TIẾP THEO (R + 6 SỐ)
+    // =========================================================
+    public String getNextRoomId() {
+        Random random = new Random();
+        String newId;
+        boolean isDuplicate;
+
+        do {
+            int randomNum = 100000 + random.nextInt(900000);
+            newId = "R" + randomNum;
+
+            isDuplicate = false;
+            List<Room> rooms = roomManagerService.getAllRooms();
+            if (rooms != null) {
+                for (Room r : rooms) {
+                    if (r.getId().equals(newId)) {
+                        isDuplicate = true;
+                        break;
+                    }
+                }
+            }
+        } while (isDuplicate);
+
+        return newId;
+    }
+
+    // =========================================================
+    // XỬ LÝ LOGIC KHI BẤM NÚT THÊM PHÒNG
+    // =========================================================
     private void handleAddRoomEvent() {
-        // Lấy dữ liệu qua các hàm Getter
+        // Lấy chính cái mã Rxxxxxx đang hiển thị trên form
         String roomId = view.getTxtRoomId().getText().trim();
         String roomName = view.getTxtRoomName().getText().trim();
-        String totalSeatsStr = view.getTxtTotalSeats().getText().trim();
 
-        // 1. Chỉ bắt buộc nhập Mã phòng và Tên phòng
-        if (roomId.isEmpty() || roomName.isEmpty()) {
-            JOptionPane.showMessageDialog(view, "Vui lòng nhập Mã phòng và Tên phòng!");
+        if (roomName.isEmpty()) {
+            JOptionPane.showMessageDialog(view, "Vui lòng nhập Tên phòng!");
             return;
         }
 
-        // 2. Xử lý logic số ghế: Tối đa 50, mặc định 50
-        int totalSeats;
-        if (totalSeatsStr.isEmpty()) {
-            totalSeats = 50; // Nếu người dùng không nhập gì, mặc định là 50 ghế
-        } else {
-            try {
-                totalSeats = Integer.parseInt(totalSeatsStr);
-                
-                // Kiểm tra giới hạn Min - Max
-                if (totalSeats <= 0) {
-                    JOptionPane.showMessageDialog(view, "Số lượng ghế phải lớn hơn 0!");
-                    return;
-                }
-                if (totalSeats > 50) {
-                    JOptionPane.showMessageDialog(view, "Một phòng chiếu chỉ chứa tối đa 50 ghế!");
-                    return;
-                }
-                
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(view, "Tổng số ghế phải là số nguyên!");
-                return;
-            }
-        }
+        int fixedTotalSeats = 50;
 
-        // 3. Tiến hành lưu file và sinh ghế
-        Room newRoom = new Room(roomId, roomName, totalSeats);
+        // Tiến hành đóng gói và lưu
+        Room newRoom = new Room(roomId, roomName, fixedTotalSeats);
         boolean isSuccess = roomManagerService.addRoom(newRoom);
 
         if (isSuccess) {
-            JOptionPane.showMessageDialog(view, "Thêm phòng và sinh " + totalSeats + " ghế thành công!");
+            JOptionPane.showMessageDialog(view, "Thêm phòng thành công!");
+
             refreshRoomTable();
-            view.clearInputFields(); 
+            view.clearInputFields(); // Xóa trắng tên phòng cũ
+
+            // QUAN TRỌNG: Gọi tạo mã mới cho lượt bấm tiếp theo
+            view.getTxtRoomId().setText(getNextRoomId());
         } else {
-            JOptionPane.showMessageDialog(view, "Thêm thất bại! Mã phòng đã tồn tại.");
+            JOptionPane.showMessageDialog(view, "Thêm thất bại do lỗi hệ thống!");
         }
     }
 
+    // =========================================================
+    // LOAD DỮ LIỆU LÊN BẢNG
+    // =========================================================
     private void refreshRoomTable() {
         DefaultTableModel model = (DefaultTableModel) view.getTblRooms().getModel();
-        model.setRowCount(0); 
-        
-        List<Room> rooms = roomManagerService.getAllRooms(); // Chú ý: Service cần có hàm getAllRooms() trả về roomDAO.findAll()
+        model.setRowCount(0);
+
+        List<Room> rooms = roomManagerService.getAllRooms();
         if (rooms != null) {
             for (Room r : rooms) {
                 model.addRow(new Object[]{r.getId(), r.getName(), r.getTotalSeats()});

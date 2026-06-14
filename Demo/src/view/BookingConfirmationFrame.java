@@ -373,42 +373,48 @@ public class BookingConfirmationFrame extends JFrame {
     }
 
     private void handleConfirmBooking() {
-        /* MỞ KHÓA KHI CÓ SESSION
+        // ==========================================
+        // 1. LẤY SESSION ĐỂ BIẾT AI ĐANG ĐẶT VÉ
+        // ==========================================
         if (!utils.Session.isLoggedIn()) {
             JOptionPane.showMessageDialog(this, "Bạn cần đăng nhập để đặt vé!");
             return;
         }
-        String currentUserId = utils.Session.getCurrentUser().getId();
-        */
-        String currentUserId = "USER001"; // Xóa dòng này khi ghép Session thật
 
+        // CHUẨN XÁC: Lấy ID của user (Ví dụ: "U01", "U02") để lưu vào bảng Booking
+        String currentUserId = utils.Session.getCurrentUser().getId();
+
+        // 2. Tính tiền
         double finalPrice = totalTicketPrice + comboPrice - discountValue;
         if (finalPrice < 0) finalPrice = 0;
 
+        // 3. Tạo hóa đơn
         Booking newBooking = new Booking();
         newBooking.setId("B" + System.currentTimeMillis());
-        newBooking.setBookingDate(LocalDateTime.now());
         newBooking.setComboName(selectedComboName);
         newBooking.setDiscountAmount(discountValue);
         newBooking.setTotalPrice(finalPrice);
-        newBooking.setStatus(Booking.Status.SUCCESS);
+
+        // GẮN MÃ KHÁCH HÀNG (LẤY TỪ SESSION) VÀO HÓA ĐƠN
         newBooking.setUserId(currentUserId);
+
         newBooking.setShowTimeId(currentShowTime.getId());
         newBooking.setBookedSeatIds(selectedSeats);
 
+        // Gọi Controller (Controller sẽ gọi tiếp BookingCheckoutService ở trên để set Status và Time)
         boolean isSuccess = bookingController.confirmBooking(newBooking);
 
+        // 4. Thông báo kết quả
         if (isSuccess) {
             JOptionPane.showMessageDialog(this,
                     "🎉 ĐẶT VÉ THÀNH CÔNG!\nMã đơn hàng: " + newBooking.getId() + "\nCảm ơn bạn đã sử dụng dịch vụ.",
                     "Hoàn tất", JOptionPane.INFORMATION_MESSAGE);
             this.dispose();
-            // TODO: Trở về màn hình Home
+            // Đóng cửa sổ, quay lại giao diện chính
         } else {
             JOptionPane.showMessageDialog(this, "Đã xảy ra lỗi hệ thống khi lưu vé!", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
-
     // ==========================================
     // CÁC COMPONENT CUSTOM (VẼ ĐỒ HỌA)
     // ==========================================
