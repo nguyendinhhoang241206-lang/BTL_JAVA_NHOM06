@@ -17,6 +17,7 @@ public class ShowlistmovieForm extends javax.swing.JPanel {
      */
     public ShowlistmovieForm() {
         initComponents();
+        
     }
 
     /**
@@ -42,6 +43,9 @@ public class ShowlistmovieForm extends javax.swing.JPanel {
 
         txtSearch.addActionListener(this::txtSearchActionPerformed);
 
+        btnSearch.setBackground(new java.awt.Color(255, 102, 0));
+        btnSearch.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnSearch.setForeground(new java.awt.Color(255, 255, 255));
         btnSearch.setText("Search");
         btnSearch.addActionListener(this::btnSearchActionPerformed);
 
@@ -53,8 +57,8 @@ public class ShowlistmovieForm extends javax.swing.JPanel {
                 .addGap(28, 28, 28)
                 .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(351, Short.MAX_VALUE))
+                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(283, Short.MAX_VALUE))
         );
         panelHeaderLayout.setVerticalGroup(
             panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -68,11 +72,20 @@ public class ShowlistmovieForm extends javax.swing.JPanel {
 
         add(panelHeader, java.awt.BorderLayout.PAGE_START);
 
+        btnAddMovie.setBackground(new java.awt.Color(255, 102, 0));
+        btnAddMovie.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnAddMovie.setForeground(new java.awt.Color(255, 255, 255));
         btnAddMovie.setText("Thêm Phim");
         btnAddMovie.addActionListener(this::btnAddMovieActionPerformed);
 
+        editMovie.setBackground(new java.awt.Color(255, 102, 0));
+        editMovie.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        editMovie.setForeground(new java.awt.Color(255, 255, 255));
         editMovie.setText("Sửa ");
 
+        deleteMovie.setBackground(new java.awt.Color(255, 102, 0));
+        deleteMovie.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        deleteMovie.setForeground(new java.awt.Color(255, 255, 255));
         deleteMovie.setText("Xóa");
 
         javax.swing.GroupLayout paneActionLayout = new javax.swing.GroupLayout(paneAction);
@@ -86,7 +99,7 @@ public class ShowlistmovieForm extends javax.swing.JPanel {
                 .addComponent(editMovie, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(102, 102, 102)
                 .addComponent(deleteMovie, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(144, Short.MAX_VALUE))
+                .addContainerGap(128, Short.MAX_VALUE))
         );
         paneActionLayout.setVerticalGroup(
             paneActionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -100,6 +113,8 @@ public class ShowlistmovieForm extends javax.swing.JPanel {
         );
 
         add(paneAction, java.awt.BorderLayout.PAGE_END);
+
+        tableMovies.setBackground(new java.awt.Color(255, 255, 255));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -120,6 +135,7 @@ public class ShowlistmovieForm extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.setRowHeight(30);
         tableMovies.setViewportView(jTable1);
 
         add(tableMovies, java.awt.BorderLayout.CENTER);
