@@ -24,6 +24,9 @@ public class ShowTimeManagerController {
             }
         }
 
+        
+        
+        
         // Gọi DAO lấy danh sách Phòng
         try {
             // Lưu ý: Đảm bảo bạn đã tạo file RoomDAO.java và hàm findAll()

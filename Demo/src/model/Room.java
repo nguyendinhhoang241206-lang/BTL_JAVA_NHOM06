@@ -55,6 +55,10 @@ public class Room implements Serializable {
 
     @Override
     public String toString() {
+        
+        
+        
+        
         return "Room{" + "id='" + id + '\'' + ", name='" + name + '\'' + ", totalSeats=" + totalSeats + '}';
     }
 }

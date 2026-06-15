@@ -26,6 +26,12 @@ public class ShowTime implements Serializable {
         setMovieId(movieId);
         setRoomId(roomId);
         
+        
+        
+        
+        
+        
+        
         // Bẫy lỗi logic: Giờ bắt đầu phải trước giờ kết thúc
         if (this.startTime != null && this.endTime != null && 
            (this.startTime.isAfter(this.endTime) || this.startTime.equals(this.endTime))) {
