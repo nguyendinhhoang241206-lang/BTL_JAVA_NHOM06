@@ -49,23 +49,4 @@ public class RevenueReportController {
             return "Lỗi hiển thị";
         }
     }
-    
-    // Hàm này View sẽ gọi. Controller chỉ gọi tiếp sang Service và ném kết quả về cho View.
-    public int handleGetTotalTickets() {
-        try {
-            return revenueReportService.calculateTotalTicketsSold();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return 0; // Trả về 0 nếu có lỗi đọc file để View không bị crash
-        }
-    }
-    
-    public String handleGetTopSellingMovie() {
-        try {
-            return revenueReportService.getTopSellingMovieTitle();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Lỗi hiển thị";
-        }
-    }
 }
