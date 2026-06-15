@@ -58,7 +58,7 @@ public class ShowTimeManagerService {
     public List<ShowTime> getAllShowTimes() {
         return showTimeDAO.findAll();
     }
-
+     /*        */
     // 4. Xóa suất chiếu dựa trên ID
     public boolean deleteShowTime(String id) {
         return showTimeDAO.delete(id);

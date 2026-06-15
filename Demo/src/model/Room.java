@@ -9,18 +9,16 @@ public class Room implements Serializable {
     private String name;
     private int totalSeats;
 
-    // No-args Constructor
     public Room() {
     }
 
-    // All-args Constructor
     public Room(String id, String name, int totalSeats) {
-        this.id = id;
-        this.name = name;
-        this.totalSeats = totalSeats;
+        // Dùng hàm set để Constructor cũng kích hoạt cơ chế bẫy lỗi
+        setId(id);
+        setName(name);
+        setTotalSeats(totalSeats);
     }
 
-    // Getters and Setters
     public String getId() {
         return id;
     }
@@ -29,28 +27,38 @@ public class Room implements Serializable {
         this.id = id;
     }
 
+    // --- CÁC HÀM GETTER MÀ COMPILER ĐANG BÁO THIẾU ---
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public int getTotalSeats() {
         return totalSeats;
     }
+    // ---------------------------------------------------
 
-    public void setTotalSeats(int totalSeats) {
+    // BẪY LỖI: Kiểm tra tên phòng
+    public void setName(String name) throws IllegalArgumentException {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Tên phòng không được để trống!"); 
+        }
+        this.name = name;
+    }
+
+    // BẪY LỖI: Kiểm tra số ghế
+    public void setTotalSeats(int totalSeats) throws IllegalArgumentException {
+        if (totalSeats <= 0 || totalSeats > 50) {
+            throw new IllegalArgumentException("Số ghế phải lớn hơn 0 và tối đa là 50!");
+        }
         this.totalSeats = totalSeats;
     }
 
     @Override
     public String toString() {
-        return "Room{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", totalSeats=" + totalSeats +
-                '}';
+        
+        
+        
+        
+        return "Room{" + "id='" + id + '\'' + ", name='" + name + '\'' + ", totalSeats=" + totalSeats + '}';
     }
 }

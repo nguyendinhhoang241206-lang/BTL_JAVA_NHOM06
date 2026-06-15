@@ -134,32 +134,37 @@ public class RoomManagerController {
     // =========================================================
     // XỬ LÝ LOGIC KHI BẤM NÚT THÊM PHÒNG
     // =========================================================
+    // =========================================================
+    // XỬ LÝ LOGIC KHI BẤM NÚT THÊM PHÒNG
+    // =========================================================
     private void handleAddRoomEvent() {
-        // Lấy chính cái mã Rxxxxxx đang hiển thị trên form
         String roomId = view.getTxtRoomId().getText().trim();
         String roomName = view.getTxtRoomName().getText().trim();
-
-        if (roomName.isEmpty()) {
-            JOptionPane.showMessageDialog(view, "Vui lòng nhập Tên phòng!");
-            return;
-        }
-
         int fixedTotalSeats = 50;
 
-        // Tiến hành đóng gói và lưu
-        Room newRoom = new Room(roomId, roomName, fixedTotalSeats);
-        boolean isSuccess = roomManagerService.addRoom(newRoom);
+        try {
+            // CƠ CHẾ TRY-CATCH: Nếu roomName rỗng, dòng 'new Room' sẽ kích hoạt hàm setName.
+            // Hàm setName sẽ ném ra lỗi IllegalArgumentException và nhảy thẳng xuống khối catch.
+            Room newRoom = new Room(roomId, roomName, fixedTotalSeats);
+            
+            // Nếu không có lỗi gì xảy ra ở trên thì mới tiến hành lưu
+            boolean isSuccess = roomManagerService.addRoom(newRoom);
 
-        if (isSuccess) {
-            JOptionPane.showMessageDialog(view, "Thêm phòng thành công!");
+            if (isSuccess) {
+                JOptionPane.showMessageDialog(view, "Thêm phòng thành công!");
+                refreshRoomTable();
+                view.clearInputFields(); 
+                view.getTxtRoomId().setText(getNextRoomId());
+            } else {
+                JOptionPane.showMessageDialog(view, "Thêm thất bại (Mã phòng đã tồn tại)!");
+            }
 
-            refreshRoomTable();
-            view.clearInputFields(); // Xóa trắng tên phòng cũ
-
-            // QUAN TRỌNG: Gọi tạo mã mới cho lượt bấm tiếp theo
-            view.getTxtRoomId().setText(getNextRoomId());
-        } else {
-            JOptionPane.showMessageDialog(view, "Thêm thất bại do lỗi hệ thống!");
+        } catch (IllegalArgumentException e) {
+            // HỨNG LỖI LAN TRUYỀN: e.getMessage() chính là câu "Tên phòng không được để trống!" từ lớp Room
+            JOptionPane.showMessageDialog(view, e.getMessage(), "Dữ liệu không hợp lệ", JOptionPane.WARNING_MESSAGE);
+        } catch (Exception e) {
+            // Hứng các lỗi hệ thống khác nếu có
+            JOptionPane.showMessageDialog(view, "Có lỗi hệ thống xảy ra: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
 
