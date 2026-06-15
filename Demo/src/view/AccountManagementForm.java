@@ -37,12 +37,15 @@ public class AccountManagementForm extends javax.swing.JFrame {
         lblMessage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(51, 51, 255));
+        jLabel2.setForeground(new java.awt.Color(255, 102, 0));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("QUẢN LÝ TÀI KHOẢN");
 
+        tblAccounts.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        tblAccounts.setForeground(new java.awt.Color(51, 51, 51));
         tblAccounts.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
@@ -64,16 +67,23 @@ public class AccountManagementForm extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tblAccounts);
 
-        btnGrantAdmin.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnGrantAdmin.setBackground(new java.awt.Color(255, 102, 0));
+        btnGrantAdmin.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnGrantAdmin.setForeground(new java.awt.Color(255, 255, 255));
         btnGrantAdmin.setText("Cấp quyền Admin");
         btnGrantAdmin.addActionListener(this::btnGrantAdminActionPerformed);
 
-        btnToggleLock.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnToggleLock.setBackground(new java.awt.Color(255, 102, 0));
+        btnToggleLock.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnToggleLock.setForeground(new java.awt.Color(255, 255, 255));
         btnToggleLock.setText("Khóa/Mở khóa");
 
-        btnBack.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnBack.setBackground(new java.awt.Color(255, 102, 0));
+        btnBack.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnBack.setForeground(new java.awt.Color(255, 255, 255));
         btnBack.setText("Quay lại");
 
+        lblMessage.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblMessage.setForeground(new java.awt.Color(255, 51, 51));
         lblMessage.setMaximumSize(new java.awt.Dimension(300, 35));
         lblMessage.setMinimumSize(new java.awt.Dimension(300, 35));
@@ -84,22 +94,20 @@ public class AccountManagementForm extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(161, 161, 161)
-                        .addComponent(btnGrantAdmin)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnToggleLock)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnBack)
-                        .addGap(0, 172, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblMessage, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1))))
+                    .addComponent(lblMessage, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 783, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnGrantAdmin)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnToggleLock)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnBack)
+                .addGap(230, 230, 230))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -115,7 +123,7 @@ public class AccountManagementForm extends javax.swing.JFrame {
                     .addComponent(btnBack))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblMessage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(10, Short.MAX_VALUE))
         );
 
         pack();

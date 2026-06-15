@@ -29,6 +29,8 @@ public class AccountManagementController {
     private void initView() {
         loadAccounts();
         view.getLblMessage().setText("");
+        javax.swing.JTable table = view.getTblAccounts();
+        table.getTableHeader().setReorderingAllowed(false);
     }
 
     private void loadAccounts() {

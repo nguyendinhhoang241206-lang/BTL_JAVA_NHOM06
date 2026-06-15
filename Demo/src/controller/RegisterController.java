@@ -84,6 +84,29 @@ public class RegisterController {
         this.view.addBackListener(e -> {
             navigateToLogin();
         });
+
+        // Trong initController của RegisterController
+        // Gắn sự kiện con mắt Mật khẩu
+        this.view.addShowPassListener(new java.awt.event.MouseAdapter() {
+            private boolean visible = false;
+
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                visible = !visible;
+                view.setPasswordVisible(visible);
+            }
+        });
+
+        // Gắn sự kiện con mắt Xác nhận
+        this.view.addShowConfirmPassListener(new java.awt.event.MouseAdapter() {
+            private boolean visible = false;
+
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                visible = !visible;
+                view.setConfirmPasswordVisible(visible);
+            }
+        });
     }
 
     // Hàm điều hướng quay lại màn hình Đăng nhập

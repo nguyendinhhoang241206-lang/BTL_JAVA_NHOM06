@@ -65,6 +65,25 @@ public class ForgotPasswordController {
             }
         });
 
+        // Sự kiện con mắt cho Mật khẩu mới
+        this.view.addShowNewPassListener(new java.awt.event.MouseAdapter() {
+            private boolean visible = false;
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                visible = !visible;
+                view.setNewPassVisible(visible);
+            }
+        });
+
+        // Sự kiện con mắt cho Xác nhận mật khẩu
+        this.view.addShowConfirmPassListener(new java.awt.event.MouseAdapter() {
+            private boolean visible = false;
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                visible = !visible;
+                view.setConfirmPassVisible(visible);
+            }
+        });
         // Sự kiện khi nhấn nút "Đăng nhập" (Quay lại)
         this.view.addBackListener(e -> {
             navigateToLogin();
