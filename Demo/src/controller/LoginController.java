@@ -63,7 +63,7 @@ public class LoginController {
 
             if (sessionUser.getRole() != null
                     && (sessionUser.getRole().toString().equalsIgnoreCase("ADMIN")
-                    || sessionUser.getRole().toString().equalsIgnoreCase("STAFF"))) {
+                    || sessionUser.getRole().toString().equalsIgnoreCase("USER"))) {
 
                 // 1. TẠO VỎ JFRAME ẢO CHO TRANG CHỦ (DASHBOARD)
                 javax.swing.JFrame mainFrame = new javax.swing.JFrame("Trang chủ Quản trị - Cinema System");
@@ -161,6 +161,16 @@ public class LoginController {
             new ForgotPasswordController(forgotForm);
             forgotForm.setLocationRelativeTo(null); // Hiển thị giữa màn hình
             forgotForm.setVisible(true); // Hiển thị màn hình quên mật khẩu
+        });
+        // Gắn sự kiện con mắt vào LoginForm
+        this.view.addShowPasswordListener(new java.awt.event.MouseAdapter() {
+            private boolean visible = false;
+
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                visible = !visible;
+                view.setPasswordVisible(visible);
+            }
         });
     }
 
