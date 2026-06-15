@@ -59,33 +59,35 @@ public class ShowTimeManagerController {
     // =========================================================
     // SỬA LẠI HÀM THÊM: Nhận ID từ giao diện truyền vào
     // =========================================================
+    // =========================================================
+    // SỬA LẠI HÀM THÊM: ÁP DỤNG TRY-CATCH HỨNG LỖI TỪ ENTITY
+    // =========================================================
     public String handleAddShowTime(String id, java.util.Date chosenDate, java.util.Date sTime, java.util.Date eTime, String movieId, String roomId) {
         try {
-            if (id == null || id.trim().isEmpty() || id.equals("Hệ thống tự tạo")) {
-                return "ERROR:Mã suất chiếu không hợp lệ!";
-            }
+            // Kiểm tra trùng mã lịch chiếu (nghiệp vụ liên quan database/file nên để ở Service)
             if (service.checkIdExist(id)) {
                 return "ERROR:Mã lịch chiếu này đã tồn tại từ trước!";
             }
-            if (chosenDate == null) {
-                return "ERROR:Vui lòng chọn ngày chiếu phim!";
+
+            // Chặn NullPointerException khi ép kiểu Date sang LocalDate
+            if (chosenDate == null || sTime == null || eTime == null) {
+                return "ERROR:Vui lòng nhập đầy đủ ngày và giờ chiếu!";
             }
 
-            // Xử lý thời gian
+            // Xử lý định dạng thời gian
             java.time.LocalDate date = chosenDate.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
             java.time.LocalTime startTime = sTime.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalTime().truncatedTo(java.time.temporal.ChronoUnit.MINUTES);
             java.time.LocalTime endTime = eTime.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalTime().truncatedTo(java.time.temporal.ChronoUnit.MINUTES);
 
-            if (startTime.isAfter(endTime) || startTime.equals(endTime)) {
-                return "ERROR:Giờ bắt đầu phải trước giờ kết thúc!";
-            }
-
             String finalMovieId = movieId.contains(" - ") ? movieId.split(" - ")[0] : movieId;
             String finalRoomId = roomId.contains(" - ") ? roomId.split(" - ")[0] : roomId;
 
-            // Sử dụng luôn cái ID hiển thị trên giao diện
+            // KÍCH HOẠT CƠ CHẾ TRY-CATCH: 
+            // Nếu dữ liệu sai (VD: chọn ngày quá khứ), lệnh 'new ShowTime' sẽ thất bại
+            // và ném ra IllegalArgumentException, nhảy thẳng xuống khối catch bên dưới.
             ShowTime st = new ShowTime(id.trim(), date, startTime, endTime, finalMovieId, finalRoomId);
 
+            // Xuống được đến đây nghĩa là dữ liệu hoàn toàn hợp lệ, tiến hành lưu
             boolean success = service.addShowTime(st);
             if (success) {
                 return "SUCCESS";
@@ -93,10 +95,13 @@ public class ShowTimeManagerController {
                 return "ERROR:Trùng lịch chiếu! Phòng này đã có phim khác chiếu trong khung giờ trên.";
             }
 
+        } catch (IllegalArgumentException e) {
+            // HỨNG LỖI LAN TRUYỀN TỪ LỚP SHOWTIME (Ví dụ: e.getMessage() = "Ngày chiếu không được là ngày trong quá khứ!")
+            return "ERROR:" + e.getMessage();
         } catch (Exception e) {
-            return "ERROR:Lỗi xử lý dữ liệu! Vui lòng kiểm tra lại.";
+            return "ERROR:Lỗi định dạng hệ thống! Vui lòng kiểm tra lại.";
         }
-    }
+    }   
 
     // ==========================================
     // 3. LOAD JTABLE VÀ XÓA (Giữ nguyên)
