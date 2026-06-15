@@ -100,6 +100,7 @@ public class ReviewForm extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         tableReviews = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
+        BacktoDashBoard = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -118,6 +119,9 @@ public class ReviewForm extends javax.swing.JFrame {
         txtComment.setText("Nhập bình luận của bạn tại đây...");
         jScrollPane1.setViewportView(txtComment);
 
+        btnSubmit.setBackground(new java.awt.Color(0, 0, 255));
+        btnSubmit.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnSubmit.setForeground(new java.awt.Color(255, 255, 255));
         btnSubmit.setText("Gửi đánh giá");
         btnSubmit.addActionListener(this::btnSubmitActionPerformed);
 
@@ -154,6 +158,12 @@ public class ReviewForm extends javax.swing.JFrame {
         jLabel3.setText("LỊCH SỬ ĐÁNH GIÁ");
         jLabel3.setFocusTraversalPolicyProvider(true);
 
+        BacktoDashBoard.setBackground(new java.awt.Color(255, 102, 51));
+        BacktoDashBoard.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        BacktoDashBoard.setForeground(new java.awt.Color(255, 255, 255));
+        BacktoDashBoard.setText("Back");
+        BacktoDashBoard.addActionListener(this::BacktoDashBoardActionPerformed);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -176,6 +186,10 @@ public class ReviewForm extends javax.swing.JFrame {
                             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(176, 176, 176)
+                .addComponent(BacktoDashBoard, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -187,14 +201,16 @@ public class ReviewForm extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addComponent(cbRating, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnSubmit)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSubmit))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(BacktoDashBoard)
+                .addContainerGap(9, Short.MAX_VALUE))
         );
 
         pack();
@@ -208,6 +224,10 @@ public class ReviewForm extends javax.swing.JFrame {
         // Ném dữ liệu thô (String) và chính cái View này (this) sang Controller
         reviewController.handleAddReview(movieId, ratingStr, comment, this);
     }//GEN-LAST:event_btnSubmitActionPerformed
+
+    private void BacktoDashBoardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BacktoDashBoardActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BacktoDashBoardActionPerformed
 
     /**
      * @param args the command line arguments
@@ -231,6 +251,7 @@ public class ReviewForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JToggleButton BacktoDashBoard;
     private javax.swing.JButton btnSubmit;
     private javax.swing.JComboBox<String> cbRating;
     private javax.swing.JLabel jLabel1;
