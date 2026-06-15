@@ -2,22 +2,74 @@ package service;
 
 import dao.UserDAO;
 import model.User;
+import utils.ValidationUtil;
 
 public class RegisterService {
+
     private UserDAO userDAO = new UserDAO();
 
-    // TODO: Sinh viên tự code logic: Kiểm tra xem username hoặc email đã tồn tại trong danh sách User của hệ thống chưa để tránh trùng lặp tài khoản. Trả về true nếu bị trùng lặp.
-    public boolean checkDuplicate(String username, String email) {
+    public boolean isUsernameDuplicate(String username) {
+        java.util.List<User> list = userDAO.readFromFile();
+
+        for (User u : list) {
+            if (u.getUsername() != null
+                    && u.getUsername().equalsIgnoreCase(username)) {
+                return true;
+            }
+        }
+
         return false;
     }
 
-    // TODO: Sinh viên tự code logic: Kiểm tra độ dài mật khẩu, định dạng email, số điện thoại có hợp lệ hay không trước khi đăng ký. Trả về true nếu hợp lệ.
-    public boolean validateData(User user) {
+    public boolean isEmailDuplicate(String email) {
+        java.util.List<User> list = userDAO.readFromFile();
+
+        for (User u : list) {
+            if (u.getEmail() != null
+                    && u.getEmail().equalsIgnoreCase(email)) {
+                return true;
+            }
+        }
+
         return false;
     }
 
-    // TODO: Sinh viên tự code logic: Thêm đối tượng User mới vào danh sách thông qua userDAO.add(). Trả về true nếu thành công.
     public boolean register(User user) {
-        return false;
+
+        if (user == null) {
+            throw new IllegalArgumentException(
+                    "Thông tin người dùng không hợp lệ");
+        }
+
+        // Validation bằng Exception
+        ValidationUtil.validateUsername(user.getUsername());
+        ValidationUtil.validateEmail(user.getEmail());
+        ValidationUtil.validatePassword(user.getPassword());
+
+        if (user.getPassword().length() < 6) {
+            throw new IllegalArgumentException(
+                    "Mật khẩu phải từ 6 ký tự trở lên");
+        }
+
+        if (isUsernameDuplicate(user.getUsername())) {
+            throw new IllegalArgumentException(
+                    "Tên đăng nhập đã tồn tại");
+        }
+
+        if (isEmailDuplicate(user.getEmail())) {
+            throw new IllegalArgumentException(
+                    "Email đã tồn tại");
+        }
+
+        java.util.List<User> list = userDAO.readFromFile();
+
+        int nextIndex = list.size() + 1;
+
+        user.setId(String.format("U%02d", nextIndex));
+        user.setRole(model.enums.Role.USER);
+        user.setStatus(model.enums.UserStatus.ACTIVE);
+        user.setFavoriteMovieIds(new java.util.ArrayList<>());
+
+        return userDAO.add(user);
     }
 }

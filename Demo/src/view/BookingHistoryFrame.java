@@ -1,8 +1,6 @@
 package view;
 
-import controller.BookingController;
-import model.Booking;
-
+import controller.BookingHistoryController;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -10,8 +8,9 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 public class BookingHistoryFrame extends JFrame {
-    private BookingController bookingController = new BookingController();
-    private String currentUserId = "USER001"; // TODO: Thay bằng utils.Session.getCurrentUser().getId()
+
+    // Gắn Controller vào View
+    private BookingHistoryController historyController = new BookingHistoryController();
 
     private JPanel listPanel;
 
@@ -27,7 +26,7 @@ public class BookingHistoryFrame extends JFrame {
         setTitle("Lịch sử đặt vé");
         setSize(800, 600);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Chỉ đóng form này, không đóng Dashboard
         setLayout(new BorderLayout());
         getContentPane().setBackground(COLOR_BG);
 
@@ -47,7 +46,7 @@ public class BookingHistoryFrame extends JFrame {
 
         add(scrollPane, BorderLayout.CENTER);
 
-        // Load dữ liệu
+        // Tự động load dữ liệu khi mở form
         loadBookingHistory();
     }
 
@@ -62,7 +61,7 @@ public class BookingHistoryFrame extends JFrame {
         RoundedButton btnBack = new RoundedButton("⬅ Quay lại", Color.WHITE, COLOR_PRIMARY);
         btnBack.setPreferredSize(new Dimension(110, 35));
         btnBack.setBorderColor(new Color(230, 230, 230));
-        btnBack.addActionListener(e -> this.dispose()); // Đóng form
+        btnBack.addActionListener(e -> this.dispose()); // Đóng form popup
 
         JLabel lblTitle = new JLabel("🕒 LỊCH SỬ ĐẶT VÉ", SwingConstants.CENTER);
         lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 24));
@@ -79,9 +78,10 @@ public class BookingHistoryFrame extends JFrame {
     }
 
     private void loadBookingHistory() {
-        listPanel.removeAll(); // Xóa UI cũ để load lại
+        listPanel.removeAll();
 
-        List<Booking> myBookings = bookingController.getBookingsByUserId(currentUserId);
+        // GỌI CONTROLLER ĐỂ LẤY DATA (Dựa trên Session)
+        List<Object[]> myBookings = historyController.getMyHistory();
 
         if (myBookings == null || myBookings.isEmpty()) {
             JLabel lblEmpty = new JLabel("Bạn chưa có lịch sử đặt vé nào.");
@@ -93,9 +93,9 @@ public class BookingHistoryFrame extends JFrame {
         } else {
             // Duyệt ngược để vé mới mua lên đầu
             for (int i = myBookings.size() - 1; i >= 0; i--) {
-                Booking b = myBookings.get(i);
-                listPanel.add(createTicketCard(b));
-                listPanel.add(Box.createVerticalStrut(20)); // Khoảng cách giữa các vé
+                Object[] rowData = myBookings.get(i);
+                listPanel.add(createTicketCard(rowData));
+                listPanel.add(Box.createVerticalStrut(20)); // Khoảng cách
             }
         }
 
@@ -103,7 +103,21 @@ public class BookingHistoryFrame extends JFrame {
         listPanel.repaint();
     }
 
-    private JPanel createTicketCard(Booking b) {
+    // MAP DỮ LIỆU TỪ MẢNG OBJECT[] CỦA SERVICE VÀO UI
+    private JPanel createTicketCard(Object[] rowData) {
+        // Cấu trúc mảng Object[] từ Service của bạn:
+        // 0: id, 1: movieTitle, 2: timeDetail, 3: roomName, 4: seatStr,
+        // 5: ticketCount, 6: totalPrice, 7: status, 8: bookingDate
+
+        String bookingId = String.valueOf(rowData[0]);
+        String movieTitle = String.valueOf(rowData[1]);
+        String timeDetail = String.valueOf(rowData[2]);
+        String roomName = String.valueOf(rowData[3]);
+        String seatStr = String.valueOf(rowData[4]);
+        double totalPrice = Double.parseDouble(String.valueOf(rowData[6]));
+        String status = String.valueOf(rowData[7]);
+        String bookingDate = String.valueOf(rowData[8]);
+
         RoundedPanel card = new RoundedPanel(20, COLOR_CARD);
         card.setLayout(new BorderLayout(15, 15));
         card.setBorder(new EmptyBorder(20, 20, 20, 20));
@@ -114,16 +128,14 @@ public class BookingHistoryFrame extends JFrame {
         infoBox.setLayout(new BoxLayout(infoBox, BoxLayout.Y_AXIS));
         infoBox.setBackground(COLOR_CARD);
 
-        JLabel lblId = new JLabel("Mã đơn: " + b.getId());
+        JLabel lblId = new JLabel("Mã đơn: " + bookingId + " - " + movieTitle);
         lblId.setFont(new Font("Segoe UI", Font.BOLD, 16));
         lblId.setForeground(COLOR_TEXT_DARK);
 
-        String seatStr = String.join(", ", b.getBookedSeatIds());
         JLabel lblDetails = new JLabel("<html>" +
-                "Suất chiếu ID: <b>" + b.getShowTimeId() + "</b><br>" +
-                "Ghế: <b>" + seatStr + "</b><br>" +
-                "Combo: " + b.getComboName() + "<br>" +
-                "<font color='#6c757d'>Ngày đặt: " + b.getBookingDate() + "</font>" +
+                "Thời gian: <b>" + timeDetail + "</b><br>" +
+                "Phòng: <b>" + roomName + "</b> | Ghế: <b>" + seatStr + "</b><br>" +
+                "<font color='#6c757d'>Ngày đặt: " + bookingDate + "</font>" +
                 "</html>");
         lblDetails.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         lblDetails.setBorder(new EmptyBorder(10, 0, 0, 0));
@@ -137,44 +149,43 @@ public class BookingHistoryFrame extends JFrame {
         actionBox.setPreferredSize(new Dimension(200, 100));
 
         DecimalFormat df = new DecimalFormat("#,### VNĐ");
-        JLabel lblPrice = new JLabel(df.format(b.getTotalPrice()), SwingConstants.RIGHT);
+        JLabel lblPrice = new JLabel(df.format(totalPrice), SwingConstants.RIGHT);
         lblPrice.setFont(new Font("Segoe UI", Font.BOLD, 20));
         lblPrice.setForeground(COLOR_PRIMARY);
 
         JPanel statusPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
         statusPanel.setBackground(COLOR_CARD);
 
-        if (b.getStatus() == Booking.Status.SUCCESS) {
-            // NẾU THÀNH CÔNG -> HIỆN NÚT HỦY VÉ
+        // Kiểm tra logic trạng thái (giả sử trạng thái hiển thị "SUCCESS")
+        if (status.equalsIgnoreCase("SUCCESS")) {
             RoundedButton btnCancel = new RoundedButton("Hủy vé", Color.WHITE, COLOR_PRIMARY);
             btnCancel.setBorderColor(COLOR_PRIMARY);
             btnCancel.setPreferredSize(new Dimension(100, 35));
 
             btnCancel.addActionListener(e -> {
                 int confirm = JOptionPane.showConfirmDialog(this,
-                        "Bạn có chắc chắn muốn hủy vé này không?\nGhế sẽ được giải phóng ngay lập tức.",
+                        "Bạn có chắc chắn muốn hủy vé này không?",
                         "Xác nhận hủy", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
                 if (confirm == JOptionPane.YES_OPTION) {
-                    boolean success = bookingController.cancelBooking(b.getId());
+                    boolean success = historyController.cancelBooking(bookingId);
                     if (success) {
                         JOptionPane.showMessageDialog(this, "Hủy vé thành công!");
-                        loadBookingHistory(); // Load lại giao diện
+                        loadBookingHistory();
                     } else {
-                        JOptionPane.showMessageDialog(this, "Lỗi hệ thống khi hủy vé!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(this, "Tính năng hủy vé đang bảo trì!", "Lỗi", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             });
             statusPanel.add(btnCancel);
         } else {
-            // NẾU ĐÃ HỦY -> HIỆN CHỮ ĐÃ HỦY MÀU XÁM
-            JLabel lblCanceled = new JLabel("ĐÃ HỦY", SwingConstants.CENTER);
-            lblCanceled.setFont(new Font("Segoe UI", Font.BOLD, 14));
-            lblCanceled.setForeground(Color.WHITE);
-            lblCanceled.setOpaque(true);
-            lblCanceled.setBackground(COLOR_TEXT_MUTED);
-            lblCanceled.setPreferredSize(new Dimension(100, 35));
-            statusPanel.add(lblCanceled);
+            JLabel lblStatus = new JLabel(status.toUpperCase(), SwingConstants.CENTER);
+            lblStatus.setFont(new Font("Segoe UI", Font.BOLD, 14));
+            lblStatus.setForeground(Color.WHITE);
+            lblStatus.setOpaque(true);
+            lblStatus.setBackground(COLOR_TEXT_MUTED);
+            lblStatus.setPreferredSize(new Dimension(100, 35));
+            statusPanel.add(lblStatus);
         }
 
         actionBox.add(lblPrice, BorderLayout.NORTH);
@@ -235,12 +246,5 @@ public class BookingHistoryFrame extends JFrame {
             super.paintComponent(g);
             g2.dispose();
         }
-    }
-
-    // MAIN ĐỂ TEST
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new BookingHistoryFrame().setVisible(true);
-        });
     }
 }

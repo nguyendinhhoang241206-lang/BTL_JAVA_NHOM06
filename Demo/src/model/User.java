@@ -3,43 +3,28 @@ package model;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
+import model.enums.Gender;
+import model.enums.Role;
+import model.enums.UserStatus;
 
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
-
-    public enum Role {
-        ADMIN,
-        CUSTOMER
-    }
-
-    public enum Status {
-        ACTIVE,
-        LOCKED
-    }
-
-    public enum Gender {
-        MALE,
-        FEMALE,
-        OTHER
-    }
 
     private String id;
     private String username;
     private String password;
     private Role role;
-    private Status status;
+    private UserStatus status;
     private String email;
     private String phone;
     private Gender gender;
     private LocalDate birthday;
     private List<String> favoriteMovieIds;
 
-    // No-args Constructor
     public User() {
     }
 
-    // All-args Constructor
-    public User(String id, String username, String password, Role role, Status status, 
+    public User(String id, String username, String password, Role role, UserStatus status, 
                 String email, String phone, Gender gender, LocalDate birthday, List<String> favoriteMovieIds) {
         this.id = id;
         this.username = username;
@@ -53,7 +38,6 @@ public class User implements Serializable {
         this.favoriteMovieIds = favoriteMovieIds;
     }
 
-    // Getters and Setters
     public String getId() {
         return id;
     }
@@ -86,11 +70,11 @@ public class User implements Serializable {
         this.role = role;
     }
 
-    public Status getStatus() {
+    public UserStatus getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(UserStatus status) {
         this.status = status;
     }
 

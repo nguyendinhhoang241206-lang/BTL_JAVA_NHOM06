@@ -2,17 +2,34 @@ package service;
 
 import dao.UserDAO;
 import model.User;
+import model.enums.UserStatus;
+import utils.ValidationUtil;
 
 public class LoginService {
     private UserDAO userDAO = new UserDAO();
 
-    // TODO: Sinh viên tự code logic: Kiểm tra sự tồn tại của tài khoản và so khớp thông tin mật khẩu có đúng với mật khẩu đã lưu không. Trả về true nếu hợp lệ.
-    public boolean checkCredentials(String username, String password) {
-        return false;
+    public User getLoggedInUser(String username, String password) {
+
+    ValidationUtil.validateUsername(username);
+    ValidationUtil.validatePassword(password);
+
+    User user = userDAO.findByUsername(username);
+
+    if (user == null) {
+        throw new IllegalArgumentException(
+                "Tên đăng nhập không tồn tại");
     }
 
-    // TODO: Sinh viên tự code logic: Trả về đối tượng User đăng nhập thành công để lưu session sử dụng sau này.
-    public User getLoggedInUser(String username) {
-        return null;
+    if (user.getStatus() != UserStatus.ACTIVE) {
+        throw new IllegalArgumentException(
+                "Tài khoản đã bị khóa");
     }
+
+    if (!user.getPassword().equals(password)) {
+        throw new IllegalArgumentException(
+                "Mật khẩu không chính xác");
+    }
+
+    return user;
+}
 }
