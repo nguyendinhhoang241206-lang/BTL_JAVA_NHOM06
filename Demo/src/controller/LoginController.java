@@ -102,6 +102,18 @@ public class LoginController {
 
                 // -- Đăng xuất
                 javax.swing.JMenu menuSystem = new javax.swing.JMenu("Tài khoản");
+
+                // -- Trang cá nhân
+                javax.swing.JMenuItem itemProfile = new javax.swing.JMenuItem("👤 Trang cá nhân");
+                itemProfile.addActionListener(evt -> {
+                    view.ProfileForm profileForm = new view.ProfileForm();
+                    profileForm.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
+                    new controller.ProfileController(profileForm, sessionUser);
+                    profileForm.setLocationRelativeTo(mainFrame);
+                    profileForm.setVisible(true);
+                });
+                menuSystem.add(itemProfile);
+
                 javax.swing.JMenuItem itemLogout = new javax.swing.JMenuItem("🚪 Đăng xuất");
                 itemLogout.addActionListener(evt -> {
                     int confirm = javax.swing.JOptionPane.showConfirmDialog(mainFrame, "Đăng xuất tài khoản?", "Xác nhận", javax.swing.JOptionPane.YES_NO_OPTION);

@@ -60,10 +60,16 @@ public class ProfileController {
         view.getLblMessage().setText("");
 
         if (loggedInUser.getRole() == Role.USER) {
-
-            view.getLblListTitle().setVisible(false);
-            view.getScrollPaneList().setVisible(false);
-            view.getBtnRequestAdmin().setVisible(false);
+            if (loggedInUser.isRequestedAdmin()) {
+                view.getBtnRequestAdmin().setText("Đang chờ duyệt...");
+                view.getBtnRequestAdmin().setEnabled(false);
+            } else {
+                view.getBtnRequestAdmin().setText("Yêu cầu cấp quyền");
+                view.getBtnRequestAdmin().setEnabled(true);
+            }
+        } else if (loggedInUser.getRole() == Role.ADMIN) {
+            view.getBtnRequestAdmin().setText("Quản lý tài khoản");
+            view.getBtnRequestAdmin().setEnabled(true);
         }
     }
 
@@ -121,6 +127,35 @@ public class ProfileController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 view.dispose();
+            }
+        });
+
+        // Đăng ký sự kiện Click cho nút Yêu cầu cấp quyền Admin hoặc Quản lý tài khoản
+        view.getBtnRequestAdmin().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (loggedInUser.getRole() == Role.ADMIN) {
+                    // Mở cửa sổ quản lý tài khoản
+                    view.AccountManagementForm manageForm = new view.AccountManagementForm();
+                    manageForm.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
+                    new controller.AccountManagementController(manageForm, loggedInUser);
+                    manageForm.setLocationRelativeTo(view);
+                    manageForm.setVisible(true);
+                } else {
+                    // Gửi yêu cầu cấp quyền
+                    try {
+                        boolean success = profileService.requestAdmin(loggedInUser);
+                        if (success) {
+                            showMessage("Gửi yêu cầu cấp quyền Admin thành công!", Color.GREEN);
+                            view.getBtnRequestAdmin().setText("Đang chờ duyệt...");
+                            view.getBtnRequestAdmin().setEnabled(false);
+                        } else {
+                            showMessage("Gửi yêu cầu cấp quyền thất bại!", Color.RED);
+                        }
+                    } catch (Exception ex) {
+                        showMessage("Có lỗi xảy ra khi gửi yêu cầu!", Color.RED);
+                    }
+                }
             }
         });
     }

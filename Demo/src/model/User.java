@@ -20,6 +20,7 @@ public class User implements Serializable {
     private Gender gender;
     private LocalDate birthday;
     private List<String> favoriteMovieIds;
+    private boolean requestedAdmin = false;
 
     public User() {
     }
@@ -116,6 +117,14 @@ public class User implements Serializable {
 
     public void setFavoriteMovieIds(List<String> favoriteMovieIds) {
         this.favoriteMovieIds = favoriteMovieIds;
+    }
+
+    public boolean isRequestedAdmin() {
+        return requestedAdmin;
+    }
+
+    public void setRequestedAdmin(boolean requestedAdmin) {
+        this.requestedAdmin = requestedAdmin;
     }
 
     @Override

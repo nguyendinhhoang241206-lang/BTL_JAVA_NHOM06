@@ -24,7 +24,20 @@ public class FakeData {
         BookingDAO bookingDAO = new BookingDAO();
         ReviewDAO reviewDAO = new ReviewDAO();
 
-        System.out.println("⏳ Đang tiến hành tạo dữ liệu giả (Fake Data)...");
+        System.out.println("⏳ Đang kiểm tra trạng thái dữ liệu...");
+
+        // ==========================================
+        // BƯỚC CHẶN: KIỂM TRA CHỐNG TRÙNG LẶP
+        // ==========================================
+        // Kiểm tra xem UserDAO đã có dữ liệu chưa. Nếu có rồi thì dừng việc tạo Fake Data.
+        if (!userDAO.readFromFile().isEmpty()) {
+            System.out.println("✅ Dữ liệu mẫu (Fake Data) đã tồn tại sẵn trong hệ thống!");
+            System.out.println("⛔ Bỏ qua bước tạo mới để tránh trùng lặp dữ liệu.");
+            System.out.println("Bạn có thể bật form Login lên để test luồng Đặt vé và Lịch sử.");
+            return; // Lệnh return này sẽ kết thúc hàm main ngay lập tức
+        }
+
+        System.out.println("⏳ Chưa có dữ liệu. Đang tiến hành tạo dữ liệu giả (Fake Data)...");
 
         // ==========================================
         // 2. TẠO DỮ LIỆU PHIM (MOVIES)
