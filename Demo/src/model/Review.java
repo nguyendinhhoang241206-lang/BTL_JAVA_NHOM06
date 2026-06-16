@@ -11,11 +11,9 @@ public class Review implements Serializable {
     private String userId;
     private String movieId;
 
-    // No-args Constructor
     public Review() {
     }
 
-    // All-args Constructor
     public Review(String id, int rating, String comment, String userId, String movieId) {
         this.id = id;
         this.rating = rating;
@@ -24,7 +22,6 @@ public class Review implements Serializable {
         this.movieId = movieId;
     }
 
-    // Getters and Setters
     public String getId() {
         return id;
     }

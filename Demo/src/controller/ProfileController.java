@@ -130,19 +130,19 @@ public class ProfileController {
             }
         });
 
-        // Đăng ký sự kiện Click cho nút Yêu cầu cấp quyền Admin hoặc Quản lý tài khoản
+
         view.getBtnRequestAdmin().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (loggedInUser.getRole() == Role.ADMIN) {
-                    // Mở cửa sổ quản lý tài khoản
+
                     view.AccountManagementForm manageForm = new view.AccountManagementForm();
                     manageForm.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
                     new controller.AccountManagementController(manageForm, loggedInUser);
                     manageForm.setLocationRelativeTo(view);
                     manageForm.setVisible(true);
                 } else {
-                    // Gửi yêu cầu cấp quyền
+
                     try {
                         boolean success = profileService.requestAdmin(loggedInUser);
                         if (success) {

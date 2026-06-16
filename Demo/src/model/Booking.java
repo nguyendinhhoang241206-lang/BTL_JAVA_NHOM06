@@ -23,12 +23,10 @@ public class Booking implements Serializable {
     private String showTimeId;
     private List<String> bookedSeatIds;
 
-    // No-args Constructor
     public Booking() {
     }
 
-    // All-args Constructor
-    public Booking(String id, LocalDateTime bookingDate, String comboName, double discountAmount, 
+    public Booking(String id, LocalDateTime bookingDate, String comboName, double discountAmount,
                    double totalPrice, Status status, String userId, String showTimeId, List<String> bookedSeatIds) {
         this.id = id;
         this.bookingDate = bookingDate;
@@ -41,7 +39,6 @@ public class Booking implements Serializable {
         this.bookedSeatIds = bookedSeatIds;
     }
 
-    // Getters and Setters
     public String getId() {
         return id;
     }

@@ -9,9 +9,9 @@ import utils.Session;
 public class BookingHistoryController {
 
     private BookingHistoryService bookingHistoryService = new BookingHistoryService();
-    private BookingService bookingService = new BookingService(); // Khởi tạo service xử lý vé
+    private BookingService bookingService = new BookingService();
 
-    // Hàm lấy lịch sử
+
     public List<Object[]> getMyHistory() {
         if (!Session.isLoggedIn()) {
             return null;
@@ -21,11 +21,8 @@ public class BookingHistoryController {
         return bookingHistoryService.getHistoryByUserId(userId);
     }
 
-    // ==========================================
-    // ĐÃ FIX: CHỨC NĂNG HỦY VÉ THỰC TẾ
-    // ==========================================
     public boolean cancelBooking(String bookingId) {
-        // Nhờ BookingService đổi trạng thái vé này thành CANCELLED rồi lưu xuống file
+
         return bookingService.updateBookingStatus(bookingId, Booking.Status.CANCELLED);
     }
 }

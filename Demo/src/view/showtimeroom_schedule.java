@@ -80,6 +80,20 @@ public class showtimeroom_schedule extends javax.swing.JFrame {
 
             // -- Đăng xuất
             javax.swing.JMenu menuSystem = new javax.swing.JMenu("Tài khoản");
+            
+            // ==========================================
+            // ĐÃ BỔ SUNG NÚT TRANG CÁ NHÂN VÀO ĐÂY
+            // ==========================================
+            javax.swing.JMenuItem itemProfile = new javax.swing.JMenuItem("👤 Trang cá nhân");
+            itemProfile.addActionListener(evt -> {
+                view.ProfileForm profileForm = new view.ProfileForm();
+                profileForm.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
+                new controller.ProfileController(profileForm, utils.Session.getCurrentUser()); 
+                profileForm.setLocationRelativeTo(mainFrame);
+                profileForm.setVisible(true);
+            });
+            menuSystem.add(itemProfile);
+
             javax.swing.JMenuItem itemLogout = new javax.swing.JMenuItem("🚪 Đăng xuất");
             itemLogout.addActionListener(evt -> {
                 int confirm = javax.swing.JOptionPane.showConfirmDialog(mainFrame, "Đăng xuất tài khoản?", "Xác nhận", javax.swing.JOptionPane.YES_NO_OPTION);

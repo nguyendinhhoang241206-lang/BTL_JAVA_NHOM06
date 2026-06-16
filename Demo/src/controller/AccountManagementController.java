@@ -13,13 +13,13 @@ import javax.swing.table.DefaultTableModel;
 
 public class AccountManagementController {
     private AccountManagementForm view;
-    // ĐÃ SỬA: Thay đổi kiểu dữ liệu của biến service
+
     private AccountManagementService service; 
     private User currentUser;
 
     public AccountManagementController(AccountManagementForm view, User currentUser) {
         this.view = view;
-        // ĐÃ SỬA: Khởi tạo đúng đối tượng AccountManagementService
+
         this.service = new AccountManagementService(); 
         this.currentUser = currentUser;
         initView();
@@ -51,7 +51,7 @@ public class AccountManagementController {
     }
 
     private void initController() {
-        // Cấp quyền Admin
+
         view.getBtnGrantAdmin().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -92,7 +92,7 @@ public class AccountManagementController {
             }
         });
 
-        // Khóa / Mở khóa
+
         view.getBtnToggleLock().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -134,7 +134,7 @@ public class AccountManagementController {
             }
         });
 
-        // Quay lại
+
         view.getBtnBack().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

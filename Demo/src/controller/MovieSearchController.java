@@ -13,23 +13,20 @@ public class MovieSearchController {
     private MovieSearchService movieSearchService;
     private ShowlistmovieForm view;
 
-    // CONSTRUCTOR: Nhận View và Role
     public MovieSearchController(ShowlistmovieForm view, String role) {
         this.view = view;
         this.movieSearchService = new MovieSearchService();
-        
-        // ---- XỬ LÝ PHÂN QUYỀN (HÌNH ẨN / HIỆN NÚT) ----
+
         boolean isAdmin = "ADMIN".equalsIgnoreCase(role);
         
         this.view.getBtnAddMovie().setVisible(isAdmin);
         this.view.getEditMovie().setVisible(isAdmin);
         this.view.getDeleteMovie().setVisible(isAdmin);
-        // -----------------------------------------------
 
-        // Tự động đổ dữ liệu khi khởi chạy
+
         loadAllMoviesToTable();
         
-        // --- BẮT SỰ KIỆN NÚT SEARCH ---
+
         this.view.getBtnSearch().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -37,7 +34,7 @@ public class MovieSearchController {
             }
         });
 
-        // --- BẮT SỰ KIỆN NÚT THÊM PHIM ---
+
         this.view.getBtnAddMovie().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -45,7 +42,7 @@ public class MovieSearchController {
             }
         });
 
-        // --- BẮT SỰ KIỆN NÚT SỬA PHIM ---
+
         this.view.getEditMovie().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -68,22 +65,22 @@ public class MovieSearchController {
             }
         });
 
-        // --- BẮT SỰ KIỆN NÚT XÓA PHIM (TÔI VỪA BƠM VÀO ĐÂY NHÉ) ---
+
         this.view.getDeleteMovie().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // 1. Kiểm tra xem người dùng đã click chọn dòng nào trên bảng chưa
+
                 int selectedRow = view.getTableMovies().getSelectedRow();
                 if (selectedRow < 0) {
                     javax.swing.JOptionPane.showMessageDialog(view, "Vui lòng chọn một bộ phim trên bảng để xóa!");
                     return;
                 }
                 
-                // 2. Lấy ID và Tên phim của dòng đang chọn
+
                 String id = view.getTableMovies().getValueAt(selectedRow, 0).toString();
                 String title = view.getTableMovies().getValueAt(selectedRow, 1).toString();
                 
-                // 3. Hiện hộp thoại hỏi cho chắc cốp
+
                 int confirm = javax.swing.JOptionPane.showConfirmDialog(
                         view, 
                         "Bạn có chắc chắn muốn xóa phim '" + title + "' (Mã: " + id + ") không?", 
@@ -92,15 +89,15 @@ public class MovieSearchController {
                         javax.swing.JOptionPane.WARNING_MESSAGE
                 );
                 
-                // 4. Nếu người dùng chọn YES
+
                 if (confirm == javax.swing.JOptionPane.YES_OPTION) {
-                    // GỌI SANG THẰNG DELETEMOVIECONTROLLER ĐỂ XỬ LÝ
+
                     controller.DeleteMovieController deleteCtrl = new controller.DeleteMovieController();
                     boolean isSuccess = deleteCtrl.handleDeleteMovie(id);
                     
                     if (isSuccess) {
                         javax.swing.JOptionPane.showMessageDialog(view, "Xóa phim thành công!");
-                        // loadAllMoviesToTable(); // Nhớ mở comment dòng này khi DAO làm xong file .dat nhé
+
                     } else {
                         javax.swing.JOptionPane.showMessageDialog(view, "Lỗi: Không thể xóa phim!");
                     }

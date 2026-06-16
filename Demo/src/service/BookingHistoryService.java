@@ -19,10 +19,9 @@ public class BookingHistoryService {
     private MovieDAO movieDAO = new MovieDAO();
     private SeatDAO seatDAO = new SeatDAO();
 
-    // CHÚ Ý: Sửa List<Booking> thành List<Object[]>
     public List<Object[]> getHistoryByUserId(String userId) {
         List<Booking> listBookings = bookingDAO.findByUserId(userId);
-        List<Object[]> resultList = new ArrayList<>(); // Danh sách các dòng
+        List<Object[]> resultList = new ArrayList<>();
 
         for (Booking b : listBookings) {
             String movieTitle = "N/A";

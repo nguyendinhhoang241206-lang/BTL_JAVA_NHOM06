@@ -13,7 +13,6 @@ public class ReviewDAO {
     private List<Review> reviews = new ArrayList<>();
     private static final String FILE_PATH = "data/reviews.dat";
 
-    // TODO: Sinh viên tự code logic: Đọc danh sách đánh giá từ file nhị phân FILE_PATH bằng ObjectInputStream. Trả về danh sách Review.
     public List<Review> readFromFile() {
         File file = new File(FILE_PATH);
         if (!file.exists()) {
@@ -33,7 +32,6 @@ public class ReviewDAO {
         return this.reviews;
     }
 
-    // TODO: Sinh viên tự code logic: Ghi danh sách đánh giá xuống file nhị phân FILE_PATH bằng ObjectOutputStream. Trả về true nếu thành công, false nếu thất bại.
     public boolean writeToFile(List<Review> list) {
         if (list == null) {
             return false;
@@ -52,7 +50,6 @@ public class ReviewDAO {
         }
     }
 
-    // TODO: Sinh viên tự code logic: Thêm một Review mới vào danh sách hiện tại, sau đó gọi writeToFile để lưu thay đổi. Trả về true nếu thành công.
     public boolean add(Review review) {
         if (review == null) {
             return false;
@@ -62,7 +59,6 @@ public class ReviewDAO {
         return writeToFile(this.reviews);
     }
 
-    // TODO: Sinh viên tự code logic: Tìm Review theo id trong danh sách, cập nhật thông tin mới, sau đó gọi writeToFile để lưu thay đổi. Trả về true nếu thành công.
     public boolean update(Review review) {
         if (review == null || review.getId() == null) {
             return false;
@@ -77,7 +73,6 @@ public class ReviewDAO {
         return false;
     }
 
-    // TODO: Sinh viên tự code logic: Xóa Review khỏi danh sách theo id, sau đó gọi writeToFile để lưu thay đổi. Trả về true nếu thành công.
     public boolean delete(String id) {
         if (id == null) {
             return false;
@@ -97,7 +92,6 @@ public class ReviewDAO {
         return false;
     }
 
-    // TODO: Sinh viên tự code logic: Duyệt danh sách tìm Review có id khớp với tham số truyền vào. Trả về đối tượng Review hoặc null.
     public Review findById(String id) {
         if (id == null) {
             return null;
@@ -111,7 +105,6 @@ public class ReviewDAO {
         return null;
     }
 
-    // TODO: Sinh viên tự code logic: Duyệt danh sách tìm và lọc ra tất cả các Review thuộc về movieId được chỉ định. Trả về danh sách đánh giá của phim đó.
     public List<Review> findByMovieId(String movieId) {
         if (movieId == null) {
             return new ArrayList<>();
@@ -126,7 +119,6 @@ public class ReviewDAO {
         return result;
     }
 
-    // TODO: Sinh viên tự code logic: Trả về toàn bộ danh sách đánh giá bằng cách gọi readFromFile().
     public List<Review> findAll() {
         return readFromFile();
     }

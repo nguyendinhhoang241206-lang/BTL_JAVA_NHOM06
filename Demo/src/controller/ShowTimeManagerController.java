@@ -8,9 +8,6 @@ import java.util.List;
 public class ShowTimeManagerController {
     private ShowTimeManagerService service = new ShowTimeManagerService();
 
-    // ==========================================
-    // 1. HÀM LOAD DỮ LIỆU TỪ DAO LÊN COMBOBOX
-    // ==========================================
     public void initComboBoxes(javax.swing.JComboBox<String> cbMovie, javax.swing.JComboBox<String> cbRoom) {
         cbMovie.removeAllItems();
         cbRoom.removeAllItems();
