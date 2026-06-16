@@ -5,7 +5,7 @@ import service.LoginService;
 import view.LoginForm;
 import view.RegisterForm;
 import view.ForgotPassword;
-import utils.ValidationUtil;
+
 import javax.swing.JOptionPane;
 
 public class LoginController {
@@ -20,7 +20,7 @@ public class LoginController {
     }
 
     private void initController() {
-        // Sự kiện khi nhấn nút "Xác nhận" (Đăng nhập)
+
         this.view.addConfirmListener(e -> {
             String username = view.getUsername();
             String password = view.getPassword();
@@ -55,28 +55,25 @@ public class LoginController {
                 return;
             }
 
-            // Hiển thị thông báo chào mừng bằng Popup
+
             JOptionPane.showMessageDialog(view,
                     "Chào mừng " + sessionUser.getUsername() + " quay trở lại!",
                     "Đăng nhập thành công",
                     JOptionPane.INFORMATION_MESSAGE);
 
             if (sessionUser.getRole() != null
-                    && (sessionUser.getRole().toString().equalsIgnoreCase("ADMIN")
-                    || sessionUser.getRole().toString().equalsIgnoreCase("USER"))) {
+                    && sessionUser.getRole().toString().equalsIgnoreCase("ADMIN")) {
 
-                // 1. TẠO VỎ JFRAME ẢO CHO TRANG CHỦ (DASHBOARD)
+
                 javax.swing.JFrame mainFrame = new javax.swing.JFrame("Trang chủ Quản trị - Cinema System");
                 mainFrame.setSize(1000, 600);
                 mainFrame.setLocationRelativeTo(null);
                 mainFrame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
 
-                // 2. TẠO THANH MENU TỔNG HỢP (CHỈ DASHBOARD MỚI CÓ)
                 javax.swing.JMenuBar menuBar = new javax.swing.JMenuBar();
 
                 javax.swing.JMenu menuNav = new javax.swing.JMenu("Chức năng Hệ thống");
 
-                // -- Nút Lịch chiếu
                 javax.swing.JMenuItem itemSchedule = new javax.swing.JMenuItem("📅 Quản lý Lịch chiếu");
                 itemSchedule.addActionListener(evt -> {
                     new view.showtimeroom_schedule().setVisible(true);
@@ -84,7 +81,7 @@ public class LoginController {
                 });
                 menuNav.add(itemSchedule);
 
-                // -- Nút Phòng chiếu
+
                 javax.swing.JMenuItem itemRoom = new javax.swing.JMenuItem("🏢 Quản lý Phòng chiếu");
                 itemRoom.addActionListener(evt -> {
                     new view.show_time_room_infrForm().setVisible(true);
@@ -92,7 +89,6 @@ public class LoginController {
                 });
                 menuNav.add(itemRoom);
 
-                // -- Nút Doanh thu
                 javax.swing.JMenuItem itemRevenue = new javax.swing.JMenuItem("📈 Báo cáo Doanh thu");
                 itemRevenue.addActionListener(evt -> {
                     new view.RevenueForm().setVisible(true);
@@ -100,10 +96,8 @@ public class LoginController {
                 });
                 menuNav.add(itemRevenue);
 
-                // -- Đăng xuất
                 javax.swing.JMenu menuSystem = new javax.swing.JMenu("Tài khoản");
 
-                // -- Trang cá nhân
                 javax.swing.JMenuItem itemProfile = new javax.swing.JMenuItem("👤 Trang cá nhân");
                 itemProfile.addActionListener(evt -> {
                     view.ProfileForm profileForm = new view.ProfileForm();
@@ -130,7 +124,7 @@ public class LoginController {
                 menuBar.add(menuSystem);
                 mainFrame.setJMenuBar(menuBar); // Đính Menu lên Dashboard
 
-                // 3. NHÚNG MẢNH GHÉP QUẢN LÝ PHIM VÀO DASHBOARD
+
                 view.ShowlistmovieForm showListPanel = new view.ShowlistmovieForm();
                 new controller.MovieController(showListPanel); // Kích hoạt nút bấm phim
 
@@ -138,31 +132,30 @@ public class LoginController {
                 mainFrame.setVisible(true);
                 view.dispose();
             } else {
+
                 view.UserMovieListForm userDashboard = new view.UserMovieListForm();
                 userDashboard.setVisible(true);
-                view.dispose(); // Đóng màn hình Login
-
+                view.dispose();
             }
         });
 
-        // Sự kiện khi nhấn nút "Đăng ký"
+
         this.view.addRegisterListener(e -> {
-            view.setVisible(false); // Ẩn màn hình đăng nhập
+            view.setVisible(false);
             RegisterForm registerForm = new RegisterForm();
             new RegisterController(registerForm);
-            registerForm.setLocationRelativeTo(null); // Hiển thị giữa màn hình
-            registerForm.setVisible(true); // Hiển thị màn hình đăng ký
+            registerForm.setLocationRelativeTo(null);
+            registerForm.setVisible(true);
         });
 
-        // Sự kiện khi nhấn nút "Quên mật khẩu?"
         this.view.addForgotPasswordListener(e -> {
-            view.setVisible(false); // Ẩn màn hình đăng nhập
+            view.setVisible(false);
             ForgotPassword forgotForm = new ForgotPassword();
             new ForgotPasswordController(forgotForm);
-            forgotForm.setLocationRelativeTo(null); // Hiển thị giữa màn hình
-            forgotForm.setVisible(true); // Hiển thị màn hình quên mật khẩu
+            forgotForm.setLocationRelativeTo(null);
+            forgotForm.setVisible(true);
         });
-        // Gắn sự kiện con mắt vào LoginForm
+
         this.view.addShowPasswordListener(new java.awt.event.MouseAdapter() {
             private boolean visible = false;
 

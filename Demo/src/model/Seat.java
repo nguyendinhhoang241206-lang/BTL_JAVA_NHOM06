@@ -17,11 +17,9 @@ public class Seat implements Serializable {
     private double price;
     private String roomId;
 
-    // No-args Constructor
     public Seat() {
     }
 
-    // All-args Constructor
     public Seat(String id, String seatName, Type type, double price, String roomId) {
         this.id = id;
         this.seatName = seatName;
@@ -30,7 +28,6 @@ public class Seat implements Serializable {
         this.roomId = roomId;
     }
 
-    // Getters and Setters
     public String getId() {
         return id;
     }

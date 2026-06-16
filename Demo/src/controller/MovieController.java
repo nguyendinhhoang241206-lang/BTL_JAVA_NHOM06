@@ -21,32 +21,22 @@ public class MovieController {
     public MovieController(ShowlistmovieForm viewPanel) {
         this.viewPanel = viewPanel;
         initController();
-        loadTableData(); // Tải toàn bộ dữ liệu lên bảng khi vừa mở màn hình
+        loadTableData();
     }
 
     private void initController() {
-        // ==========================================
-        // KHU VỰC: XỬ LÝ TÌM KIẾM PHIM (MỚI BỔ SUNG)
-        // ==========================================
 
-        // 1. Sự kiện khi click vào nút "Search"
         viewPanel.getBtnSearch().addActionListener(e -> {
             String keyword = viewPanel.getTxtSearch().getText().trim();
             searchTableData(keyword);
         });
 
-        // 2. Sự kiện khi nhấn phím Enter ngay trong ô nhập tìm kiếm
         viewPanel.getTxtSearch().addActionListener(e -> {
             String keyword = viewPanel.getTxtSearch().getText().trim();
             searchTableData(keyword);
         });
 
 
-        // ==========================================
-        // KHU VỰC: CÁC TÍNH NĂNG KHÁC (GIỮ NGUYÊN)
-        // ==========================================
-
-        // Sự kiện: NÚT THÊM PHIM
         viewPanel.getBtnAddMovie().addActionListener(e -> {
             AddEditMovieForm form = new AddEditMovieForm();
             form.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -79,7 +69,6 @@ public class MovieController {
             form.getBtnCancel().addActionListener(evt -> form.dispose());
         });
 
-        // Sự kiện: NÚT SỬA PHIM
         viewPanel.getEditMovie().addActionListener(e -> {
             int selectedRow = viewPanel.getTableMovies().getSelectedRow();
             if (selectedRow == -1) {
@@ -126,7 +115,7 @@ public class MovieController {
             form.getBtnCancel().addActionListener(evt -> form.dispose());
         });
 
-        // Sự kiện: NÚT XÓA PHIM
+
         viewPanel.getDeleteMovie().addActionListener(e -> {
             int selectedRow = viewPanel.getTableMovies().getSelectedRow();
             if (selectedRow == -1) {
@@ -148,20 +137,19 @@ public class MovieController {
         });
     }
 
-    // Hàm load toàn bộ danh sách phim từ file lên bảng
     public void loadTableData() {
-        searchTableData(""); // Gọi hàm tìm kiếm với từ khóa rỗng để hiển thị hết
+        searchTableData("");
     }
 
-    // Hàm lọc dữ liệu theo từ khóa tìm kiếm (Không phân biệt chữ hoa, chữ thường)
+
     public void searchTableData(String keyword) {
         DefaultTableModel model = (DefaultTableModel) viewPanel.getTableMovies().getModel();
-        model.setRowCount(0); // Xóa sạch bảng để hiển thị kết quả lọc mới
+        model.setRowCount(0);
 
-        java.util.List<Movie> list = new dao.MovieDAO().findAll(); // Đọc dữ liệu chuẩn từ file lên
+        java.util.List<Movie> list = new dao.MovieDAO().findAll();
         if (list != null) {
             for (Movie m : list) {
-                // Kiểm tra: Nếu từ khóa trống, hoặc Tên phim chứa từ khóa, hoặc Mã phim chứa từ khóa
+
                 if (keyword.isEmpty() ||
                         m.getTitle().toLowerCase().contains(keyword.toLowerCase()) ||
                         m.getId().toLowerCase().contains(keyword.toLowerCase())) {

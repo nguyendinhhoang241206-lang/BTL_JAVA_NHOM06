@@ -17,7 +17,7 @@ public class ForgotPasswordController {
     }
 
     private void initController() {
-        // Sự kiện khi nhấn nút "Xác nhận" (Khôi phục mật khẩu)
+
         this.view.addResetListener(e -> {
 
             try {
@@ -65,7 +65,6 @@ public class ForgotPasswordController {
             }
         });
 
-        // Sự kiện con mắt cho Mật khẩu mới
         this.view.addShowNewPassListener(new java.awt.event.MouseAdapter() {
             private boolean visible = false;
             @Override
@@ -75,7 +74,7 @@ public class ForgotPasswordController {
             }
         });
 
-        // Sự kiện con mắt cho Xác nhận mật khẩu
+
         this.view.addShowConfirmPassListener(new java.awt.event.MouseAdapter() {
             private boolean visible = false;
             @Override
@@ -84,15 +83,15 @@ public class ForgotPasswordController {
                 view.setConfirmPassVisible(visible);
             }
         });
-        // Sự kiện khi nhấn nút "Đăng nhập" (Quay lại)
+
         this.view.addBackListener(e -> {
             navigateToLogin();
         });
     }
 
-    // Hàm điều hướng quay lại màn hình Đăng nhập
+
     private void navigateToLogin() {
-        view.dispose(); // Đóng/Giải phóng tài nguyên màn hình quên mật khẩu
+        view.dispose();
         LoginForm loginForm = new LoginForm();
         new LoginController(loginForm);
         loginForm.setLocationRelativeTo(null);

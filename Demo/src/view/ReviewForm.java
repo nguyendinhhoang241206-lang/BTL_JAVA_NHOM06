@@ -227,6 +227,11 @@ public class ReviewForm extends javax.swing.JFrame {
 
     private void BacktoDashBoardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BacktoDashBoardActionPerformed
         // TODO add your handling code here:
+        this.dispose();
+        
+        // Quay lại màn hình danh sách phim của User
+        view.UserMovieListForm userList = new view.UserMovieListForm();
+        userList.setVisible(true);
     }//GEN-LAST:event_BacktoDashBoardActionPerformed
 
     /**

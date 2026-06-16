@@ -5,6 +5,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.List;
 import java.util.ArrayList;
+import java.net.URL;
 
 public class UserMovieListForm extends JFrame {
 
@@ -34,7 +35,7 @@ public class UserMovieListForm extends JFrame {
     }
 
     // ==========================================
-    // TẠO SIDEBAR
+    // TẠO SIDEBAR (ĐÃ FIX ĐƯỜNG DẪN ẢNH AVATAR)
     // ==========================================
     private JPanel createSidebar() {
         JPanel sidebar = new JPanel();
@@ -61,7 +62,15 @@ public class UserMovieListForm extends JFrame {
             }
         }
 
-        JLabel lblAvatar = new JLabel(new ImageIcon("path_to_avatar.png"));
+        // Tải ảnh Avatar an toàn
+        JLabel lblAvatar = new JLabel();
+        URL avatarUrl = getClass().getResource("/image/avatar.png");
+        if (avatarUrl != null) {
+            lblAvatar.setIcon(new ImageIcon(avatarUrl));
+        } else {
+            lblAvatar.setText("👤"); // Hiển thị icon mặc định nếu thiếu ảnh
+            lblAvatar.setFont(new Font("Arial", Font.PLAIN, 40));
+        }
         lblAvatar.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel lblName = new JLabel(displayName);
@@ -153,7 +162,6 @@ public class UserMovieListForm extends JFrame {
         mainPanel.setBackground(new Color(248, 249, 250));
         mainPanel.setBorder(new EmptyBorder(30, 40, 30, 40));
 
-        // Header
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setOpaque(false);
         JLabel lblTitle = new JLabel("Danh sách phim");
@@ -167,7 +175,6 @@ public class UserMovieListForm extends JFrame {
         headerPanel.add(lblTitle, BorderLayout.WEST);
         headerPanel.add(iconPanel, BorderLayout.EAST);
 
-        // Lưới thẻ phim
         gridPanel = new JPanel(new GridLayout(0, 3, 25, 25));
         gridPanel.setOpaque(false);
 
@@ -181,7 +188,6 @@ public class UserMovieListForm extends JFrame {
         scrollPane.getViewport().setOpaque(false);
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 
-        // Khung phân trang
         paginationPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         paginationPanel.setOpaque(false);
 
@@ -225,7 +231,6 @@ public class UserMovieListForm extends JFrame {
                 gridPanel.add(createMovieCard(m.getId(), m.getTitle(), m.getDuration() + " phút", m.getDirector()));
             }
 
-            // Nút "Lùi"
             JButton btnPrev = new JButton("<");
             btnPrev.setCursor(new Cursor(Cursor.HAND_CURSOR));
             btnPrev.setEnabled(currentPage > 1);
@@ -235,7 +240,6 @@ public class UserMovieListForm extends JFrame {
             });
             paginationPanel.add(btnPrev);
 
-            // Các nút Số trang
             for (int i = 1; i <= totalPages; i++) {
                 JButton btnPage = new JButton(String.valueOf(i));
                 btnPage.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -256,7 +260,6 @@ public class UserMovieListForm extends JFrame {
                 paginationPanel.add(btnPage);
             }
 
-            // Nút "Tiến"
             JButton btnNext = new JButton(">");
             btnNext.setCursor(new Cursor(Cursor.HAND_CURSOR));
             btnNext.setEnabled(currentPage < totalPages);
@@ -274,121 +277,192 @@ public class UserMovieListForm extends JFrame {
     }
 
     // ==========================================
-    // TẠO THẺ PHIM (SỰ KIỆN ĐỔI MÀU YÊU THÍCH)
+    // TẠO THẺ PHIM (ĐÃ FIX AN TOÀN ĐƯỜNG DẪN ẢNH)
     // ==========================================
     private JPanel createMovieCard(String movieId, String title, String time, String director) {
-        JPanel card = new JPanel();
-        card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
-        card.setBackground(Color.WHITE);
-        card.setBorder(BorderFactory.createLineBorder(new Color(230, 230, 230), 1));
+    JPanel card = new JPanel();
+    card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
+    card.setBackground(Color.WHITE);
+    card.setBorder(BorderFactory.createLineBorder(new Color(230, 230, 230), 1));
 
-        card.setPreferredSize(new Dimension(240, 350));
-        card.setMinimumSize(new Dimension(240, 350));
-        card.setMaximumSize(new Dimension(240, 350));
+    card.setPreferredSize(new Dimension(240, 350));
+    card.setMinimumSize(new Dimension(240, 350));
+    card.setMaximumSize(new Dimension(240, 350));
 
-        JLayeredPane imageContainer = new JLayeredPane();
-        imageContainer.setPreferredSize(new Dimension(240, 220));
-        imageContainer.setMaximumSize(new Dimension(240, 220));
+    JLayeredPane imageContainer = new JLayeredPane();
+    imageContainer.setPreferredSize(new Dimension(240, 220));
+    imageContainer.setMaximumSize(new Dimension(240, 220));
 
-        // Nút Trái Tim
-        JButton btnHeart = new JButton();
-        ImageIcon heartIcon = new ImageIcon("image/heart.png");
-        Image heartImg = heartIcon.getImage().getScaledInstance(18, 18, Image.SCALE_SMOOTH);
+    // =========================
+    // NÚT YÊU THÍCH
+    // =========================
+    JButton btnHeart = new JButton();
+    URL heartUrl = getClass().getResource("/image/heart.png");
+
+    if (heartUrl != null) {
+        ImageIcon heartIcon = new ImageIcon(heartUrl);
+        Image heartImg = heartIcon.getImage()
+                .getScaledInstance(18, 18, Image.SCALE_SMOOTH);
         btnHeart.setIcon(new ImageIcon(heartImg));
-        btnHeart.setFocusPainted(false);
-        btnHeart.setBorder(BorderFactory.createEmptyBorder());
-        btnHeart.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        btnHeart.setBounds(195, 10, 32, 32);
-
-        // Quy ước màu
-        Color colorNormal = new Color(178, 53, 228);   // Màu Tím (Chưa thích)
-        Color colorFavorite = new Color(255, 102, 0);  // Màu Cam (Đã thích)
-
-        // Khởi tạo màu ban đầu dựa trên Session
-        model.User currentUser = utils.Session.getCurrentUser();
-        boolean isAlreadyFavorite = false;
-        if (currentUser != null && currentUser.getFavoriteMovieIds() != null) {
-            isAlreadyFavorite = currentUser.getFavoriteMovieIds().contains(movieId);
-        }
-        btnHeart.setBackground(isAlreadyFavorite ? colorFavorite : colorNormal);
-
-        // Sự kiện Click trái tim
-        btnHeart.addActionListener(e -> {
-            if (currentUser == null) {
-                JOptionPane.showMessageDialog(this, "Vui lòng đăng nhập để thao tác!", "Lỗi", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
-            List<String> favs = currentUser.getFavoriteMovieIds();
-            if (favs == null) {
-                favs = new ArrayList<>();
-                currentUser.setFavoriteMovieIds(favs);
-            } else if (!(favs instanceof ArrayList)) {
-                // Ép kiểu mảng tĩnh thành ArrayList động để cho phép Add/Remove
-                favs = new ArrayList<>(favs);
-                currentUser.setFavoriteMovieIds(favs);
-            }
-
-            // Xử lý đổi màu và Thêm/Xóa
-            if (favs.contains(movieId)) {
-                favs.remove(movieId);
-                btnHeart.setBackground(colorNormal); // Đổi về màu Tím
-                JOptionPane.showMessageDialog(this, "Đã XÓA phim khỏi danh sách yêu thích!");
-            } else {
-                favs.add(movieId);
-                btnHeart.setBackground(colorFavorite); // Đổi thành màu Cam
-                JOptionPane.showMessageDialog(this, "Đã THÊM phim vào danh sách yêu thích!");
-            }
-
-            // Lưu trực tiếp xuống file để giữ màu
-            dao.UserDAO userDAO = new dao.UserDAO();
-            userDAO.update(currentUser);
-        });
-
-        // ẢNH GỐC
-        ImageIcon originalIcon = new ImageIcon("image/img.png");
-        Image scaledImage = originalIcon.getImage().getScaledInstance(240, 220, Image.SCALE_SMOOTH);
-        JLabel lblImage = new JLabel(new ImageIcon(scaledImage));
-        lblImage.setBounds(0, 0, 240, 220);
-
-        // NÚT ĐẶT VÉ BỌC ẨN TRÊN ẢNH
-        JButton btnBookTicket = new JButton();
-        btnBookTicket.setOpaque(false);
-        btnBookTicket.setContentAreaFilled(false);
-        btnBookTicket.setBorderPainted(false);
-        btnBookTicket.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        btnBookTicket.setBounds(0, 0, 240, 220);
-
-        btnBookTicket.addActionListener(e -> {
-            new SelectShowTimeFrame(movieId).setVisible(true);
-        });
-
-        imageContainer.add(lblImage, Integer.valueOf(0));
-        imageContainer.add(btnBookTicket, Integer.valueOf(1));
-        imageContainer.add(btnHeart, Integer.valueOf(2));
-
-        JPanel infoPanel = new JPanel(new GridLayout(3, 1, 0, 5));
-        infoPanel.setBackground(Color.WHITE);
-        infoPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
-
-        JLabel lblName = new JLabel(title);
-        lblName.setFont(new Font("Arial", Font.BOLD, 16));
-
-        JLabel lblTime = new JLabel("⏱ " + time);
-        lblTime.setForeground(Color.GRAY);
-
-        JLabel lblDirector = new JLabel("👤 " + (director != null ? director : "Đang cập nhật"));
-        lblDirector.setForeground(Color.GRAY);
-
-        infoPanel.add(lblName);
-        infoPanel.add(lblTime);
-        infoPanel.add(lblDirector);
-
-        card.add(imageContainer);
-        card.add(infoPanel);
-
-        return card;
+    } else {
+        btnHeart.setText("❤");
+        btnHeart.setForeground(Color.WHITE);
     }
+
+    btnHeart.setFocusPainted(false);
+    btnHeart.setBorder(BorderFactory.createEmptyBorder());
+    btnHeart.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    btnHeart.setBounds(195, 10, 32, 32);
+
+    Color colorNormal = new Color(178, 53, 228);
+    Color colorFavorite = new Color(255, 102, 0);
+
+    model.User currentUser = utils.Session.getCurrentUser();
+    boolean isAlreadyFavorite = false;
+
+    if (currentUser != null && currentUser.getFavoriteMovieIds() != null) {
+        isAlreadyFavorite = currentUser.getFavoriteMovieIds().contains(movieId);
+    }
+
+    btnHeart.setBackground(isAlreadyFavorite ? colorFavorite : colorNormal);
+
+    btnHeart.addActionListener(e -> {
+        if (currentUser == null) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Vui lòng đăng nhập để thao tác!",
+                    "Lỗi",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        List<String> favs = currentUser.getFavoriteMovieIds();
+
+        if (favs == null) {
+            favs = new ArrayList<>();
+            currentUser.setFavoriteMovieIds(favs);
+        } else if (!(favs instanceof ArrayList)) {
+            favs = new ArrayList<>(favs);
+            currentUser.setFavoriteMovieIds(favs);
+        }
+
+        if (favs.contains(movieId)) {
+            favs.remove(movieId);
+            btnHeart.setBackground(colorNormal);
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Đã XÓA phim khỏi danh sách yêu thích!");
+        } else {
+            favs.add(movieId);
+            btnHeart.setBackground(colorFavorite);
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Đã THÊM phim vào danh sách yêu thích!");
+        }
+
+        dao.UserDAO userDAO = new dao.UserDAO();
+        userDAO.update(currentUser);
+    });
+
+    // =========================
+    // ẢNH PHIM
+    // =========================
+    JLabel lblImage = new JLabel();
+    URL movieUrl = getClass().getResource("/image/img.png");
+
+    if (movieUrl != null) {
+        ImageIcon originalIcon = new ImageIcon(movieUrl);
+        Image scaledImage = originalIcon.getImage()
+                .getScaledInstance(240, 220, Image.SCALE_SMOOTH);
+        lblImage.setIcon(new ImageIcon(scaledImage));
+    } else {
+        lblImage.setText("Không tải được ảnh");
+        lblImage.setHorizontalAlignment(SwingConstants.CENTER);
+        lblImage.setOpaque(true);
+        lblImage.setBackground(new Color(240, 240, 240));
+    }
+
+    lblImage.setBounds(0, 0, 240, 220);
+
+    // =========================
+    // CLICK ẢNH ĐỂ ĐẶT VÉ
+    // =========================
+    JButton btnBookTicket = new JButton();
+    btnBookTicket.setOpaque(false);
+    btnBookTicket.setContentAreaFilled(false);
+    btnBookTicket.setBorderPainted(false);
+    btnBookTicket.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    btnBookTicket.setBounds(0, 0, 240, 220);
+
+    btnBookTicket.addActionListener(e -> {
+        new SelectShowTimeFrame(movieId).setVisible(true);
+    });
+
+    imageContainer.add(lblImage, Integer.valueOf(0));
+    imageContainer.add(btnBookTicket, Integer.valueOf(1));
+    imageContainer.add(btnHeart, Integer.valueOf(2));
+
+    // =========================
+    // THÔNG TIN PHIM
+    // =========================
+    JPanel infoPanel = new JPanel(new GridLayout(4, 1, 0, 5));
+    infoPanel.setBackground(Color.WHITE);
+    infoPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
+
+    JLabel lblName = new JLabel(title);
+    lblName.setFont(new Font("Arial", Font.BOLD, 16));
+
+    JLabel lblTime = new JLabel("⏱ " + time);
+    lblTime.setForeground(Color.GRAY);
+
+    JLabel lblDirector = new JLabel(
+            "👤 " + (director != null ? director : "Đang cập nhật"));
+    lblDirector.setForeground(Color.GRAY);
+
+    // =========================
+    // NÚT ĐÁNH GIÁ
+    // =========================
+    JButton btnReview = new JButton("⭐ Đánh giá");
+    btnReview.setBackground(new Color(255, 102, 0));
+    btnReview.setForeground(Color.WHITE);
+    btnReview.setFocusPainted(false);
+    btnReview.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+    btnReview.addActionListener(e -> {
+        try {
+            dao.MovieDAO movieDAO = new dao.MovieDAO();
+
+            model.Movie movie = movieDAO.findById(movieId);
+
+            if (movie != null) {
+                ReviewForm reviewForm = new ReviewForm(movie);
+                reviewForm.setLocationRelativeTo(this);
+                reviewForm.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Không tìm thấy thông tin phim!");
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Có lỗi khi mở trang đánh giá!");
+        }
+    });
+
+    infoPanel.add(lblName);
+    infoPanel.add(lblTime);
+    infoPanel.add(lblDirector);
+    infoPanel.add(btnReview);
+
+    card.add(imageContainer);
+    card.add(infoPanel);
+
+    return card;
+}
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {

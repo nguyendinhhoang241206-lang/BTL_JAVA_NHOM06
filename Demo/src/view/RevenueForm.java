@@ -299,7 +299,6 @@ public class RevenueForm extends javax.swing.JFrame {
 
         // 2. TẠO THANH MENU TỔNG HỢP (CHỈ DASHBOARD MỚI CÓ)
         javax.swing.JMenuBar menuBar = new javax.swing.JMenuBar();
-
         javax.swing.JMenu menuNav = new javax.swing.JMenu("Chức năng Hệ thống");
 
         // -- Nút Lịch chiếu
@@ -326,8 +325,22 @@ public class RevenueForm extends javax.swing.JFrame {
         });
         menuNav.add(itemRevenue);
 
-        // -- Đăng xuất
+        // -- Đăng xuất & Tài khoản
         javax.swing.JMenu menuSystem = new javax.swing.JMenu("Tài khoản");
+        
+        // ==========================================
+        // ĐÃ BỔ SUNG NÚT TRANG CÁ NHÂN VÀO ĐÂY
+        // ==========================================
+        javax.swing.JMenuItem itemProfile = new javax.swing.JMenuItem("👤 Trang cá nhân");
+        itemProfile.addActionListener(e -> {
+            view.ProfileForm profileForm = new view.ProfileForm();
+            profileForm.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
+            new controller.ProfileController(profileForm, utils.Session.getCurrentUser()); 
+            profileForm.setLocationRelativeTo(mainFrame);
+            profileForm.setVisible(true);
+        });
+        menuSystem.add(itemProfile);
+
         javax.swing.JMenuItem itemLogout = new javax.swing.JMenuItem("🚪 Đăng xuất");
         itemLogout.addActionListener(e -> {
             int confirm = javax.swing.JOptionPane.showConfirmDialog(mainFrame, "Đăng xuất tài khoản?", "Xác nhận", javax.swing.JOptionPane.YES_NO_OPTION);

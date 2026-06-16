@@ -18,7 +18,6 @@ public class ShowTime implements Serializable {
     }
 
     public ShowTime(String id, LocalDate showDate, LocalTime startTime, LocalTime endTime, String movieId, String roomId) {
-        // Sử dụng hàm Set để Constructor cũng được bảo vệ bởi bẫy lỗi
         setId(id);
         setShowDate(showDate);
         setStartTime(startTime);

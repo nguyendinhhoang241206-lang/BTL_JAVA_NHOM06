@@ -7,7 +7,6 @@ import service.RevenueReportService;
 public class RevenueReportController {
     private RevenueReportService revenueReportService = new RevenueReportService();
 
-    // TODO: Sinh viên tự code logic: Khi Admin truy cập vào tab/màn hình "Thống kê doanh thu" ở View, gọi revenueReportService.calculateTotalRevenue() để lấy số liệu tổng doanh thu của rạp và đổ số liệu hiển thị lên nhãn (JLabel) hoặc vẽ biểu đồ tương ứng.
     public List<Object[]> handleGetTotalRevenue() {
         try {
             List<Object[]> report = revenueReportService.getRevenueReport();
@@ -30,7 +29,6 @@ public class RevenueReportController {
         }
     }
     
-    // Hàm này View sẽ gọi. Controller chỉ gọi tiếp sang Service và ném kết quả về cho View.
     public int handleGetTotalTickets() {
         try {
             return revenueReportService.calculateTotalTicketsSold();
