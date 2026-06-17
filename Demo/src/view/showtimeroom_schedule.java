@@ -9,52 +9,39 @@ package view;
  * @author ADMIN
  */
 public class showtimeroom_schedule extends javax.swing.JFrame {
-    // Đặt dòng này ngay dưới tên class View
     private controller.ShowTimeManagerController controller = new controller.ShowTimeManagerController();
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(showtimeroom_schedule.class.getName());
     
-    /**
-     * Creates new form showtimeroom_schedule
-     */
     public showtimeroom_schedule() {
         initComponents(); 
         tblShowTime.getTableHeader().setReorderingAllowed(false);
         setLocationRelativeTo(null);
         setupUIDesign();
-        // Gọi ComboBox
         controller.initComboBoxes(cbMovie, cbRoom);
 
-        // ---- KHÓA Ô VÀ HIỂN THỊ MÃ SẮP TẠO TẠI ĐÂY ----
         txtId1.setEditable(false);
         txtId1.setText(controller.getNextShowTimeId());
 
-        // 1. Cấu hình định dạng Giờ Bắt đầu (HH:mm) cho spinStartTime
         javax.swing.SpinnerDateModel startModel = new javax.swing.SpinnerDateModel();
         spinStartTime.setModel(startModel);
         javax.swing.JSpinner.DateEditor startEditor = new javax.swing.JSpinner.DateEditor(spinStartTime, "HH:mm");
         spinStartTime.setEditor(startEditor);
 
-        // 2. Cấu hình định dạng Giờ Kết thúc (HH:mm) cho spinEndTime
         javax.swing.SpinnerDateModel endModel = new javax.swing.SpinnerDateModel();
         spinEndTime.setModel(endModel);
         javax.swing.JSpinner.DateEditor endEditor = new javax.swing.JSpinner.DateEditor(spinEndTime, "HH:mm");
         spinEndTime.setEditor(endEditor);
-        
-        // Gọi hàm load dữ liệu lên bảng ngay khi vừa mở form
         controller.loadDataToTable((javax.swing.table.DefaultTableModel) tblShowTime.getModel());
         backtodashboard.addActionListener(e -> {
-            // 1. TẠO VỎ JFRAME ẢO CHO TRANG CHỦ (DASHBOARD)
             javax.swing.JFrame mainFrame = new javax.swing.JFrame("Trang chủ Quản trị - Cinema System");
             mainFrame.setSize(1000, 600);
             mainFrame.setLocationRelativeTo(null);
             mainFrame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
 
-            // 2. TẠO THANH MENU TỔNG HỢP (CHỈ DASHBOARD MỚI CÓ)
             javax.swing.JMenuBar menuBar = new javax.swing.JMenuBar();
 
             javax.swing.JMenu menuNav = new javax.swing.JMenu("Chức năng Hệ thống");
 
-            // -- Nút Lịch chiếu
             javax.swing.JMenuItem itemSchedule = new javax.swing.JMenuItem("📅 Quản lý Lịch chiếu");
             itemSchedule.addActionListener(evt -> {
                 new view.showtimeroom_schedule().setVisible(true);
@@ -62,7 +49,6 @@ public class showtimeroom_schedule extends javax.swing.JFrame {
             });
             menuNav.add(itemSchedule);
 
-            // -- Nút Phòng chiếu
             javax.swing.JMenuItem itemRoom = new javax.swing.JMenuItem("🏢 Quản lý Phòng chiếu");
             itemRoom.addActionListener(evt -> {
                 new view.show_time_room_infrForm().setVisible(true);
@@ -70,7 +56,6 @@ public class showtimeroom_schedule extends javax.swing.JFrame {
             });
             menuNav.add(itemRoom);
 
-            // -- Nút Doanh thu
             javax.swing.JMenuItem itemRevenue = new javax.swing.JMenuItem("📈 Báo cáo Doanh thu");
             itemRevenue.addActionListener(evt -> {
                 new view.RevenueForm().setVisible(true);
@@ -78,12 +63,8 @@ public class showtimeroom_schedule extends javax.swing.JFrame {
             });
             menuNav.add(itemRevenue);
 
-            // -- Đăng xuất
             javax.swing.JMenu menuSystem = new javax.swing.JMenu("Tài khoản");
-            
-            // ==========================================
-            // ĐÃ BỔ SUNG NÚT TRANG CÁ NHÂN VÀO ĐÂY
-            // ==========================================
+
             javax.swing.JMenuItem itemProfile = new javax.swing.JMenuItem("👤 Trang cá nhân");
             itemProfile.addActionListener(evt -> {
                 view.ProfileForm profileForm = new view.ProfileForm();
@@ -108,19 +89,15 @@ public class showtimeroom_schedule extends javax.swing.JFrame {
 
             menuBar.add(menuNav);
             menuBar.add(menuSystem);
-            mainFrame.setJMenuBar(menuBar); // Đính Menu lên Dashboard
-
-            // 3. NHÚNG MẢNH GHÉP QUẢN LÝ PHIM VÀO DASHBOARD
+            mainFrame.setJMenuBar(menuBar);
             view.ShowlistmovieForm showListPanel = new view.ShowlistmovieForm();
-            new controller.MovieController(showListPanel); // Kích hoạt nút bấm phim
+            new controller.MovieController(showListPanel);
 
             mainFrame.add(showListPanel);
             mainFrame.setVisible(true);
             this.dispose();
         });
 
-
-        // Gọi hàm load dữ liệu lên bảng ngay khi vừa mở form
         controller.loadDataToTable((javax.swing.table.DefaultTableModel) tblShowTime.getModel());
     }
 
@@ -346,7 +323,6 @@ public class showtimeroom_schedule extends javax.swing.JFrame {
             spinStartTime.commitEdit();
             spinEndTime.commitEdit();
 
-            // Truyền txtId1.getText() làm tham số đầu tiên
             String result = controller.handleAddShowTime(
                     txtId1.getText(),
                     dateChooser.getDate(),
@@ -360,7 +336,6 @@ public class showtimeroom_schedule extends javax.swing.JFrame {
                 javax.swing.JOptionPane.showMessageDialog(this, "Xếp lịch chiếu thành công!");
                 controller.loadDataToTable((javax.swing.table.DefaultTableModel) tblShowTime.getModel());
 
-                // Gọi nút clear để dọn form và tự động đổi sang mã mới cho lượt tiếp theo
                 btnClearActionPerformed(null);
             } else {
                 String errorMsg = result.split(":")[1];
@@ -376,7 +351,6 @@ public class showtimeroom_schedule extends javax.swing.JFrame {
     }//GEN-LAST:event_txtId1ActionPerformed
 
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {
-        // Tự động lấy mã mới tiếp theo hiển thị lên ô nhập liệu
         txtId1.setText(controller.getNextShowTimeId());
 
         dateChooser.setDate(null);
@@ -387,8 +361,7 @@ public class showtimeroom_schedule extends javax.swing.JFrame {
         tblShowTime.clearSelection();
     }
 
-    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        // Kiểm tra xem Admin đã click chọn dòng nào trên bảng chưa
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {
         int selectedRow = tblShowTime.getSelectedRow();
         if (selectedRow == -1) {
             javax.swing.JOptionPane.showMessageDialog(this, "Vui lòng click chọn một suất chiếu trên bảng để xóa!", "Thông báo", javax.swing.JOptionPane.WARNING_MESSAGE);
@@ -405,45 +378,31 @@ public class showtimeroom_schedule extends javax.swing.JFrame {
                 javax.swing.JOptionPane.showMessageDialog(this, "Xóa thất bại!", "Lỗi", javax.swing.JOptionPane.ERROR_MESSAGE);
             }
         }
-    }//GEN-LAST:event_btnDeleteActionPerformed
+    }                                         
 
     /**
      * @param args the command line arguments
      */
 
-//    public static void main(String args[]) {
-//        /* Đảm bảo giao diện chạy trên luồng sự kiện (Event Dispatch Thread) an toàn */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                // Khởi tạo và hiển thị form của bạn
-//                new showtimeroom_schedule().setVisible(true);
-//            }
-//        });
-//    }
 private void setupUIDesign() {
-        // 1. Đổi màu nền của Form VÀ các Panel thành Trắng (#FFFFFF)
         java.awt.Color whiteColor = new java.awt.Color(255, 255, 255);
         getContentPane().setBackground(whiteColor);
         jPanel1.setBackground(whiteColor);
         jPanel2.setBackground(whiteColor);
-        
-        // 2. Định nghĩa Font chữ (Segoe UI, size 14) và Màu chữ thường (#333333)
+
         java.awt.Font mainFont = new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 14);
         java.awt.Color textColor = new java.awt.Color(51, 51, 51); 
 
-        // Áp dụng cho 6 Tiêu đề trên form Lịch chiếu
         javax.swing.JLabel[] labels = {jLabel1, jLabel2, jLabel3, jLabel4, jLabel5, jLabel6};
         for (javax.swing.JLabel lbl : labels) {
             lbl.setFont(mainFont);
             lbl.setForeground(textColor);
         }
 
-        // 3. Định nghĩa thiết kế cho Nút bấm (Màu Cam #FF6600, Chữ Trắng, In đậm)
         java.awt.Font btnFont = new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 14);
         java.awt.Color btnBgColor = new java.awt.Color(255, 102, 0); 
         java.awt.Color btnTextColor = new java.awt.Color(255, 255, 255); 
 
-        // Nạp 4 nút bấm của form này vào mảng
         javax.swing.JButton[] buttons = {btnAdd, btnDelete, btnClear, backtodashboard};
         for (javax.swing.JButton btn : buttons) {
             btn.setFont(btnFont);
@@ -454,20 +413,15 @@ private void setupUIDesign() {
             btn.setBorderPainted(false);
             btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         }
-        // --- CẤU HÌNH MÀU CAM VÀ KHÓA CỘT CHO TIÊU ĐỀ BẢNG LỊCH CHIẾU ---
         javax.swing.table.JTableHeader header = tblShowTime.getTableHeader(); 
-        
-        // Khóa cứng cột, không cho kéo thả nhảy lung tung
+
         header.setReorderingAllowed(false);
-        
-        // Set màu chữ Trắng và Font in đậm
+
         header.setForeground(new java.awt.Color(255, 255, 255)); 
         header.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 14)); 
-        
-        // Set màu nền Cam (#FF6600)
+
         header.setBackground(new java.awt.Color(255, 102, 0)); 
-        
-        // Ép hệ điều hành Windows hiển thị màu nền của Header
+
         ((javax.swing.table.DefaultTableCellRenderer) header.getDefaultRenderer()).setBackground(new java.awt.Color(255, 102, 0));
     }   
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -17,10 +17,9 @@ public class AddEditMovieForm extends javax.swing.JFrame {
      */
     public AddEditMovieForm() {
         initComponents();
-        setLocationRelativeTo(null); // Hiển thị giữa màn hình
+        setLocationRelativeTo(null);
         initNavigationMenu();
     }
-    // Hàm tự viết bằng tay để nhúng thanh Menu chuyển màn hình
     private void initNavigationMenu() {
         javax.swing.JMenuBar menuBar = new javax.swing.JMenuBar();
 
@@ -79,32 +78,32 @@ public class AddEditMovieForm extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setBackground(new java.awt.Color(255, 102, 0));
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14));
         jLabel1.setForeground(new java.awt.Color(51, 51, 51));
         jLabel1.setText("Mã phim");
 
         jLabel2.setBackground(new java.awt.Color(255, 102, 0));
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14));
         jLabel2.setForeground(new java.awt.Color(51, 51, 51));
         jLabel2.setText("Tên Phim");
 
         jLabel3.setBackground(new java.awt.Color(255, 102, 0));
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14));
         jLabel3.setForeground(new java.awt.Color(51, 51, 51));
         jLabel3.setText("Mô tả");
 
         jLabel4.setBackground(new java.awt.Color(255, 102, 0));
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14));
         jLabel4.setForeground(new java.awt.Color(51, 51, 51));
         jLabel4.setText("Đạo diễn");
 
         jLabel5.setBackground(new java.awt.Color(255, 102, 0));
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14));
         jLabel5.setForeground(new java.awt.Color(51, 51, 51));
         jLabel5.setText("Thời lượng");
 
         jLabel6.setBackground(new java.awt.Color(255, 102, 0));
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14));
         jLabel6.setForeground(new java.awt.Color(51, 51, 51));
         jLabel6.setText("Ngày chiếu");
 
@@ -119,12 +118,12 @@ public class AddEditMovieForm extends javax.swing.JFrame {
         txtReleaseDate.addActionListener(this::txtReleaseDateActionPerformed);
 
         btnSave.setBackground(new java.awt.Color(255, 102, 0));
-        btnSave.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnSave.setFont(new java.awt.Font("Segoe UI", 1, 14));
         btnSave.setForeground(new java.awt.Color(255, 255, 255));
         btnSave.setText("Lưu");
 
         btnCancel.setBackground(new java.awt.Color(255, 102, 0));
-        btnCancel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnCancel.setFont(new java.awt.Font("Segoe UI", 1, 14));
         btnCancel.setForeground(new java.awt.Color(255, 255, 255));
         btnCancel.setText("Hủy");
 
@@ -220,28 +219,8 @@ public class AddEditMovieForm extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new AddEditMovieForm().setVisible(true));
     }
-    
-    // --- CÁC HÀM GETTER ĐỂ CONTROLLER LẤY VÀ ĐIỀN DỮ LIỆU ---
     
     public javax.swing.JTextField getTxtId() {
         return txtId;

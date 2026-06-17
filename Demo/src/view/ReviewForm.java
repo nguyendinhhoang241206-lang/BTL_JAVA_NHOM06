@@ -47,23 +47,19 @@ public class ReviewForm extends javax.swing.JFrame {
         initCustomTable();
         loadReviews();
     }
-    
-    // Tự động chèn thêm bảng danh sách đánh giá lên phía trên phần form của bạn
+
     private void initCustomTable() {
-        // 2. Móc nối bảng hiển thị
         tableModel = (DefaultTableModel) tableReviews.getModel();
 
-        // 3. Setup lại Combobox
         cbRating.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { 
             "5 Sao ⭐⭐⭐⭐⭐", "4 Sao ⭐⭐⭐⭐", "3 Sao ⭐⭐⭐", "2 Sao ⭐⭐", "1 Sao ⭐" 
         }));
         txtComment.setText("");
     }
 
-    // Tải dữ liệu từ Controller đổ lên bảng
     public void loadReviews() {
         if (tableModel == null) return;
-        tableModel.setRowCount(0); // Xóa trắng bảng
+        tableModel.setRowCount(0);
         
         if (currentMovie == null || currentMovie.getId() == null) {
             return; 
@@ -81,7 +77,6 @@ public class ReviewForm extends javax.swing.JFrame {
         }
     }
 
-    // Cung cấp hàm public cho Controller gọi để dọn dẹp giao diện
     public void clearInputs() {
         txtComment.setText(""); 
         cbRating.setSelectedIndex(0);

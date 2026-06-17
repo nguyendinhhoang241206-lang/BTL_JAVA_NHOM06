@@ -10,7 +10,7 @@ public class Movie implements Serializable {
     private String title;
     private String description;
     private String director;
-    private int duration; // Duration in minutes
+    private int duration;
     private LocalDate releaseDate;
 
     public Movie() {

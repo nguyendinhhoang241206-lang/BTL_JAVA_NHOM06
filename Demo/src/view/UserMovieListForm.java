@@ -9,12 +9,11 @@ import java.net.URL;
 
 public class UserMovieListForm extends JFrame {
 
-    // Các biến phục vụ hiển thị và phân trang
     private List<model.Movie> allMovies = new ArrayList<>();
     private JPanel gridPanel;
     private JPanel paginationPanel;
     private int currentPage = 1;
-    private final int itemsPerPage = 6; // Số phim tối đa trên 1 trang
+    private final int itemsPerPage = 6;
 
     public UserMovieListForm() {
         setTitle("Dashboard Khách Hàng - Danh sách phim");
@@ -24,19 +23,12 @@ public class UserMovieListForm extends JFrame {
         setLayout(new BorderLayout());
         getContentPane().setBackground(new Color(248, 249, 250));
 
-        // 1. Thêm Sidebar
         add(createSidebar(), BorderLayout.WEST);
 
-        // 2. Thêm Khu vực nội dung (Danh sách phim + Phân trang)
         add(createMainContent(), BorderLayout.CENTER);
 
-        // 3. Tải dữ liệu từ DB và render
         loadMoviesFromDatabase();
     }
-
-    // ==========================================
-    // TẠO SIDEBAR (ĐÃ FIX ĐƯỜNG DẪN ẢNH AVATAR)
-    // ==========================================
     private JPanel createSidebar() {
         JPanel sidebar = new JPanel();
         sidebar.setLayout(new BoxLayout(sidebar, BoxLayout.Y_AXIS));
@@ -62,13 +54,12 @@ public class UserMovieListForm extends JFrame {
             }
         }
 
-        // Tải ảnh Avatar an toàn
         JLabel lblAvatar = new JLabel();
         URL avatarUrl = getClass().getResource("/image/avatar.png");
         if (avatarUrl != null) {
             lblAvatar.setIcon(new ImageIcon(avatarUrl));
         } else {
-            lblAvatar.setText("👤"); // Hiển thị icon mặc định nếu thiếu ảnh
+            lblAvatar.setText("👤"); 
             lblAvatar.setFont(new Font("Arial", Font.PLAIN, 40));
         }
         lblAvatar.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -154,9 +145,6 @@ public class UserMovieListForm extends JFrame {
         return btn;
     }
 
-    // ==========================================
-    // TẠO NỘI DUNG CHÍNH
-    // ==========================================
     private JPanel createMainContent() {
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(new Color(248, 249, 250));
@@ -198,9 +186,6 @@ public class UserMovieListForm extends JFrame {
         return mainPanel;
     }
 
-    // ==========================================
-    // LOGIC LOAD DỮ LIỆU & PHÂN TRANG
-    // ==========================================
     private void loadMoviesFromDatabase() {
         try {
             dao.MovieDAO movieDAO = new dao.MovieDAO();
@@ -276,9 +261,6 @@ public class UserMovieListForm extends JFrame {
         paginationPanel.repaint();
     }
 
-    // ==========================================
-    // TẠO THẺ PHIM (ĐÃ FIX AN TOÀN ĐƯỜNG DẪN ẢNH)
-    // ==========================================
     private JPanel createMovieCard(String movieId, String title, String time, String director) {
     JPanel card = new JPanel();
     card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
@@ -293,9 +275,6 @@ public class UserMovieListForm extends JFrame {
     imageContainer.setPreferredSize(new Dimension(240, 220));
     imageContainer.setMaximumSize(new Dimension(240, 220));
 
-    // =========================
-    // NÚT YÊU THÍCH
-    // =========================
     JButton btnHeart = new JButton();
     URL heartUrl = getClass().getResource("/image/heart.png");
 
@@ -364,9 +343,6 @@ public class UserMovieListForm extends JFrame {
         userDAO.update(currentUser);
     });
 
-    // =========================
-    // ẢNH PHIM
-    // =========================
     JLabel lblImage = new JLabel();
     URL movieUrl = getClass().getResource("/image/img.png");
 
@@ -384,9 +360,6 @@ public class UserMovieListForm extends JFrame {
 
     lblImage.setBounds(0, 0, 240, 220);
 
-    // =========================
-    // CLICK ẢNH ĐỂ ĐẶT VÉ
-    // =========================
     JButton btnBookTicket = new JButton();
     btnBookTicket.setOpaque(false);
     btnBookTicket.setContentAreaFilled(false);
@@ -402,9 +375,6 @@ public class UserMovieListForm extends JFrame {
     imageContainer.add(btnBookTicket, Integer.valueOf(1));
     imageContainer.add(btnHeart, Integer.valueOf(2));
 
-    // =========================
-    // THÔNG TIN PHIM
-    // =========================
     JPanel infoPanel = new JPanel(new GridLayout(4, 1, 0, 5));
     infoPanel.setBackground(Color.WHITE);
     infoPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
@@ -419,9 +389,6 @@ public class UserMovieListForm extends JFrame {
             "👤 " + (director != null ? director : "Đang cập nhật"));
     lblDirector.setForeground(Color.GRAY);
 
-    // =========================
-    // NÚT ĐÁNH GIÁ
-    // =========================
     JButton btnReview = new JButton("⭐ Đánh giá");
     btnReview.setBackground(new Color(255, 102, 0));
     btnReview.setForeground(Color.WHITE);

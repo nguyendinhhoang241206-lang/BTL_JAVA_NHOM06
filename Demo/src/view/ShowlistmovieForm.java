@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package view;
+
 import java.util.List;
 import model.Movie;
 import javax.swing.table.DefaultTableModel;
@@ -12,12 +13,14 @@ import javax.swing.table.DefaultTableModel;
  * @author PC
  */
 public class ShowlistmovieForm extends javax.swing.JPanel {
+
     /**
      * Creates new form ShowlistmovieForm
      */
     public ShowlistmovieForm() {
         initComponents();
-        
+        jTable1.getTableHeader().setResizingAllowed(false);
+        jTable1.getTableHeader().setReorderingAllowed(false);
     }
 
     /**
@@ -165,6 +168,7 @@ public class ShowlistmovieForm extends javax.swing.JPanel {
     public javax.swing.JTable getTableMovies() {
         return jTable1;
     }
+
     public javax.swing.JButton getBtnAddMovie() {
         return btnAddMovie;
     }
@@ -188,4 +192,3 @@ public class ShowlistmovieForm extends javax.swing.JPanel {
     private javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
 }
-

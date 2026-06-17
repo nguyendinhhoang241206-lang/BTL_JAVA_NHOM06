@@ -24,14 +24,7 @@ public class ShowTime implements Serializable {
         setEndTime(endTime);
         setMovieId(movieId);
         setRoomId(roomId);
-        
-        
-        
-        
-        
-        
-        
-        // Bẫy lỗi logic: Giờ bắt đầu phải trước giờ kết thúc
+
         if (this.startTime != null && this.endTime != null && 
            (this.startTime.isAfter(this.endTime) || this.startTime.equals(this.endTime))) {
             throw new IllegalArgumentException("Giờ bắt đầu phải trước giờ kết thúc!");
@@ -51,7 +44,6 @@ public class ShowTime implements Serializable {
         if (showDate == null) {
             throw new IllegalArgumentException("Vui lòng chọn ngày chiếu phim!");
         }
-        // Nâng cao: Không cho phép xếp lịch chiếu vào ngày trong quá khứ
         if (showDate.isBefore(LocalDate.now())) {
             throw new IllegalArgumentException("Ngày chiếu không được là ngày trong quá khứ!");
         }

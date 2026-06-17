@@ -13,8 +13,7 @@ import model.Movie;
 public class FavoriteForm extends javax.swing.JFrame {
     
     private DefaultTableModel tableModel;
-    
-    // Khởi tạo Controller. Controller này đã chứa sẵn Service bên trong nó.
+
     private ListFavoriteController listFavoriteController = new ListFavoriteController();
 
     public FavoriteForm() {
@@ -22,20 +21,16 @@ public class FavoriteForm extends javax.swing.JFrame {
         
         tableModel = (DefaultTableModel) history_Ticket.getModel();
         tableModel.setRowCount(0);
-        
-        // Gọi hàm để đổ dữ liệu ngay khi vừa mở Form
+
         loadDataToTable();
     }
 
    
     private void loadDataToTable() {
-        tableModel.setRowCount(0); // Xóa dữ liệu cũ trên bảng
-        
-        // 1. KẾT NỐI VỚI CONTROLLER: Gọi Controller để lấy danh sách phim.
-        // Controller sẽ tự động gọi SessionUtil và Service cho bạn.
+        tableModel.setRowCount(0);
+
         List<Movie> movies = listFavoriteController.getMyFavoriteMovies();
-        
-        // 2. Hiển thị lên giao diện (View)
+
         if (movies != null) {
             for (Movie movie : movies) {
                 Object[] rowData = {
@@ -49,10 +44,6 @@ public class FavoriteForm extends javax.swing.JFrame {
             }
         }
     }
-
-    // ... (GIỮ NGUYÊN TOÀN BỘ PHẦN initComponents() CỦA BẠN BÊN DƯỚI) ...
-
-    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -172,8 +163,6 @@ public class FavoriteForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BacktoDashBoardActionPerformed(java.awt.event.ActionEvent evt) {
-        // Đóng form Danh sách yêu thích lại.
-        // Lập tức bạn sẽ nhìn thấy Dashboard đang nằm chờ sẵn ở dưới!
         this.dispose();
     }
 
@@ -190,12 +179,9 @@ public class FavoriteForm extends javax.swing.JFrame {
         }
         
         java.awt.EventQueue.invokeLater(() -> {
-            // Không truyền "U01" nữa, vì dùng Session rồi
             new FavoriteForm().setVisible(true); 
         });
     }
-        
-    // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton BacktoDashBoard;
     private javax.swing.JTable history_Ticket;
     private javax.swing.JComboBox<String> jComboBox1;
@@ -203,6 +189,4 @@ public class FavoriteForm extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JScrollPane jScrollPane2;
-    // End of variables declaration//GEN-END:variables
-
 }

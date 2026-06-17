@@ -122,11 +122,11 @@ public class LoginController {
 
                 menuBar.add(menuNav);
                 menuBar.add(menuSystem);
-                mainFrame.setJMenuBar(menuBar); // Đính Menu lên Dashboard
+                mainFrame.setJMenuBar(menuBar);
 
 
                 view.ShowlistmovieForm showListPanel = new view.ShowlistmovieForm();
-                new controller.MovieController(showListPanel); // Kích hoạt nút bấm phim
+                new controller.MovieController(showListPanel);
 
                 mainFrame.add(showListPanel);
                 mainFrame.setVisible(true);

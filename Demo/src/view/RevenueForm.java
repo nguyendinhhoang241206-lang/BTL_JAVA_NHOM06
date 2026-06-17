@@ -33,43 +33,32 @@ public class RevenueForm extends javax.swing.JFrame {
             tableModel.addRow(row);
         }
 
-        // 2. Lấy tổng doanh thu và hiển thị lên TextField
         double total = revenueController.getTotalRevenue();
-        
-        // Hiển thị số tiền kèm định dạng (VD: 450,000 VNĐ)
+
         lblTotalRevenue.setText(String.format("%,.0f VNĐ", total));
-        
-        // Khóa TextField lại để người dùng không thể tự gõ/sửa số tiền
+
         lblTotalRevenue.setEditable(false);
     }
 
     private void loadSummaryData() {
-        // 1. Phần Tổng vé đã bán (Bạn đang làm đúng rồi, giữ nguyên)
         int totalTickets = revenueController.handleGetTotalTickets();
         lblTotalTickets.setText(totalTickets + " vé");
-        
-        // 2. PHẦN TÌM PHIM BÁN CHẠY NHẤT (Dùng mẹo quét trực tiếp từ Bảng)
+
         int maxTickets = 0;
         String topMovieName = "Chưa có dữ liệu";
 
-        // Quét lần lượt từng dòng trên cái bảng 'revenue' của bạn
         for (int i = 0; i < revenue.getRowCount(); i++) {
             try {
-                // Cột 1 là 'Số vé bán' -> Lấy ra và ép kiểu về số nguyên
                 int tickets = Integer.parseInt(revenue.getValueAt(i, 1).toString());
-                
-                // Nếu số vé dòng này lớn hơn kỷ lục hiện tại -> Cập nhật kỷ lục
+
                 if (tickets > maxTickets) {
                     maxTickets = tickets;
-                    // Cột 0 là 'Tên phim' -> Lấy tên phim tương ứng
                     topMovieName = revenue.getValueAt(i, 0).toString();
                 }
             } catch (Exception e) {
-                // Bỏ qua nếu có dòng bị lỗi định dạng
             }
         }
-        
-        // Bắn tên phim tìm được lên giao diện
+
         lblTopMovie.setText(topMovieName);
     }
     
@@ -291,17 +280,14 @@ public class RevenueForm extends javax.swing.JFrame {
     }//GEN-LAST:event_lblTopMovieActionPerformed
 
     private void BacktoDashBoardActionPerformed(java.awt.event.ActionEvent evt) {
-        // 1. TẠO VỎ JFRAME ẢO CHO TRANG CHỦ (DASHBOARD)
         javax.swing.JFrame mainFrame = new javax.swing.JFrame("Trang chủ Quản trị - Cinema System");
         mainFrame.setSize(1000, 600);
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
 
-        // 2. TẠO THANH MENU TỔNG HỢP (CHỈ DASHBOARD MỚI CÓ)
         javax.swing.JMenuBar menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu menuNav = new javax.swing.JMenu("Chức năng Hệ thống");
 
-        // -- Nút Lịch chiếu
         javax.swing.JMenuItem itemSchedule = new javax.swing.JMenuItem("📅 Quản lý Lịch chiếu");
         itemSchedule.addActionListener(e -> {
             new view.showtimeroom_schedule().setVisible(true);
@@ -309,7 +295,6 @@ public class RevenueForm extends javax.swing.JFrame {
         });
         menuNav.add(itemSchedule);
 
-        // -- Nút Phòng chiếu
         javax.swing.JMenuItem itemRoom = new javax.swing.JMenuItem("🏢 Quản lý Phòng chiếu");
         itemRoom.addActionListener(e -> {
             new view.show_time_room_infrForm().setVisible(true);
@@ -317,7 +302,6 @@ public class RevenueForm extends javax.swing.JFrame {
         });
         menuNav.add(itemRoom);
 
-        // -- Nút Doanh thu
         javax.swing.JMenuItem itemRevenue = new javax.swing.JMenuItem("📈 Báo cáo Doanh thu");
         itemRevenue.addActionListener(e -> {
             new view.RevenueForm().setVisible(true);
@@ -325,12 +309,8 @@ public class RevenueForm extends javax.swing.JFrame {
         });
         menuNav.add(itemRevenue);
 
-        // -- Đăng xuất & Tài khoản
         javax.swing.JMenu menuSystem = new javax.swing.JMenu("Tài khoản");
-        
-        // ==========================================
-        // ĐÃ BỔ SUNG NÚT TRANG CÁ NHÂN VÀO ĐÂY
-        // ==========================================
+
         javax.swing.JMenuItem itemProfile = new javax.swing.JMenuItem("👤 Trang cá nhân");
         itemProfile.addActionListener(e -> {
             view.ProfileForm profileForm = new view.ProfileForm();
@@ -355,11 +335,10 @@ public class RevenueForm extends javax.swing.JFrame {
 
         menuBar.add(menuNav);
         menuBar.add(menuSystem);
-        mainFrame.setJMenuBar(menuBar); // Đính Menu lên Dashboard
+        mainFrame.setJMenuBar(menuBar);
 
-        // 3. NHÚNG MẢNH GHÉP QUẢN LÝ PHIM VÀO DASHBOARD
         view.ShowlistmovieForm showListPanel = new view.ShowlistmovieForm();
-        new controller.MovieController(showListPanel); // Kích hoạt nút bấm phim
+        new controller.MovieController(showListPanel);
 
         mainFrame.add(showListPanel);
         mainFrame.setVisible(true);

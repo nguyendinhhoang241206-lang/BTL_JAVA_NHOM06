@@ -253,54 +253,42 @@ public class LoginForm extends javax.swing.JFrame {
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 
-    // --- BẮT ĐẦU PHẦN CODE THAY ĐỔI/BỔ SUNG CHO CONTROLLER SỬ DỤNG ---
-    
-    // Lấy tên đăng nhập người dùng nhập vào
     public String getUsername() {
         return txtUsername.getText().trim();
     }
 
-    // Lấy mật khẩu người dùng nhập vào
     public String getPassword() {
         return new String(txtPassword.getPassword());
     }
 
-    // Lấy email (Màn hình đăng nhập không có ô email nên trả về chuỗi rỗng)
     public String getEmail() {
         return "";
     }
 
-    // Hiển thị thông báo màu sắc tương ứng (thành công màu xanh, thất bại màu đỏ)
     public void showMessage(String message, boolean isSuccess) {
         lblMessage.setText(message);
         if (isSuccess) {
-            lblMessage.setForeground(new java.awt.Color(0, 150, 0)); // Màu xanh lá đậm
+            lblMessage.setForeground(new java.awt.Color(0, 150, 0));
         } else {
-            lblMessage.setForeground(java.awt.Color.RED); // Màu đỏ
+            lblMessage.setForeground(java.awt.Color.RED);
         }
     }
 
-    // Đăng ký sự kiện khi bấm nút Xác nhận (Đăng nhập)
     public void addConfirmListener(java.awt.event.ActionListener listener) {
         btnLogin.addActionListener(listener);
     }
 
-    // Đăng ký sự kiện khi bấm nút Đăng ký
     public void addRegisterListener(java.awt.event.ActionListener listener) {
         btnRegister.addActionListener(listener);
     }
 
-    // Đăng ký sự kiện khi bấm nút Quên mật khẩu
     public void addForgotPasswordListener(java.awt.event.ActionListener listener) {
         btnForgotPassword.addActionListener(listener);
     }
-    // --- KẾT THÚC PHẦN CODE THAY ĐỔI/BỔ SUNG ---
-    // Cho phép Controller gắn sự kiện click chuột
     public void addShowPasswordListener(java.awt.event.MouseListener listener) {
         lblLoginShowPass.addMouseListener(listener);
     }
 
-    // Điều khiển ẩn/hiện mật khẩu
     public void setPasswordVisible(boolean visible) {
         txtPassword.setEchoChar(visible ? (char) 0 : '\u2022');
     }

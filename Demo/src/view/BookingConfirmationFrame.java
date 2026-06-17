@@ -3,8 +3,6 @@ package view;
 import controller.BookingController;
 import model.Booking;
 import model.ShowTime;
-// import utils.Session; // Mở ra khi ghép code thật
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -25,25 +23,22 @@ public class BookingConfirmationFrame extends JFrame {
     private String selectedComboName = "Không mua";
 
     private JLabel lblTotalFinal;
-    private JLabel lblTotalTicketDisplay; // Nhãn hiển thị tiền vé ở cột trái
+    private JLabel lblTotalTicketDisplay;
 
-    // Bảng màu thiết kế chuẩn UI mới
-    private final Color COLOR_BG = new Color(248, 249, 250); // Nền xám rất sáng
+    private final Color COLOR_BG = new Color(248, 249, 250);
     private final Color COLOR_CARD = Color.WHITE;
-    private final Color COLOR_PRIMARY = new Color(220, 53, 69); // Đỏ chủ đạo
-    private final Color COLOR_SUCCESS = new Color(40, 167, 69); // Xanh lá
+    private final Color COLOR_PRIMARY = new Color(220, 53, 69);
+    private final Color COLOR_SUCCESS = new Color(40, 167, 69);
     private final Color COLOR_TEXT_DARK = new Color(33, 37, 41);
     private final Color COLOR_TEXT_MUTED = new Color(108, 117, 125);
-    private final Color COLOR_RED_BG = new Color(255, 240, 243); // Đỏ nhạt cho box Tiền vé
+    private final Color COLOR_RED_BG = new Color(255, 240, 243);
 
     public BookingConfirmationFrame(ShowTime showTime, List<String> selectedSeats) {
         this.currentShowTime = showTime;
         this.selectedSeats = selectedSeats;
 
-        // Tính toán lại tiền vé theo hạng ghế (A,B: 50k | C,D: 70k | E: 100k)
         calculateTicketPrice();
 
-        // 1. THIẾT LẬP FORM
         setTitle("Xác nhận đặt vé");
         setSize(1000, 700);
         setLocationRelativeTo(null);
@@ -51,15 +46,11 @@ public class BookingConfirmationFrame extends JFrame {
         setLayout(new BorderLayout());
         getContentPane().setBackground(COLOR_BG);
 
-        // --- GỌI CÁC HÀM XÂY DỰNG GIAO DIỆN ---
         add(createHeaderPanel(), BorderLayout.NORTH);
         add(createCenterPanel(), BorderLayout.CENTER);
         add(createFooterPanel(), BorderLayout.SOUTH);
     }
 
-    // ==========================================
-    // TÍNH TOÁN TIỀN VÉ THEO HẠNG GHẾ
-    // ==========================================
     private void calculateTicketPrice() {
         totalTicketPrice = 0;
         for (String seatId : selectedSeats) {
@@ -71,15 +62,11 @@ public class BookingConfirmationFrame extends JFrame {
         }
     }
 
-    // ==========================================
-    // 1. TẠO HEADER
-    // ==========================================
     private JPanel createHeaderPanel() {
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setBackground(COLOR_BG);
         headerPanel.setBorder(new EmptyBorder(15, 20, 15, 20));
 
-        // Nút quay lại (Bo góc, viền xám nhạt)
         RoundedButton btnBack = new RoundedButton("⬅ Quay lại", Color.WHITE, COLOR_PRIMARY);
         btnBack.setPreferredSize(new Dimension(110, 35));
         btnBack.setBorderColor(new Color(220, 220, 220));
@@ -88,7 +75,6 @@ public class BookingConfirmationFrame extends JFrame {
             this.dispose();
         });
 
-        // Tiêu đề giữa
         JPanel titleBox = new JPanel(new GridLayout(2, 1));
         titleBox.setBackground(COLOR_BG);
         JLabel lblTitle = new JLabel("🎟️ XÁC NHẬN ĐẶT VÉ", SwingConstants.CENTER);
@@ -105,7 +91,6 @@ public class BookingConfirmationFrame extends JFrame {
         headerPanel.add(btnBack, BorderLayout.WEST);
         headerPanel.add(titleBox, BorderLayout.CENTER);
 
-        // Nhãn giả để cân bằng layout
         JLabel emptyLbl = new JLabel("");
         emptyLbl.setPreferredSize(new Dimension(110, 35));
         headerPanel.add(emptyLbl, BorderLayout.EAST);
@@ -113,28 +98,22 @@ public class BookingConfirmationFrame extends JFrame {
         return headerPanel;
     }
 
-    // ==========================================
-    // 2. TẠO KHU VỰC TRUNG TÂM (2 CỘT)
-    // ==========================================
     private JPanel createCenterPanel() {
         JPanel centerPanel = new JPanel(new GridLayout(1, 2, 25, 0));
         centerPanel.setBackground(COLOR_BG);
         centerPanel.setBorder(new EmptyBorder(10, 30, 20, 30));
 
-        // Thêm 2 cột
         centerPanel.add(createLeftColumn());
         centerPanel.add(createRightColumn());
 
         return centerPanel;
     }
 
-    // --- CỘT TRÁI: THÔNG TIN VÉ ---
     private JPanel createLeftColumn() {
         RoundedPanel panel = new RoundedPanel(20, COLOR_CARD);
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        // Tiêu đề
         JLabel lblTitle = new JLabel("📄 THÔNG TIN VÉ");
         lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 18));
         lblTitle.setForeground(COLOR_PRIMARY);
@@ -142,7 +121,6 @@ public class BookingConfirmationFrame extends JFrame {
         panel.add(lblTitle);
         panel.add(Box.createVerticalStrut(20));
 
-        // Các dòng thông tin chi tiết
         String seatStr = String.join(", ", selectedSeats).replace(currentShowTime.getRoomId() + "_", "");
 
         panel.add(createInfoRow("🎬", "Phim (Mã)", currentShowTime.getMovieId(), COLOR_PRIMARY));
@@ -150,9 +128,7 @@ public class BookingConfirmationFrame extends JFrame {
         panel.add(createInfoRow("🕒", "Giờ chiếu", currentShowTime.getStartTime() + " | " + currentShowTime.getShowDate(), COLOR_TEXT_DARK));
         panel.add(createInfoRow("💺", "Ghế đã chọn", seatStr + " (" + selectedSeats.size() + " ghế)", COLOR_PRIMARY));
 
-        panel.add(Box.createVerticalGlue()); // Đẩy cục tiền vé xuống đáy
-
-        // Khối Tiền vé (Nền hồng nhạt)
+        panel.add(Box.createVerticalGlue());
         RoundedPanel priceBox = new RoundedPanel(15, COLOR_RED_BG);
         priceBox.setLayout(new BorderLayout());
         priceBox.setBorder(new EmptyBorder(15, 15, 15, 15));
@@ -174,7 +150,6 @@ public class BookingConfirmationFrame extends JFrame {
         return panel;
     }
 
-    // Hàm tiện ích tạo dòng thông tin
     private JPanel createInfoRow(String icon, String label, String value, Color valueColor) {
         JPanel row = new JPanel(new BorderLayout());
         row.setBackground(COLOR_CARD);
@@ -194,13 +169,11 @@ public class BookingConfirmationFrame extends JFrame {
         return row;
     }
 
-    // --- CỘT PHẢI: COMBO VÀ GIẢM GIÁ ---
     private JPanel createRightColumn() {
         JPanel rightWrapper = new JPanel();
         rightWrapper.setLayout(new BoxLayout(rightWrapper, BoxLayout.Y_AXIS));
         rightWrapper.setBackground(COLOR_BG);
 
-        // 1. Box Combo
         RoundedPanel comboPanel = new RoundedPanel(20, COLOR_CARD);
         comboPanel.setLayout(new BoxLayout(comboPanel, BoxLayout.Y_AXIS));
         comboPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
@@ -211,10 +184,8 @@ public class BookingConfirmationFrame extends JFrame {
         comboPanel.add(lblComboTitle);
         comboPanel.add(Box.createVerticalStrut(15));
 
-        // Group Radio
         ButtonGroup group = new ButtonGroup();
 
-        // HTML thần chưởng để format UI bên trong RadioButton
         String htmlNone = "<html><table width='340'><tr><td width='200'><b>Không mua</b><br><font color='#757575' size='3'>Không chọn combo</font></td></tr></table></html>";
         String htmlCb1 = "<html><table width='340'><tr><td width='200'><b>Combo 1 (1 Bắp + 1 Nước)</b><br><font color='#757575' size='3'>1 bắp ngọt + 1 nước</font></td><td align='right'><font color='#D32F2F'><b>50,000 VNĐ</b></font></td></tr></table></html>";
         String htmlCb2 = "<html><table width='340'><tr><td width='200'><b>Combo 2 (1 Bắp + 2 Nước)</b><br><font color='#757575' size='3'>1 bắp ngọt + 2 nước</font></td><td align='right'><font color='#D32F2F'><b>75,000 VNĐ</b></font></td></tr></table></html>";
@@ -228,7 +199,6 @@ public class BookingConfirmationFrame extends JFrame {
         rbNone.setSelected(true);
         group.add(rbNone); group.add(rbCb1); group.add(rbCb2); group.add(rbCb3);
 
-        // Sự kiện đổi Combo
         java.awt.event.ActionListener comboAction = e -> {
             if (rbCb1.isSelected()) { comboPrice = 50000; selectedComboName = "Combo 1"; }
             else if (rbCb2.isSelected()) { comboPrice = 75000; selectedComboName = "Combo 2"; }
@@ -248,7 +218,6 @@ public class BookingConfirmationFrame extends JFrame {
         rightWrapper.add(comboPanel);
         rightWrapper.add(Box.createVerticalStrut(20));
 
-        // 2. Box Giảm giá
         RoundedPanel discountPanel = new RoundedPanel(20, COLOR_CARD);
         discountPanel.setLayout(new BoxLayout(discountPanel, BoxLayout.Y_AXIS));
         discountPanel.setBorder(new EmptyBorder(15, 20, 15, 20));
@@ -295,7 +264,6 @@ public class BookingConfirmationFrame extends JFrame {
         return rightWrapper;
     }
 
-    // Tiện ích format RadioButton
     private JRadioButton createStyledRadio(String htmlText) {
         JRadioButton rb = new JRadioButton(htmlText);
         rb.setBackground(COLOR_CARD);
@@ -310,16 +278,11 @@ public class BookingConfirmationFrame extends JFrame {
         return rb;
     }
 
-
-    // ==========================================
-    // 3. TẠO FOOTER (CHỐT VÉ)
-    // ==========================================
     private JPanel createFooterPanel() {
         RoundedPanel footerPanel = new RoundedPanel(20, COLOR_CARD);
         footerPanel.setLayout(new BorderLayout());
         footerPanel.setBorder(new EmptyBorder(15, 30, 15, 30));
 
-        // Trái: Tổng cộng
         JPanel leftBox = new JPanel(new GridLayout(2, 1));
         leftBox.setBackground(COLOR_CARD);
         JLabel lblTitle = new JLabel("💳 TỔNG CỘNG");
@@ -331,9 +294,7 @@ public class BookingConfirmationFrame extends JFrame {
         lblTotalFinal.setForeground(COLOR_PRIMARY);
         leftBox.add(lblTitle); leftBox.add(lblTotalFinal);
 
-        updateFinalTotal(); // Tính toán lần đầu
-
-        // Phải: Nút Chốt vé + Text bảo mật
+        updateFinalTotal();
         JPanel rightBox = new JPanel(new BorderLayout());
         rightBox.setBackground(COLOR_CARD);
 
@@ -353,7 +314,6 @@ public class BookingConfirmationFrame extends JFrame {
         footerPanel.add(leftBox, BorderLayout.WEST);
         footerPanel.add(rightBox, BorderLayout.EAST);
 
-        // Bọc footerPanel vào 1 panel khác để tạo khoảng cách (margin) với viền cửa sổ
         JPanel wrapper = new JPanel(new BorderLayout());
         wrapper.setBackground(COLOR_BG);
         wrapper.setBorder(new EmptyBorder(0, 30, 20, 30));
@@ -362,9 +322,6 @@ public class BookingConfirmationFrame extends JFrame {
         return wrapper;
     }
 
-    // ==========================================
-    // CÁC HÀM XỬ LÝ LOGIC
-    // ==========================================
     private void updateFinalTotal() {
         double finalPrice = totalTicketPrice + comboPrice - discountValue;
         if (finalPrice < 0) finalPrice = 0;
@@ -373,53 +330,38 @@ public class BookingConfirmationFrame extends JFrame {
     }
 
     private void handleConfirmBooking() {
-        // ==========================================
-        // 1. LẤY SESSION ĐỂ BIẾT AI ĐANG ĐẶT VÉ
-        // ==========================================
         if (!utils.Session.isLoggedIn()) {
             JOptionPane.showMessageDialog(this, "Bạn cần đăng nhập để đặt vé!");
             return;
         }
 
-        // CHUẨN XÁC: Lấy ID của user (Ví dụ: "U01", "U02") để lưu vào bảng Booking
         String currentUserId = utils.Session.getCurrentUser().getId();
 
-        // 2. Tính tiền
         double finalPrice = totalTicketPrice + comboPrice - discountValue;
         if (finalPrice < 0) finalPrice = 0;
 
-        // 3. Tạo hóa đơn
         Booking newBooking = new Booking();
         newBooking.setId("B" + System.currentTimeMillis());
         newBooking.setComboName(selectedComboName);
         newBooking.setDiscountAmount(discountValue);
         newBooking.setTotalPrice(finalPrice);
 
-        // GẮN MÃ KHÁCH HÀNG (LẤY TỪ SESSION) VÀO HÓA ĐƠN
         newBooking.setUserId(currentUserId);
 
         newBooking.setShowTimeId(currentShowTime.getId());
         newBooking.setBookedSeatIds(selectedSeats);
 
-        // Gọi Controller (Controller sẽ gọi tiếp BookingCheckoutService ở trên để set Status và Time)
         boolean isSuccess = bookingController.confirmBooking(newBooking);
 
-        // 4. Thông báo kết quả
         if (isSuccess) {
             JOptionPane.showMessageDialog(this,
                     "🎉 ĐẶT VÉ THÀNH CÔNG!\nMã đơn hàng: " + newBooking.getId() + "\nCảm ơn bạn đã sử dụng dịch vụ.",
                     "Hoàn tất", JOptionPane.INFORMATION_MESSAGE);
             this.dispose();
-            // Đóng cửa sổ, quay lại giao diện chính
         } else {
             JOptionPane.showMessageDialog(this, "Đã xảy ra lỗi hệ thống khi lưu vé!", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
-    // ==========================================
-    // CÁC COMPONENT CUSTOM (VẼ ĐỒ HỌA)
-    // ==========================================
-
-    // Class tạo Panel có góc bo tròn đẹp mắt
     class RoundedPanel extends JPanel {
         private int cornerRadius;
         private Color bgColor;
@@ -441,7 +383,6 @@ public class BookingConfirmationFrame extends JFrame {
         }
     }
 
-    // Class tạo Nút bấm bo tròn
     class RoundedButton extends JButton {
         private Color bgColor, textColor, borderColor;
 
@@ -449,7 +390,7 @@ public class BookingConfirmationFrame extends JFrame {
             super(text);
             this.bgColor = bgColor;
             this.textColor = textColor;
-            this.borderColor = bgColor; // Mặc định không có viền khác màu
+            this.borderColor = bgColor;
             setContentAreaFilled(false);
             setFocusPainted(false);
             setForeground(textColor);
@@ -465,11 +406,9 @@ public class BookingConfirmationFrame extends JFrame {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-            // Vẽ nền
             g2.setColor(bgColor);
             g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
 
-            // Vẽ viền
             g2.setColor(borderColor);
             g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 15, 15);
 
@@ -477,8 +416,6 @@ public class BookingConfirmationFrame extends JFrame {
             g2.dispose();
         }
     }
-
-    // Main Test nhanh giao diện
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             ShowTime fakeShow = new ShowTime();

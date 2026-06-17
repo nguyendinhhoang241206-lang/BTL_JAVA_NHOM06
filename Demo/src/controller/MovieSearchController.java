@@ -139,15 +139,11 @@ public class MovieSearchController {
         }
     }
 
-    // Hàm mở form chi tiết (Dùng chung cho cả Thêm và Sửa)
     private void openDetailForm(Movie movie) {
-        // Form của ông đang là JFrame rồi, xài thẳng luôn
         view.AddEditMovieForm detailView = new view.AddEditMovieForm();
         
-        // Sửa lỗi tắt form phụ bị tắt luôn app chính
         detailView.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
-        
-        // Cờ đánh dấu xem đang ở chế độ nào
+
         boolean isEditMode = (movie != null);
         
         if (!isEditMode) {
@@ -164,24 +160,16 @@ public class MovieSearchController {
             detailView.getTxtReleaseDate().setText(movie.getReleaseDate().toString());
         }
 
-        // Cài đặt kích thước và cho hiển thị lên giữa màn hình
         detailView.setSize(600, 500); 
         detailView.setLocationRelativeTo(null); 
         detailView.setVisible(true);
 
-        // =================================================================
-        // --- XỬ LÝ SỰ KIỆN CHO FORM CHI TIẾT (THÊM / SỬA) ---
-        // =================================================================
-
-        // 1. Nút Hủy: Đóng cửa sổ lại
         detailView.getBtnCancel().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                detailView.dispose(); // Tắt chính cái form detailView này đi
+                detailView.dispose();
             }
         });
-
-        // 2. Nút Lưu: Gom dữ liệu, Validate và Gọi Service
         detailView.getBtnSave().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -214,8 +202,8 @@ public class MovieSearchController {
 
                     if (isSuccess) {
                         javax.swing.JOptionPane.showMessageDialog(detailView, isEditMode ? "Cập nhật phim thành công!" : "Thêm phim mới thành công!");
-                        detailView.dispose(); // Tắt form đi sau khi lưu thành công
-                        loadAllMoviesToTable(); // TẢI LẠI BẢNG
+                        detailView.dispose();
+                        loadAllMoviesToTable();
                     } else {
                         javax.swing.JOptionPane.showMessageDialog(detailView, isEditMode ? "Lỗi: Không tìm thấy phim để sửa!" : "Lỗi: Mã phim (ID) này đã tồn tại!");
                     }

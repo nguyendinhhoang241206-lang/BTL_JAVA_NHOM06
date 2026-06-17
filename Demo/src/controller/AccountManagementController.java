@@ -1,7 +1,6 @@
 package controller;
 
 import view.AccountManagementForm;
-// ĐÃ SỬA: Đổi import từ ProfileService sang AccountManagementService
 import service.AccountManagementService; 
 import model.User;
 import java.awt.Color;

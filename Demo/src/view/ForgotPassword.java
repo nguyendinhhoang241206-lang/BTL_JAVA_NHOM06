@@ -299,64 +299,51 @@ public class ForgotPassword extends javax.swing.JFrame {
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 
-    // --- BẮT ĐẦU PHẦN CODE THAY ĐỔI/BỔ SUNG CHO CONTROLLER SỬ DỤNG ---
-    
-    // Lấy tên đăng nhập
     public String getUsername() {
         return txtUsername.getText().trim();
     }
 
-    // Lấy Gmail
     public String getEmail() {
         return txtEmail.getText().trim();
     }
 
-    // Lấy mật khẩu mới
     public String getNewPassword() {
         return new String(txtNewPassword.getPassword());
     }
 
-    // Lấy xác nhận mật khẩu mới
     public String getConfirmPassword() {
         return new String(txtConfirmPassword.getPassword());
     }
 
-    // Hiển thị thông báo màu sắc tương ứng
     public void showMessage(String message, boolean isSuccess) {
         lblMessage.setText(message);
         if (isSuccess) {
-            lblMessage.setForeground(new java.awt.Color(0, 150, 0)); // Màu xanh lá đậm
+            lblMessage.setForeground(new java.awt.Color(0, 150, 0));
         } else {
-            lblMessage.setForeground(java.awt.Color.RED); // Màu đỏ
+            lblMessage.setForeground(java.awt.Color.RED);
         }
     }
 
-    // Đăng ký sự kiện khi bấm nút Xác nhận (Reset Password)
     public void addResetListener(java.awt.event.ActionListener listener) {
         btnReset.addActionListener(listener);
     }
 
-    // Đăng ký sự kiện khi bấm nút Đăng nhập (Quay lại)
     public void addBackListener(java.awt.event.ActionListener listener) {
         btnBack.addActionListener(listener);
     }
-    // --- KẾT THÚC PHẦN CODE THAY ĐỔI/BỔ SUNG ---
-    // Đăng ký sự kiện click cho con mắt Mật khẩu mới
+
     public void addShowNewPassListener(java.awt.event.MouseListener listener) {
         lblForgotShowNewPass.addMouseListener(listener);
     }
 
-    // Đăng ký sự kiện click cho con mắt Xác nhận
     public void addShowConfirmPassListener(java.awt.event.MouseListener listener) {
         lblForgotShowConfirmPass.addMouseListener(listener);
     }
 
-    // Điều khiển hiện/ẩn mật khẩu mới
     public void setNewPassVisible(boolean visible) {
         txtNewPassword.setEchoChar(visible ? (char) 0 : '\u2022');
     }
 
-    // Điều khiển hiện/ẩn xác nhận mật khẩu
     public void setConfirmPassVisible(boolean visible) {
         txtConfirmPassword.setEchoChar(visible ? (char) 0 : '\u2022');
     }

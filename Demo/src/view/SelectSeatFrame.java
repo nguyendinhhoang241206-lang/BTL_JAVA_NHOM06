@@ -14,7 +14,6 @@ public class SelectSeatFrame extends JFrame {
     private SeatController seatController = new SeatController();
     private List<String> selectedSeats = new ArrayList<>();
 
-    // Khai báo bảng màu cực chất chuẩn Dark Theme
     private final Color COLOR_BG = new Color(26, 26, 26);         // Đen nhám
     private final Color COLOR_NORMAL = new Color(114, 9, 183);    // Tím (Ghế thường)
     private final Color COLOR_VIP = new Color(230, 57, 70);       // Đỏ (Ghế VIP)
@@ -34,7 +33,6 @@ public class SelectSeatFrame extends JFrame {
             this.selectedSeats.addAll(previousSelectedSeats);
         }
 
-        // 1. THIẾT LẬP CƠ BẢN
         setTitle("Sơ đồ chọn ghế (Dark Mode)");
         setSize(950, 650);
         setLocationRelativeTo(null);
@@ -42,7 +40,6 @@ public class SelectSeatFrame extends JFrame {
         setLayout(new BorderLayout());
         getContentPane().setBackground(COLOR_BG);
 
-        // 2. HEADER
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setBackground(COLOR_BG);
         headerPanel.setBorder(new EmptyBorder(15, 20, 15, 20));
@@ -68,11 +65,9 @@ public class SelectSeatFrame extends JFrame {
         headerPanel.add(new JLabel("              "), BorderLayout.EAST);
         add(headerPanel, BorderLayout.NORTH);
 
-        // 3. CENTER (SƠ ĐỒ GHẾ)
         JPanel centerWrapper = new JPanel(new BorderLayout());
         centerWrapper.setBackground(COLOR_BG);
 
-        // Vẽ màn hình cong
         JPanel screenPanel = new JPanel(new BorderLayout());
         screenPanel.setBackground(COLOR_BG);
         screenPanel.setBorder(new EmptyBorder(10, 150, 20, 150)); // Thụt vào 2 bên
@@ -80,13 +75,11 @@ public class SelectSeatFrame extends JFrame {
         JLabel lblScreen = new JLabel("MÀN HÌNH", SwingConstants.CENTER);
         lblScreen.setFont(new Font("Segoe UI", Font.BOLD, 14));
         lblScreen.setForeground(Color.LIGHT_GRAY);
-        // Tạo đường viền trắng ở dưới chữ Màn hình
         lblScreen.setBorder(BorderFactory.createMatteBorder(0, 0, 3, 0, Color.WHITE));
         screenPanel.add(lblScreen, BorderLayout.CENTER);
 
         centerWrapper.add(screenPanel, BorderLayout.NORTH);
 
-        // Lưới ghế
         JPanel seatPanel = new JPanel(new GridLayout(5, 10, 12, 12)); // Khoảng cách giữa các ghế là 12px
         seatPanel.setBackground(COLOR_BG);
         seatPanel.setBorder(new EmptyBorder(20, 60, 30, 60));
@@ -99,31 +92,28 @@ public class SelectSeatFrame extends JFrame {
                 String seatName = String.format("%c%02d", row, col);
                 String fullSeatId = currentShowTime.getRoomId() + "_" + seatName;
 
-                // Xác định màu gốc theo hạng ghế (Theo hàng)
                 Color baseColor = COLOR_NORMAL;
                 if (row == 'C' || row == 'D') baseColor = COLOR_VIP;
                 else if (row == 'E') baseColor = COLOR_COUPLE;
 
-                // Sử dụng Custom Button Bo góc
                 RoundedButton btnSeat = new RoundedButton(seatName, baseColor);
 
                 if (bookedSeats.contains(fullSeatId)) {
-                    btnSeat.setBgColor(COLOR_BOOKED); // Khách khác đã mua
+                    btnSeat.setBgColor(COLOR_BOOKED);
                     btnSeat.setEnabled(false);
                 } else {
                     if (this.selectedSeats.contains(fullSeatId)) {
-                        btnSeat.setBgColor(COLOR_SELECTED); // Phục hồi ghế đang chọn dở
+                        btnSeat.setBgColor(COLOR_SELECTED);
                     }
 
-                    // Xử lý logic Click
                     Color finalBaseColor = baseColor;
                     btnSeat.addActionListener(e -> {
                         if (selectedSeats.contains(fullSeatId)) {
                             selectedSeats.remove(fullSeatId);
-                            btnSeat.setBgColor(finalBaseColor); // Trả về màu gốc của ghế
+                            btnSeat.setBgColor(finalBaseColor);
                         } else {
                             selectedSeats.add(fullSeatId);
-                            btnSeat.setBgColor(COLOR_SELECTED); // Chuyển màu đang chọn
+                            btnSeat.setBgColor(COLOR_SELECTED);
                         }
                         updateTotalPrice();
                     });
@@ -134,12 +124,10 @@ public class SelectSeatFrame extends JFrame {
         centerWrapper.add(seatPanel, BorderLayout.CENTER);
         add(centerWrapper, BorderLayout.CENTER);
 
-        // 4. FOOTER
         JPanel footerPanel = new JPanel(new BorderLayout());
-        footerPanel.setBackground(new Color(33, 33, 33)); // Sáng hơn nền chính 1 chút
+        footerPanel.setBackground(new Color(33, 33, 33));
         footerPanel.setBorder(new EmptyBorder(15, 30, 20, 30));
 
-        // Bảng chú thích màu
         JPanel legendPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0));
         legendPanel.setBackground(new Color(33, 33, 33));
         legendPanel.add(createLegendItem("Thường (50K)", COLOR_NORMAL));
@@ -149,7 +137,6 @@ public class SelectSeatFrame extends JFrame {
         legendPanel.add(createLegendItem("Đã đặt", COLOR_BOOKED));
         footerPanel.add(legendPanel, BorderLayout.WEST);
 
-        // Chốt vé
         JPanel checkoutPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 20, 0));
         checkoutPanel.setBackground(new Color(33, 33, 33));
 
@@ -157,7 +144,7 @@ public class SelectSeatFrame extends JFrame {
         lblTotalPrice.setFont(new Font("Segoe UI", Font.BOLD, 20));
         lblTotalPrice.setForeground(Color.WHITE);
 
-        updateTotalPrice(); // Tính tiền lần đầu
+        updateTotalPrice();
 
         JButton btnContinue = new JButton("TIẾP TỤC");
         btnContinue.setFont(new Font("Segoe UI", Font.BOLD, 15));
@@ -181,7 +168,6 @@ public class SelectSeatFrame extends JFrame {
         add(footerPanel, BorderLayout.SOUTH);
     }
 
-    // Tiện ích tạo Label chú thích
     private JPanel createLegendItem(String text, Color color) {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
         panel.setBackground(new Color(33, 33, 33));
@@ -196,11 +182,9 @@ public class SelectSeatFrame extends JFrame {
         return panel;
     }
 
-    // Tính toán tiền theo chuẩn từng loại ghế
     private void updateTotalPrice() {
         double total = 0;
         for (String seatId : selectedSeats) {
-            // Lấy mã ghế (VD: R001_A01 -> Lấy ký tự A)
             String seatCode = seatId.split("_")[1];
             char row = seatCode.charAt(0);
 
@@ -212,9 +196,6 @@ public class SelectSeatFrame extends JFrame {
         lblTotalPrice.setText("Tổng: " + df.format(total));
     }
 
-    // ==========================================
-    // CLASS CON: GHI ĐÈ NÚT BẤM ĐỂ BO GÓC
-    // ==========================================
     class RoundedButton extends JButton {
         private Color bgColor;
 
@@ -231,17 +212,15 @@ public class SelectSeatFrame extends JFrame {
 
         public void setBgColor(Color color) {
             this.bgColor = color;
-            repaint(); // Yêu cầu Java vẽ lại nút khi đổi màu
+            repaint();
         }
 
         @Override
         protected void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D) g.create();
-            // Bật khử răng cưa cho góc bo mượt mà
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
             g2.setColor(bgColor);
-            // Thông số 15, 15 là độ bo cong của góc
             g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
 
             super.paintComponent(g);

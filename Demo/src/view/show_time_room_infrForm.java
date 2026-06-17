@@ -17,62 +17,47 @@ public class show_time_room_infrForm extends javax.swing.JFrame {
      */
     public show_time_room_infrForm() {
         initComponents();
-        setLocationRelativeTo(null); // Hiện ra giữa màn hình
+        setLocationRelativeTo(null);
         setupUIDesign();
-        // ĐÁNH THỨC CONTROLLER ĐỂ NÓ KHÓA Ô NHẬP VÀ XỬ LÝ NÚT BẤM
         new controller.RoomManagerController(this);
     }
     public javax.swing.JButton getBtnBack() {
         return backtodashboard;
     }
     private void setupUIDesign() {
-        // 1. Đổi màu nền của toàn bộ Form thành Trắng (#FFFFFF)
         getContentPane().setBackground(new java.awt.Color(255, 255, 255));
-        
-        // 2. Định nghĩa Font chữ (Segoe UI, size 14) và Màu chữ thường (#333333)
+
         java.awt.Font mainFont = new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 14);
         java.awt.Color textColor = new java.awt.Color(51, 51, 51); 
 
-        // Áp dụng Font và Màu chữ cho các Tiêu đề (Label) - Bạn điền tên các biến Label của bạn vào đây
         javax.swing.JLabel[] labels = {jLabel1, jLabel2, jLabel3};
         for (javax.swing.JLabel lbl : labels) {
             lbl.setFont(mainFont);
             lbl.setForeground(textColor);
         }
 
-        // 3. Định nghĩa thiết kế cho Nút bấm (Màu Cam #FF6600, Chữ Trắng, In đậm)
         java.awt.Font btnFont = new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 14);
         java.awt.Color btnBgColor = new java.awt.Color(255, 102, 0); // #FF6600
         java.awt.Color btnTextColor = new java.awt.Color(255, 255, 255); // #FFFFFF
 
-        // Gom các nút bấm vào 1 mảng để set màu cùng lúc
-        // Lưu ý: Sửa lại tên btnAdd, btnDelete... cho khớp với tên biến bạn đặt
         javax.swing.JButton[] buttons = {btnAddRoom, backtodashboard};
         for (javax.swing.JButton btn : buttons) {
             btn.setFont(btnFont);
             btn.setBackground(btnBgColor);
             btn.setForeground(btnTextColor);
-            
-            // 2 Dòng này CỰC KỲ QUAN TRỌNG trong Java Swing để nút hiển thị đúng màu nền trên Windows
+
             btn.setOpaque(true);
             btn.setBorderPainted(false);
-            
-            // Đổi con trỏ chuột thành hình bàn tay khi di chuột vào nút
+
             btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         }
-        javax.swing.table.JTableHeader header = tblRooms.getTableHeader(); // Đã sửa thành tblRooms
-        
-        // Khóa cứng cột, không cho kéo thả nhảy lung tung
+        javax.swing.table.JTableHeader header = tblRooms.getTableHeader();
         header.setReorderingAllowed(false);
-        
-        // Set màu chữ Trắng và Font in đậm
+
         header.setForeground(new java.awt.Color(255, 255, 255)); 
         header.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 14)); 
-        
-        // Set màu nền Cam (#FF6600)
-        header.setBackground(new java.awt.Color(255, 102, 0)); 
-        
-        // Ép hệ điều hành Windows hiển thị màu nền của Header
+
+        header.setBackground(new java.awt.Color(255, 102, 0));
         ((javax.swing.table.DefaultTableCellRenderer) header.getDefaultRenderer()).setBackground(new java.awt.Color(255, 102, 0));
     }
     

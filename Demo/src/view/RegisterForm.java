@@ -309,49 +309,39 @@ public class RegisterForm extends javax.swing.JFrame {
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 
-    // --- BẮT ĐẦU PHẦN CODE THAY ĐỔI/BỔ SUNG CHO CONTROLLER SỬ DỤNG ---
-    
-    // Lấy tên đăng nhập
     public String getUsername() {
         return txtUsername.getText().trim();
     }
 
-    // Lấy Gmail
     public String getEmail() {
         return txtEmail.getText().trim();
     }
 
-    // Lấy mật khẩu
     public String getPassword() {
         return new String(txtPassword.getPassword());
     }
 
-    // Lấy xác nhận mật khẩu
     public String getConfirmPassword() {
         return new String(txtConfirmPassword.getPassword());
     }
 
-    // Hiển thị thông báo màu sắc tương ứng
     public void showMessage(String message, boolean isSuccess) {
         lblMessage.setText(message);
         if (isSuccess) {
-            lblMessage.setForeground(new java.awt.Color(0, 150, 0)); // Màu xanh lá đậm
+            lblMessage.setForeground(new java.awt.Color(0, 150, 0));
         } else {
-            lblMessage.setForeground(java.awt.Color.RED); // Màu đỏ
+            lblMessage.setForeground(java.awt.Color.RED);
         }
     }
 
-    // Đăng ký sự kiện khi bấm nút Đăng ký
     public void addRegisterListener(java.awt.event.ActionListener listener) {
         btnRegister.addActionListener(listener);
     }
 
-    // Đăng ký sự kiện khi bấm nút Đăng nhập (Quay lại)
     public void addBackListener(java.awt.event.ActionListener listener) {
         btnBack.addActionListener(listener);
     }
-    // --- KẾT THÚC PHẦN CODE THAY ĐỔI/BỔ SUNG ---
-    // 1. Đăng ký sự kiện click cho các con mắt
+
     public void addShowPassListener(java.awt.event.MouseListener listener) {
         lblRegShowPass.addMouseListener(listener);
     }
@@ -360,7 +350,6 @@ public class RegisterForm extends javax.swing.JFrame {
         lblRegShowConfirmPass.addMouseListener(listener);
     }
 
-    // 2. Điều khiển ẩn/hiện mật khẩu
     public void setPasswordVisible(boolean visible) {
         txtPassword.setEchoChar(visible ? (char) 0 : '\u2022');
     }

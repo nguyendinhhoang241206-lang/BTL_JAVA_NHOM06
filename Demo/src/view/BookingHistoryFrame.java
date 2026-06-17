@@ -9,12 +9,10 @@ import java.util.List;
 
 public class BookingHistoryFrame extends JFrame {
 
-    // Gắn Controller vào View
     private BookingHistoryController historyController = new BookingHistoryController();
 
     private JPanel listPanel;
 
-    // Bảng màu thiết kế
     private final Color COLOR_BG = new Color(248, 249, 250);
     private final Color COLOR_CARD = Color.WHITE;
     private final Color COLOR_PRIMARY = new Color(220, 53, 69); // Đỏ hủy vé
@@ -26,14 +24,12 @@ public class BookingHistoryFrame extends JFrame {
         setTitle("Lịch sử đặt vé");
         setSize(800, 600);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Chỉ đóng form này, không đóng Dashboard
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
         getContentPane().setBackground(COLOR_BG);
 
-        // 1. HEADER
         add(createHeaderPanel(), BorderLayout.NORTH);
 
-        // 2. CENTER (Danh sách vé)
         listPanel = new JPanel();
         listPanel.setLayout(new BoxLayout(listPanel, BoxLayout.Y_AXIS));
         listPanel.setBackground(COLOR_BG);
@@ -45,8 +41,6 @@ public class BookingHistoryFrame extends JFrame {
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
         add(scrollPane, BorderLayout.CENTER);
-
-        // Tự động load dữ liệu khi mở form
         loadBookingHistory();
     }
 
@@ -61,7 +55,7 @@ public class BookingHistoryFrame extends JFrame {
         RoundedButton btnBack = new RoundedButton("⬅ Quay lại", Color.WHITE, COLOR_PRIMARY);
         btnBack.setPreferredSize(new Dimension(110, 35));
         btnBack.setBorderColor(new Color(230, 230, 230));
-        btnBack.addActionListener(e -> this.dispose()); // Đóng form popup
+        btnBack.addActionListener(e -> this.dispose());
 
         JLabel lblTitle = new JLabel("🕒 LỊCH SỬ ĐẶT VÉ", SwingConstants.CENTER);
         lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 24));
@@ -80,7 +74,6 @@ public class BookingHistoryFrame extends JFrame {
     private void loadBookingHistory() {
         listPanel.removeAll();
 
-        // GỌI CONTROLLER ĐỂ LẤY DATA (Dựa trên Session)
         List<Object[]> myBookings = historyController.getMyHistory();
 
         if (myBookings == null || myBookings.isEmpty()) {
@@ -91,7 +84,6 @@ public class BookingHistoryFrame extends JFrame {
             listPanel.add(Box.createVerticalStrut(50));
             listPanel.add(lblEmpty);
         } else {
-            // Duyệt ngược để vé mới mua lên đầu
             for (int i = myBookings.size() - 1; i >= 0; i--) {
                 Object[] rowData = myBookings.get(i);
                 listPanel.add(createTicketCard(rowData));
@@ -103,11 +95,7 @@ public class BookingHistoryFrame extends JFrame {
         listPanel.repaint();
     }
 
-    // MAP DỮ LIỆU TỪ MẢNG OBJECT[] CỦA SERVICE VÀO UI
     private JPanel createTicketCard(Object[] rowData) {
-        // Cấu trúc mảng Object[] từ Service của bạn:
-        // 0: id, 1: movieTitle, 2: timeDetail, 3: roomName, 4: seatStr,
-        // 5: ticketCount, 6: totalPrice, 7: status, 8: bookingDate
 
         String bookingId = String.valueOf(rowData[0]);
         String movieTitle = String.valueOf(rowData[1]);
@@ -123,7 +111,6 @@ public class BookingHistoryFrame extends JFrame {
         card.setBorder(new EmptyBorder(20, 20, 20, 20));
         card.setMaximumSize(new Dimension(700, 180));
 
-        // --- BÊN TRÁI: THÔNG TIN VÉ ---
         JPanel infoBox = new JPanel();
         infoBox.setLayout(new BoxLayout(infoBox, BoxLayout.Y_AXIS));
         infoBox.setBackground(COLOR_CARD);
@@ -143,7 +130,6 @@ public class BookingHistoryFrame extends JFrame {
         infoBox.add(lblId);
         infoBox.add(lblDetails);
 
-        // --- BÊN PHẢI: TỔNG TIỀN & TRẠNG THÁI ---
         JPanel actionBox = new JPanel(new BorderLayout());
         actionBox.setBackground(COLOR_CARD);
         actionBox.setPreferredSize(new Dimension(200, 100));
@@ -156,7 +142,6 @@ public class BookingHistoryFrame extends JFrame {
         JPanel statusPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
         statusPanel.setBackground(COLOR_CARD);
 
-        // Kiểm tra logic trạng thái (giả sử trạng thái hiển thị "SUCCESS")
         if (status.equalsIgnoreCase("SUCCESS")) {
             RoundedButton btnCancel = new RoundedButton("Hủy vé", Color.WHITE, COLOR_PRIMARY);
             btnCancel.setBorderColor(COLOR_PRIMARY);
@@ -197,9 +182,6 @@ public class BookingHistoryFrame extends JFrame {
         return card;
     }
 
-    // ==========================================
-    // CÁC COMPONENT CUSTOM ĐỂ BO GÓC UI
-    // ==========================================
     class RoundedPanel extends JPanel {
         private int cornerRadius;
         private Color bgColor;
