@@ -1,9 +1,8 @@
 package demo;
 
-import controller.LoginController;
+import controller.authentication.LoginController;
 import utils.FakeData;
-import view.LoginForm;
-import view.showtimeroom_schedule;
+import view.authentication.LoginForm;
 
 public class Demo {
 
