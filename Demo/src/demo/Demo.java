@@ -3,7 +3,7 @@ package demo;
 import controller.LoginController;
 import utils.FakeData;
 import view.LoginForm;
-import view.showtimeroom_schedule; // Gom import lên đầu file cho chuẩn
+import view.showtimeroom_schedule;
 
 public class Demo {
 

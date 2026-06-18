@@ -5,7 +5,7 @@ import java.util.List;
 import model.Movie;
 import model.User;
 import service.ListFavoriteService;
-import utils.Session; // Đã sửa lại thành đúng class Session của bạn
+import utils.Session; 
 
 public class ListFavoriteController {
 

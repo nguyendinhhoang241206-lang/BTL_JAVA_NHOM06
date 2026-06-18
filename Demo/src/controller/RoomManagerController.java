@@ -88,7 +88,7 @@ public class RoomManagerController {
                 mainFrame.setJMenuBar(menuBar);
 
                 view.ShowlistmovieForm showListPanel = new view.ShowlistmovieForm();
-                new controller.MovieController(showListPanel); // Kích hoạt nút bấm phim
+                new controller.MovieController(showListPanel);
 
                 mainFrame.add(showListPanel);
                 mainFrame.setVisible(true);
