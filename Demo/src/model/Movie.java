@@ -10,14 +10,12 @@ public class Movie implements Serializable {
     private String title;
     private String description;
     private String director;
-    private int duration; // Duration in minutes
+    private int duration;
     private LocalDate releaseDate;
 
-    // No-args Constructor
     public Movie() {
     }
 
-    // All-args Constructor
     public Movie(String id, String title, String description, String director, int duration, LocalDate releaseDate) {
         this.id = id;
         this.title = title;
@@ -27,7 +25,6 @@ public class Movie implements Serializable {
         this.releaseDate = releaseDate;
     }
 
-    // Getters and Setters
     public String getId() {
         return id;
     }

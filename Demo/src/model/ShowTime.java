@@ -14,78 +14,70 @@ public class ShowTime implements Serializable {
     private String movieId;
     private String roomId;
 
-    // No-args Constructor
     public ShowTime() {
     }
 
-    // All-args Constructor
     public ShowTime(String id, LocalDate showDate, LocalTime startTime, LocalTime endTime, String movieId, String roomId) {
+        setId(id);
+        setShowDate(showDate);
+        setStartTime(startTime);
+        setEndTime(endTime);
+        setMovieId(movieId);
+        setRoomId(roomId);
+
+        if (this.startTime != null && this.endTime != null && 
+           (this.startTime.isAfter(this.endTime) || this.startTime.equals(this.endTime))) {
+            throw new IllegalArgumentException("Giờ bắt đầu phải trước giờ kết thúc!");
+        }
+    }
+
+    public String getId() { return id; }
+    public void setId(String id) throws IllegalArgumentException {
+        if (id == null || id.trim().isEmpty() || id.equals("Hệ thống tự tạo")) {
+            throw new IllegalArgumentException("Mã suất chiếu không hợp lệ!");
+        }
         this.id = id;
-        this.showDate = showDate;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.movieId = movieId;
-        this.roomId = roomId;
     }
 
-    // Getters and Setters
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public LocalDate getShowDate() {
-        return showDate;
-    }
-
-    public void setShowDate(LocalDate showDate) {
+    public LocalDate getShowDate() { return showDate; }
+    public void setShowDate(LocalDate showDate) throws IllegalArgumentException {
+        if (showDate == null) {
+            throw new IllegalArgumentException("Vui lòng chọn ngày chiếu phim!");
+        }
+        if (showDate.isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("Ngày chiếu không được là ngày trong quá khứ!");
+        }
         this.showDate = showDate;
     }
 
-    public LocalTime getStartTime() {
-        return startTime;
-    }
-
+    public LocalTime getStartTime() { return startTime; }
     public void setStartTime(LocalTime startTime) {
         this.startTime = startTime;
     }
 
-    public LocalTime getEndTime() {
-        return endTime;
-    }
-
+    public LocalTime getEndTime() { return endTime; }
     public void setEndTime(LocalTime endTime) {
         this.endTime = endTime;
     }
 
-    public String getMovieId() {
-        return movieId;
-    }
-
-    public void setMovieId(String movieId) {
+    public String getMovieId() { return movieId; }
+    public void setMovieId(String movieId) throws IllegalArgumentException {
+        if (movieId == null || movieId.trim().isEmpty()) {
+            throw new IllegalArgumentException("Vui lòng chọn phim hợp lệ!");
+        }
         this.movieId = movieId;
     }
 
-    public String getRoomId() {
-        return roomId;
-    }
-
-    public void setRoomId(String roomId) {
+    public String getRoomId() { return roomId; }
+    public void setRoomId(String roomId) throws IllegalArgumentException {
+        if (roomId == null || roomId.trim().isEmpty()) {
+            throw new IllegalArgumentException("Vui lòng chọn phòng chiếu hợp lệ!");
+        }
         this.roomId = roomId;
     }
 
     @Override
     public String toString() {
-        return "ShowTime{" +
-                "id='" + id + '\'' +
-                ", showDate=" + showDate +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                ", movieId='" + movieId + '\'' +
-                ", roomId='" + roomId + '\'' +
-                '}';
+        return "ShowTime{" + "id='" + id + '\'' + ", showDate=" + showDate + ", startTime=" + startTime + ", endTime=" + endTime + ", movieId='" + movieId + '\'' + ", roomId='" + roomId + '\'' + '}';
     }
 }
