@@ -41,7 +41,6 @@ public class RegisterService {
                     "Thông tin người dùng không hợp lệ");
         }
 
-        // Validation bằng Exception
         ValidationUtil.validateUsername(user.getUsername());
         ValidationUtil.validateEmail(user.getEmail());
         ValidationUtil.validatePassword(user.getPassword());
