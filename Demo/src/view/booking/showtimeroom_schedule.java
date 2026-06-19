@@ -27,12 +27,16 @@ public class showtimeroom_schedule extends javax.swing.JFrame {
         txtId1.setEditable(false);
         txtId1.setText(controller.getNextShowTimeId());
 
-        javax.swing.SpinnerDateModel startModel = new javax.swing.SpinnerDateModel();
+        java.util.Calendar cal = java.util.Calendar.getInstance();
+        cal.set(java.util.Calendar.HOUR_OF_DAY, 0);
+        cal.set(java.util.Calendar.MINUTE, 0);
+        java.util.Date defaultTime = cal.getTime();
+
+        javax.swing.SpinnerDateModel startModel = new javax.swing.SpinnerDateModel(defaultTime, null, null, java.util.Calendar.MINUTE);
         spinStartTime.setModel(startModel);
         javax.swing.JSpinner.DateEditor startEditor = new javax.swing.JSpinner.DateEditor(spinStartTime, "HH:mm");
         spinStartTime.setEditor(startEditor);
-
-        javax.swing.SpinnerDateModel endModel = new javax.swing.SpinnerDateModel();
+        javax.swing.SpinnerDateModel endModel = new javax.swing.SpinnerDateModel(defaultTime, null, null, java.util.Calendar.MINUTE);
         spinEndTime.setModel(endModel);
         javax.swing.JSpinner.DateEditor endEditor = new javax.swing.JSpinner.DateEditor(spinEndTime, "HH:mm");
         spinEndTime.setEditor(endEditor);
@@ -354,12 +358,16 @@ public class showtimeroom_schedule extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtId1ActionPerformed
 
-    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {
+   private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {
         txtId1.setText(controller.getNextShowTimeId());
-
         dateChooser.setDate(null);
-        spinStartTime.setValue(new java.util.Date());
-        spinEndTime.setValue(new java.util.Date());
+        java.util.Calendar cal = java.util.Calendar.getInstance();
+        cal.set(java.util.Calendar.HOUR_OF_DAY, 0);
+        cal.set(java.util.Calendar.MINUTE, 0);
+        java.util.Date zeroTime = cal.getTime();
+        
+        spinStartTime.setValue(zeroTime);
+        spinEndTime.setValue(zeroTime);
         if (cbMovie.getItemCount() > 0) cbMovie.setSelectedIndex(0);
         if (cbRoom.getItemCount() > 0) cbRoom.setSelectedIndex(0);
         tblShowTime.clearSelection();
