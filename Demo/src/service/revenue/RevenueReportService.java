@@ -48,7 +48,7 @@ public class RevenueReportService {
                     ShowTime showTime = showTimeDAO.findById(booking.getShowTimeId());
 
                     if (showTime != null && showTime.getMovieId().equals(movie.getId())) {
-                        soldTickets++;
+                        soldTickets += booking.getTotalPrice();
                         revenue += booking.getTotalPrice();
                     }
                 }
